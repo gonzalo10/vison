@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import { LandingPage } from './containers/Pages';
+import Layout from './containers/Layout';
+import LandingPage from './containers/Pages';
 
 export default class App extends React.Component {
 	render() {
