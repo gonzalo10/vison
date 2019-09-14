@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 import TitleImg from '../../assets/images/Analytics.jpg';
 import BlueTitleImg from '../../assets/images/blueAnalytics.png';
-import MambaDashboard from '../../assets/images/MambaDashboard.jpg';
+import MambaDashboard from '../../assets/images/MambaDashboard.jpeg';
+import dasboardSVG from '../../assets/images/home.svg';
 
 const TitleSection = styled.div`
 	width: 100vw;
@@ -26,6 +27,12 @@ const Header = styled.div`
 `;
 const Img = styled.img`
 	height: 500px;
+	-webkit-font-smoothing: antialiased;
+`;
+const ImgMamba = styled.img`
+	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+	-webkit-font-smoothing: antialiased;
+	width: 65vw;
 `;
 
 const Span1 = styled.span`
@@ -129,6 +136,47 @@ const Example = styled.div`
 const InteractiveExample = styled.div`
 	width: 100vw;
 	text-align: center;
+	display: flex;
+	justify-content: center;
+`;
+const NavSwitcher = styled.div`
+	display: flex;
+	flex-direction: column;
+	margin-left: 50px;
+`;
+const StepsButtons = styled.div`
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background: 0 0;
+	text-decoration: none;
+	cursor: pointer;
+	border-radius: 4px;
+	text-align: left;
+	display: flex;
+	align-items: center;
+	border: none;
+	padding: 1rem;
+	width: 200px;
+	font-size: 16px;
+	line-height: 22px;
+	letter-spacing: 0.2px;
+	color: #696969;
+	font-weight: 700;
+	&:active {
+		transition: all 420ms cubic-bezier(0.165, 0.84, 0.44, 1);
+		outline: 0;
+		background: #fff;
+		box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+	}
+`;
+
+const SwitchImg = styled.img`
+	width: 30px;
+	&:hover {
+		fill: blue;
+	}
+	margin-right: 10px;
 `;
 const LandingPage = () => {
 	return (
@@ -156,7 +204,16 @@ const LandingPage = () => {
 			<Example>
 				<h1>Put Machine Learning at your fingertips</h1>
 				<InteractiveExample>
-					<Img />
+					<ImgMamba src={MambaDashboard} />
+					<NavSwitcher>
+						<StepsButtons active>
+							<SwitchImg src={dasboardSVG} />
+							Dashboard
+						</StepsButtons>
+						<StepsButtons>Drag & Drop Model creator</StepsButtons>
+						<StepsButtons>Production In One Click </StepsButtons>
+						<StepsButtons>Share</StepsButtons>
+					</NavSwitcher>
 				</InteractiveExample>
 			</Example>
 		</>
