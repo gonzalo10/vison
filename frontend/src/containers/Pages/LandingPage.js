@@ -5,6 +5,6 @@ const Header = styled.button`
 	background-color: blue;
 `;
 
-const LandingPage = () => {
-	return <Header>Land</Header>;
+export const LandingPage = () => {
+	return <Header>LandingPage</Header>;
 };

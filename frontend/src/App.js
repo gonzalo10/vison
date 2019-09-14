@@ -1,11 +1,13 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+import { LandingPage } from './containers/Pages';
 
 export default class App extends React.Component {
 	render() {
 		return (
 			<Router>
-				<Route path='/' component={PricingPage} />
+				<Route path='/' component={LandingPage} />
 			</Router>
 		);
 	}
