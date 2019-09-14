@@ -18,7 +18,7 @@ class Layout extends Component {
 
 		return (
 			<>
-				<Navbar history={history} dispatch={dispatch} />
+				<Navbar history={history} dispatch={dispatch} url={url} />
 				{/* <Notification
 					notifications={this.props.notifications}
 					dispatch={this.props.dispatch}
