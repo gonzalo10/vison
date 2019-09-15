@@ -8,7 +8,7 @@ class Layout extends Component {
 		const { history, dispatch } = this.props;
 		let url = history.location.pathname;
 
-		if (url === '/login') {
+		if (url === '/login' || url === '/dashboard') {
 			return (
 				<React.Fragment>
 					<main>{this.props.children}</main>

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
+import { history } from '../../helpers';
 import { userActions } from '../../_actions';
 import Logo from '../../assets/images/vision.svg';
 
@@ -10,7 +11,7 @@ const Header = styled.div`
 	width: 100vw;
 	height: 60px;
 	display: flex;
-	justify-content: left;
+	justify-content: space-between;
 	align-items: center;
 	position: absolute;
 	z-index: 1;
@@ -25,12 +26,33 @@ const Brand = styled.h1`
 	color: ${props => props.theme.white};
 	font-weight: 900;
 `;
+const BrandProfile = styled.div`
+	display: flex;
+	align-items: center;
+`;
+const Menu = styled.div`
+	display: flex;
+	align-items: center;
+`;
+const Item = styled.h1`
+	font-size: 20px
+	color: ${props => props.theme.white};
+	font-weight: 700;
+	margin: 0px 10px;
+	cursor: pointer;
+`;
 
 const Navbar = ({ url }) => {
 	return (
 		<Header url={url}>
-			<Img src={Logo} />
-			<Brand>Vision</Brand>
+			<BrandProfile>
+				<Img src={Logo} />
+				<Brand>Vision</Brand>
+			</BrandProfile>
+			<Menu>
+				<Item onClick={() => history.push('/dashboard')}>Log in</Item>
+				<Item>Sign in</Item>
+			</Menu>
 		</Header>
 	);
 };

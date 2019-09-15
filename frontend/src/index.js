@@ -16,6 +16,9 @@ const theme = {
 	fontPrimaryColor: 'black',
 	fontSecondaryColor: 'white',
 	white: 'white',
+	color: {
+		dark: '#4553ff',
+	},
 };
 
 ReactDOM.render(
