@@ -5,6 +5,8 @@ const { buildSchema } = require('graphql');
 
 const sql = require('./utils/database');
 
+const Models = require('./models/models');
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -19,13 +21,21 @@ app.use(
             description: String!
             price: Float!
           }
+          type Model {
+            _id: ID!
+            title: String!
+            description: String!
+			price: Float!
+			imageURL: String!
+          }
           input EventInput {
             title: String!
             description: String!
             price: Float!
           }
           type RootQuery {
-              events: [Event!]!
+			events: [Event!]!
+			models: [Model!]!
           }
           type RootMutation {
               createEvent(eventInput: EventInput): Event
@@ -46,6 +56,17 @@ app.use(
 					throw err;
 				}
 			},
+			models: async () => {
+				try {
+					const response = await Models.fetchAll();
+					console.log(response);
+					const models = response[0];
+					return models;
+				} catch (err) {
+					console.log(err);
+					throw err;
+				}
+			},
 			createEvent: async args => {
 				const { title, description, price } = args.eventInput;
 				try {
@@ -55,7 +76,8 @@ app.use(
 					);
 					const ID = event[0].insertId;
 					const response = await sql.execute(
-						`SELECT * FROM events WHERE _id = ${ID}`
+						`SELECT * FROM events WHERE _id = ?`,
+						[ID]
 					);
 					return response[0][0];
 				} catch (err) {

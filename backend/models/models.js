@@ -1,6 +1,6 @@
-const db = require('../util/database');
+const db = require('../utils/database');
 
-module.exports = class Product {
+module.exports = class Models {
 	constructor(id, title, imageUrl, description, price) {
 		this.id = id;
 		this.title = title;
@@ -19,7 +19,7 @@ module.exports = class Product {
 	static deleteById(id) {}
 
 	static fetchAll() {
-		return db.execute('SELECT * FROM products');
+		return db.execute('SELECT * FROM models');
 	}
 
 	static findById(id) {}
