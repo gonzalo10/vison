@@ -14,8 +14,9 @@
 		"body-parser": "^1.18.3",
 		"express": "^4.16.4",
 		"express-graphql": "^0.7.1",
+		"graphql": "^14.0.2",
 		"mysql2": "^1.6.1",
-		"graphql": "^14.0.2"
+		"sequelize": "^5.18.4"
 	},
 	"license": "MIT"
 }

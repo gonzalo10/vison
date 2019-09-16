@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const { buildSchema } = require('graphql');
 
-const sql = require('./utils/database');
+const sequelize = require('./utils/database');
 
 const Models = require('./models/models');
 
@@ -90,4 +90,9 @@ app.use(
 	})
 );
 
-app.listen(3000);
+sequelize
+	.sync()
+	.then(results => {
+		app.listen(3000);
+	})
+	.catch(err => console.log(err));
