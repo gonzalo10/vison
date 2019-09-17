@@ -6,8 +6,17 @@ const { buildSchema } = require('graphql');
 const sequelize = require('./utils/database');
 
 const Models = require('./models/models');
+const User = require('./models/user');
 
 const app = express();
+app.use((req, res, next) => {
+	User.findById(1)
+		.then(user => {
+			req.user = user;
+			next();
+		})
+		.catch(err => console.log(err));
+});
 
 app.use(bodyParser.json());
 
@@ -112,9 +121,19 @@ app.use(
 	})
 );
 
+Models.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Models);
+
 sequelize
-	.sync()
+	.sync({ force: true })
 	.then(results => {
-		app.listen(3000);
+		return User.findByPk(1);
 	})
+	.then(user => {
+		if (!user) {
+			return User.create({ name: 'max', email: 'google.com' });
+		}
+		return user;
+	})
+	.then(() => app.listen(3000))
 	.catch(err => console.log(err));
