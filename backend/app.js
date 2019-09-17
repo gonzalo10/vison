@@ -22,16 +22,22 @@ app.use(
             price: Float!
           }
           type Model {
-            _id: ID!
+            id: ID!
             title: String!
             description: String!
 			price: Float!
-			imageURL: String!
+			imageUrl: String!
           }
           input EventInput {
             title: String!
             description: String!
             price: Float!
+          }
+          input ModelInput {
+            title: String!
+            description: String!
+			price: Float!
+			imageUrl: String!
           }
           type RootQuery {
 			events: [Event!]!
@@ -39,6 +45,7 @@ app.use(
           }
           type RootMutation {
               createEvent(eventInput: EventInput): Event
+              createModel(modelInput: ModelInput): Model
           }
           schema {
               query: RootQuery
@@ -58,10 +65,8 @@ app.use(
 			},
 			models: async () => {
 				try {
-					const response = await Models.fetchAll();
-					console.log(response);
-					const models = response[0];
-					return models;
+					const allModels = await Models.findAll();
+					return allModels;
 				} catch (err) {
 					console.log(err);
 					throw err;
@@ -80,6 +85,23 @@ app.use(
 						[ID]
 					);
 					return response[0][0];
+				} catch (err) {
+					console.log(err);
+					throw err;
+				}
+			},
+			createModel: async args => {
+				const { title, description, price, imageUrl } = args.modelInput;
+				try {
+					const response = await Models.create({
+						title,
+						description,
+						price,
+						imageUrl,
+					});
+					const { dataValues } = response;
+					console.log(response.dataValues);
+					return dataValues;
 				} catch (err) {
 					console.log(err);
 					throw err;
