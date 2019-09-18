@@ -15,10 +15,9 @@ module.exports = {
 			throw err;
 		}
 	},
-	models: async () => {
+	models: async (args, req) => {
 		try {
-			const allModels = await Model.findAll();
-			return allModels;
+			return req.user.getModels();
 		} catch (err) {
 			console.log(err);
 			throw err;
