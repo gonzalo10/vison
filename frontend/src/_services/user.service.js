@@ -22,7 +22,6 @@ const login = async (username, password) => {
 			body: JSON.stringify(requestBody),
 			headers: {
 				'Content-Type': 'application/json',
-				'Set-Cookie': 'my_cookie_name=my_cookie_value',
 			},
 		});
 		const {

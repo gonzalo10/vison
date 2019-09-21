@@ -1,4 +1,4 @@
-const Model = require('../models/models');
+const Model = require('../../models/models');
 
 module.exports = {
 	createModel: async (args, req) => {
@@ -16,8 +16,10 @@ module.exports = {
 		}
 	},
 	models: async (args, req) => {
+		console.log(req.user);
 		try {
-			return req.user.getModels();
+			const models = await req.user.getModels();
+			return models;
 		} catch (err) {
 			console.log(err);
 			throw err;

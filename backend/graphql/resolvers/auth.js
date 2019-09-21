@@ -48,8 +48,6 @@ module.exports = {
 				expiresIn: '1h',
 			}
 		);
-		console.log(user);
-		console.log(token);
 		return { userId: user.id, token: token, tokenExpiration: 1, error: null };
 	},
 };
