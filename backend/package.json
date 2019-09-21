@@ -11,10 +11,14 @@
 		"nodemon": "^1.18.3"
 	},
 	"dependencies": {
+		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.18.3",
+		"connect-session-sequelize": "^6.0.0",
 		"express": "^4.16.4",
 		"express-graphql": "^0.7.1",
+		"express-session": "^1.16.2",
 		"graphql": "^14.0.2",
+		"jsonwebtoken": "^8.5.1",
 		"mysql2": "^1.6.1",
 		"sequelize": "^5.18.4"
 	},

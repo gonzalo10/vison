@@ -1,41 +1,61 @@
 // import { authHeader } from '../_helpers';
 // import { TOKEN_URL, MYUSER_URL, GET_ACTORS_URL } from '../endpoint.js';
 // import { CLIENT_ID } from '../global_constants.js';
-export const userService = {
-	login,
-	logout,
-	// register,
-	// getAll,
-	// getById,
-	// update,
-	// delete: _delete,
+
+const login = async (username, password) => {
+	console.log('login', username, password);
+	try {
+		const requestBody = {
+			query: `
+			 {
+				login(email: "${username}", password: "${password}") {
+				userId
+				token
+				tokenExpiration
+				error
+				}
+			  }
+			`,
+		};
+		const response = await fetch('http://localhost:3000/graphql', {
+			method: 'POST',
+			body: JSON.stringify(requestBody),
+			headers: {
+				'Content-Type': 'application/json',
+				'Set-Cookie': 'my_cookie_name=my_cookie_value',
+			},
+		});
+		const {
+			data: { login: result },
+		} = await response.json();
+		if (result.error) {
+			return Promise.reject(result.error);
+		}
+		return result;
+	} catch (err) {
+		console.log(err);
+	}
 };
 
-function login(username, password) {
-	// const grant_type = 'password';
-	// const client_id = CLIENT_ID;
-	// const requestOptions = {
-	// 	method: 'POST',
-	// 	headers: { 'Content-Type': 'application/json' },
-	// 	body: JSON.stringify({ username, password, grant_type, client_id }),
-	// };
-	// return fetch(`${TOKEN_URL}`, requestOptions)
-	// 	.then(handleResponse)
-	// 	.then(response => {
-	// 		// set header for all next peticions
-	// 		localStorage.setItem('token', response.data.access_token);
-	// 		localStorage.setItem('refresh_token', response.data.refresh_token);
-	// 		const requestOptions = {
-	// 			method: 'GET',
-	// 			headers: authHeader(),
-	// 		};
-	// 		return fetch(`${MYUSER_URL}`, requestOptions)
-	// 			.then(handleResponse)
-	// 			.then(user => {
-	// 				localStorage.setItem('user', JSON.stringify(user.data));
-	// 				return user;
-	// 			});
-	// 	});
+function register(username, password) {
+	const requestBody = {
+		query: `
+		mutation {
+			createUser(userInput: {email: "${username}", password: "${password}"}) {
+			  id
+			  email
+			  password
+			}
+		  }
+        `,
+	};
+	return fetch('http://localhost:3000/graphql', {
+		method: 'POST',
+		body: JSON.stringify(requestBody),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 }
 
 function logout() {
@@ -63,3 +83,12 @@ function handleResponse(response) {
 		return data;
 	});
 }
+export const userService = {
+	login,
+	logout,
+	register,
+	// getAll,
+	// getById,
+	// update,
+	// delete: _delete,
+};

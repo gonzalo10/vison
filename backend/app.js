@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
-const { buildSchema } = require('graphql');
+const session = require('express-session');
+var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const sequelize = require('./utils/database');
 
@@ -12,16 +13,29 @@ const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
 
 const app = express();
-app.use((req, res, next) => {
-	User.findByPk(1)
-		.then(user => {
-			req.user = user;
-			next();
-		})
-		.catch(err => console.log(err));
+
+var store = new SequelizeStore({
+	db: sequelize,
 });
 
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	if (req.method === 'OPTIONS') {
+		return res.sendStatus(200);
+	}
+	next();
+});
+app.use(
+	session({
+		secret: 'my secret',
+		resave: false,
+		saveUninitialized: false,
+		store: store,
+	})
+);
 
 app.use(
 	'/graphql',
@@ -37,14 +51,5 @@ User.hasMany(Models);
 
 sequelize
 	.sync()
-	.then(results => {
-		return User.findByPk(1);
-	})
-	.then(user => {
-		if (!user) {
-			return User.create({ name: 'max', email: 'google.com' });
-		}
-		return user;
-	})
 	.then(() => app.listen(3000))
 	.catch(err => console.log(err));
