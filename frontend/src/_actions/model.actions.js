@@ -12,7 +12,7 @@ function getAll() {
 	return dispatch => {
 		dispatch(request());
 
-		modelService.login().then(
+		modelService.getAll().then(
 			models => {
 				console.log(models);
 				dispatch(success(models));

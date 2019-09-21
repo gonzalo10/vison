@@ -19,24 +19,26 @@ var store = new SequelizeStore({
 });
 
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-	if (req.method === 'OPTIONS') {
-		return res.sendStatus(200);
-	}
-	next();
-});
+// app.use((req, res, next) => {
+// 	res.setHeader('Access-Control-Allow-Origin', '*');
+// 	res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+// 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+// 	if (req.method === 'OPTIONS') {
+// 		return res.sendStatus(200);
+// 	}
+// 	next();
+// });
 app.use(
 	session({
 		secret: 'my secret',
 		resave: false,
 		saveUninitialized: false,
 		store: store,
+		maxAge: 100000000000000,
 	})
 );
 app.use((req, res, next) => {
+	console.log(req.session);
 	if (!req.session.user) {
 		return next();
 	}
@@ -46,6 +48,11 @@ app.use((req, res, next) => {
 			next();
 		})
 		.catch(err => console.log(err));
+});
+
+app.use((req, res, next) => {
+	res.locals.isAuthenticated = req.session.isLoggedIn;
+	next();
 });
 
 app.use(

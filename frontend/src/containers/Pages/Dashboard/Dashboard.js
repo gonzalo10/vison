@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import visionLogo from '../../../assets/images/vision.svg';
+import { modelActions } from '../../../_actions';
 
 const LateralMenu = styled.div`
 	width: 100px;
@@ -80,7 +82,7 @@ const CardText = styled.h3``;
 const CardDescription = styled.p``;
 const CardCallToAction = styled.button``;
 
-export const Dashboard = () => {
+const Dashboard = ({ dispatch }) => {
 	return (
 		<>
 			<LateralMenu>
@@ -97,6 +99,9 @@ export const Dashboard = () => {
 				<Header>
 					<Logo src={visionLogo} />
 					<TitleHeader>Models</TitleHeader>
+					<button onClick={() => dispatch(modelActions.getAll())}>
+						RFRESH
+					</button>
 				</Header>
 				<Models>
 					<CardMenu>
@@ -124,3 +129,11 @@ export const Dashboard = () => {
 		</>
 	);
 };
+
+function mapStateToProps(state) {
+	const {} = state;
+	return {};
+}
+
+const connectedDashboard = connect(mapStateToProps)(Dashboard);
+export { connectedDashboard as Dashboard };

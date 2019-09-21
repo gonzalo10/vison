@@ -16,7 +16,7 @@ module.exports = {
 		}
 	},
 	models: async (args, req) => {
-		console.log(req.user);
+		console.log(req);
 		try {
 			const models = await req.user.getModels();
 			return models;
