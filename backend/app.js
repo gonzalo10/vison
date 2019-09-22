@@ -69,18 +69,19 @@ app.use((req, res, next) => {
 
 app.use(isAuth);
 
-// app.use((req, res, next) => {
-// 	if (!req.isAuth) {
-// 		console.log('no auth');
-// 	}
-// 	User.findByPk(req.userId)
-// 		.then(user => {
-// 			console.log(user);
-// 			req.user = user;
-// 			next();
-// 		})
-// 		.catch(err => console.log(err));
-// });
+app.use((req, res, next) => {
+	if (!req.isAuth) {
+		console.log('no auth');
+	}
+	console.log(req.userId);
+	User.findByPk(req.userId)
+		.then(user => {
+			console.log('get User model', user);
+			req.user = user;
+			next();
+		})
+		.catch(err => console.log(err));
+});
 
 app.use(
 	'/graphql',

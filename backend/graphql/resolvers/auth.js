@@ -36,11 +36,11 @@ module.exports = {
 				error: 'Incorrect User or Password!!',
 			};
 		}
-		req.session.isLoggedIn = true;
-		req.session.user = user;
-		req.session.save(err => {
-			console.log(err);
-		});
+		// req.session.isLoggedIn = true;
+		// req.session.user = user;
+		// req.session.save(err => {
+		// 	console.log(err);
+		// });
 		const token = jwt.sign(
 			{ userId: user.id, email: user.email },
 			'somesupersecretkey',

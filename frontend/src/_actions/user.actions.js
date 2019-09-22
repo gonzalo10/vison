@@ -18,8 +18,9 @@ function login(username, password) {
 			user => {
 				console.log(user);
 				dispatch(success(user));
-				// localStorage.setItem('token', user.token);
-				// history.push('/dashboard');
+				localStorage.removeItem('token');
+				localStorage.setItem('token', user.token);
+				history.push('/dashboard');
 			},
 			error => {
 				console.log('error', error);
@@ -51,11 +52,11 @@ function logout() {
 	}
 }
 
-function register(user) {
+function register(username, password) {
 	return dispatch => {
-		dispatch(request(user));
+		dispatch(request());
 
-		userService.register(user).then(
+		userService.register(username, password).then(
 			user => {
 				dispatch(success());
 				history.push('/login');
@@ -68,8 +69,8 @@ function register(user) {
 		);
 	};
 
-	function request(user) {
-		return { type: userConstants.REGISTER_REQUEST, user };
+	function request() {
+		return { type: userConstants.REGISTER_REQUEST };
 	}
 	function success(user) {
 		return { type: userConstants.REGISTER_SUCCESS, user };

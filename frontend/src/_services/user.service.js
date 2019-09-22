@@ -1,10 +1,9 @@
-// import { authHeader } from '../_helpers';
+import { authHeader } from '../helpers';
 // import { TOKEN_URL, MYUSER_URL, GET_ACTORS_URL } from '../endpoint.js';
 // import { CLIENT_ID } from '../global_constants.js';
 import axios from 'axios';
 
 const login = async (username, password) => {
-	console.log('login', username, password);
 	try {
 		const requestBody = {
 			query: `
@@ -58,10 +57,8 @@ function register(username, password) {
 	return fetch('http://localhost:3000/graphql', {
 		method: 'POST',
 		body: JSON.stringify(requestBody),
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+		headers: authHeader(),
+	}).then(response => handleResponse(response));
 }
 
 function logout() {

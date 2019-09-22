@@ -21,7 +21,7 @@ module.exports = {
 	models: async (args, req) => {
 		console.log(req);
 		try {
-			return await Model.findAll();
+			// return await Model.findAll();
 			const models = await req.user.getModels();
 			return models;
 		} catch (err) {

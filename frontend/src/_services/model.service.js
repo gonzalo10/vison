@@ -1,4 +1,6 @@
 import { authHeader } from '../helpers';
+import axios from 'axios';
+
 export const modelService = {
 	getAll,
 };
@@ -6,12 +8,12 @@ export const modelService = {
 function getAll() {
 	const requestBody = {
 		query: `
-         {
-            models{
-                title
-            }
-          }
-        `,
+	     query{
+	        models{
+	            title
+	        }
+	      }
+	    `,
 	};
 	const requestOptions = {
 		method: 'POST',
