@@ -1,6 +1,7 @@
 // import { authHeader } from '../_helpers';
 // import { TOKEN_URL, MYUSER_URL, GET_ACTORS_URL } from '../endpoint.js';
 // import { CLIENT_ID } from '../global_constants.js';
+import axios from 'axios';
 
 const login = async (username, password) => {
 	console.log('login', username, password);
@@ -17,16 +18,22 @@ const login = async (username, password) => {
 			  }
 			`,
 		};
-		const response = await fetch('http://localhost:3000/graphql', {
+		const response = await axios({
+			url: 'http://localhost:3000/graphql',
 			method: 'POST',
-			body: JSON.stringify(requestBody),
-			headers: {
-				'Content-Type': 'application/json',
-			},
+			data: requestBody,
 		});
+		// const response = await fetch('http://localhost:3000/graphql', {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(requestBody),
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 	},
+		// 	credentials: 'same-origin',
+		// });
 		const {
 			data: { login: result },
-		} = await response.json();
+		} = await response.data;
 		if (result.error) {
 			return Promise.reject(result.error);
 		}

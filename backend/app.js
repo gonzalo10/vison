@@ -5,6 +5,7 @@ const session = require('express-session');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const sequelize = require('./utils/database');
+const isAuth = require('./middleware/is-auth');
 
 const Models = require('./models/models');
 const User = require('./models/user');
@@ -19,41 +20,67 @@ var store = new SequelizeStore({
 });
 
 app.use(bodyParser.json());
-// app.use((req, res, next) => {
-// 	res.setHeader('Access-Control-Allow-Origin', '*');
-// 	res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
-// 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-// 	if (req.method === 'OPTIONS') {
-// 		return res.sendStatus(200);
-// 	}
-// 	next();
-// });
-app.use(
-	session({
-		secret: 'my secret',
-		resave: false,
-		saveUninitialized: false,
-		store: store,
-		maxAge: 100000000000000,
-	})
-);
 app.use((req, res, next) => {
-	console.log(req.session);
-	if (!req.session.user) {
-		return next();
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	if (req.method === 'OPTIONS') {
+		return res.sendStatus(200);
 	}
-	User.findByPk(req.session.user.id)
-		.then(user => {
-			req.user = user;
-			next();
-		})
-		.catch(err => console.log(err));
-});
-
-app.use((req, res, next) => {
-	res.locals.isAuthenticated = req.session.isLoggedIn;
 	next();
 });
+
+// this is for the cookies
+
+// app.use(
+// 	session({
+// 		secret: 'my secret',
+// 		resave: false,
+// 		saveUninitialized: false,
+// 		store: store,
+// 		cookie: {
+// 			maxAge: 1000 * 60 * 60 * 2,
+// 			sameSite: false,
+// 			httpOnly: false,
+// 			domain: '127.0.0.1',
+// 		},
+// 	})
+// );
+
+// app.use((req, res, next) => {
+// 	console.log(req.session);
+// 	if (!req.session.user) {
+// 		return next();
+// 	}
+// 	User.findByPk(req.session.user.id)
+// 		.then(user => {
+// 			req.user = user;
+// 			next();
+// 		})
+// 		.catch(err => console.log(err));
+// });
+
+// app.use((req, res, next) => {
+// 	res.locals.isAuthenticated = req.session.isLoggedIn;
+// 	next();
+// });
+
+// this is for the bearer token
+
+app.use(isAuth);
+
+// app.use((req, res, next) => {
+// 	if (!req.isAuth) {
+// 		console.log('no auth');
+// 	}
+// 	User.findByPk(req.userId)
+// 		.then(user => {
+// 			console.log(user);
+// 			req.user = user;
+// 			next();
+// 		})
+// 		.catch(err => console.log(err));
+// });
 
 app.use(
 	'/graphql',

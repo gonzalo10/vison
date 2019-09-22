@@ -18,8 +18,8 @@ function login(username, password) {
 			user => {
 				console.log(user);
 				dispatch(success(user));
-				localStorage.setItem('token', user.token);
-				history.push('/dashboard');
+				// localStorage.setItem('token', user.token);
+				// history.push('/dashboard');
 			},
 			error => {
 				console.log('error', error);
