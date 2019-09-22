@@ -8,7 +8,7 @@ export const sentimentActions = {
 	execute,
 };
 
-function execute({ text }) {
+function execute(text) {
 	return dispatch => {
 		dispatch(request());
 
@@ -29,8 +29,8 @@ function execute({ text }) {
 	function request() {
 		return { type: modelConstants.EXECUTE_SENTIMENT_REQUEST };
 	}
-	function success(models) {
-		return { type: modelConstants.EXECUTE_SENTIMENT_SUCCESS, models };
+	function success(sentiment) {
+		return { type: modelConstants.EXECUTE_SENTIMENT_SUCCESS, sentiment };
 	}
 	function failure(error) {
 		return { type: modelConstants.EXECUTE_SENTIMENT_FAILURE, error };

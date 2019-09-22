@@ -6,6 +6,7 @@ export const sentimentService = {
 };
 
 function execute(text) {
+	console.log('execute', text);
 	const requestBody = {
 		query: `
 	    {

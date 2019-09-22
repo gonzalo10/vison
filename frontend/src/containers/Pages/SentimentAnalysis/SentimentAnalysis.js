@@ -84,7 +84,7 @@ const OutputStats = styled.div`
 	justify-content: center;
 `;
 
-const SentimentAnalysis = ({ dispatch }) => {
+const SentimentAnalysis = ({ dispatch, sentimentResult }) => {
 	const [text, setText] = useState('');
 	const handleChange = e => {
 		setText(e.target.value);
@@ -92,6 +92,8 @@ const SentimentAnalysis = ({ dispatch }) => {
 	const execute = () => {
 		dispatch(sentimentActions.execute(text));
 	};
+
+	console.log('sentimentResult', sentimentResult);
 
 	return (
 		<>
@@ -119,12 +121,21 @@ const SentimentAnalysis = ({ dispatch }) => {
 						<button onClick={execute}>Run</button>
 					</Left>
 					<Right>
-						<Ouput>
-							<OutputTitle>Results</OutputTitle>
-							<OutputStats>
-								😍 99% <Badges>Positive</Badges>
-							</OutputStats>
-						</Ouput>
+						{sentimentResult ? (
+							<Ouput>
+								<OutputTitle>Results</OutputTitle>
+								<OutputStats>
+									<div>SentimentScore</div>
+									<div>Positive:{sentimentResult.SentimentScore.Positive}</div>
+									<div>Negative:{sentimentResult.SentimentScore.Negative}</div>
+									<div>Neutral:{sentimentResult.SentimentScore.Neutral}</div>
+									<div>Mixed:{sentimentResult.SentimentScore.Mixed}</div>
+									😍 99% <Badges>{sentimentResult.sentiment}</Badges>
+								</OutputStats>
+							</Ouput>
+						) : (
+							<div>Loading...</div>
+						)}
 					</Right>
 				</Body>
 			</Container>
@@ -133,9 +144,9 @@ const SentimentAnalysis = ({ dispatch }) => {
 };
 
 function mapStateToProps(state) {
-	const { modelList } = state.models;
+	const { sentimentResult } = state.sentiment;
 	console.log('state', state);
-	return { modelList };
+	return { sentimentResult };
 }
 
 const connectedSentiment = connect(mapStateToProps)(SentimentAnalysis);
