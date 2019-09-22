@@ -5,9 +5,14 @@ module.exports = buildSchema(`
         id: ID!
         title: String!
         description: String!
-        price: Float!
+    }
+    type ModelType {
+        id: ID!
+        title: String!
+        description: String!
         imageUrl: String!
     }
+
     type User {
         id: ID!
         email: String!
@@ -25,7 +30,11 @@ module.exports = buildSchema(`
     input ModelInput {
         title: String!
         description: String!
-        price: Float!
+    }
+
+    input ModelTypeInput {
+        title: String!
+        description: String!
         imageUrl: String!
     }
 
@@ -37,10 +46,12 @@ module.exports = buildSchema(`
     type RootQuery {
         models: [Model!]!
         users: [User!]! 
+        modelsTypes: [ModelType!]!
         login(email: String!, password: String!): AuthData!
     }
     type RootMutation {
         createModel(modelInput: ModelInput): Model
+        createModelType(modelTypeInput: ModelTypeInput): ModelType
         createUser(userInput: UserInput): User
     }
     schema {

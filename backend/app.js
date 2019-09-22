@@ -7,7 +7,8 @@ var SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sequelize = require('./utils/database');
 const isAuth = require('./middleware/is-auth');
 
-const Models = require('./models/models');
+const Model = require('./models/model');
+const ModelTypes = require('./models/modelTypes');
 const User = require('./models/user');
 
 const graphqlSchema = require('./graphql/schema');
@@ -73,10 +74,9 @@ app.use((req, res, next) => {
 	if (!req.isAuth) {
 		console.log('no auth');
 	}
-	console.log(req.userId);
 	User.findByPk(req.userId)
 		.then(user => {
-			console.log('get User model', user);
+			console.log('user', user);
 			req.user = user;
 			next();
 		})
@@ -91,9 +91,10 @@ app.use(
 		graphiql: true,
 	})
 );
-
-Models.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-User.hasMany(Models);
+Model.belongsTo(ModelTypes, { constraints: true, onDelete: 'CASCADE' });
+Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+ModelTypes.hasMany(Model);
+User.hasMany(Model);
 
 sequelize
 	.sync()

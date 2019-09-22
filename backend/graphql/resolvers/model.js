@@ -1,8 +1,6 @@
-const Model = require('../../models/models');
-
 module.exports = {
 	createModel: async (args, req) => {
-		const { title, description, price, imageUrl } = args.modelInput;
+		const { title, description, price, imageUrl, modelType } = args.modelInput;
 		try {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
@@ -10,8 +8,7 @@ module.exports = {
 			return req.user.createModel({
 				title,
 				description,
-				price,
-				imageUrl,
+				modelType,
 			});
 		} catch (err) {
 			console.log(err);
@@ -21,7 +18,9 @@ module.exports = {
 	models: async (args, req) => {
 		console.log(req);
 		try {
-			// return await Model.findAll();
+			if (!req.isAuth) {
+				throw new Error('Unauthenticated!');
+			}
 			const models = await req.user.getModels();
 			return models;
 		} catch (err) {

@@ -1,7 +1,6 @@
-import { authHeader } from '../helpers';
-// import { TOKEN_URL, MYUSER_URL, GET_ACTORS_URL } from '../endpoint.js';
-// import { CLIENT_ID } from '../global_constants.js';
 import axios from 'axios';
+
+import { authHeader } from '../helpers';
 
 const login = async (username, password) => {
 	try {

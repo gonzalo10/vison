@@ -1,5 +1,7 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
+
+import PrivateRoutes from './containers/Navigation/Routes';
 import { history } from './helpers';
 import Layout from './containers/Layout';
 import {
@@ -14,8 +16,8 @@ export default class App extends React.Component {
 		return (
 			<Router history={history}>
 				<Layout history={history}>
+					<PrivateRoutes path='/dashboard' component={Dashboard} />
 					<Route exact path='/' component={LandingPage} />
-					<Route path='/dashboard' component={Dashboard} />
 					<Route path='/login' component={LoginPage} />
 					<Route path='/signup' component={SignupPage} />
 				</Layout>
