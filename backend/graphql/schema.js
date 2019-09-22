@@ -5,12 +5,18 @@ module.exports = buildSchema(`
         id: ID!
         title: String!
         description: String!
+        modelTypeId: Int!
     }
+
     type ModelType {
         id: ID!
         title: String!
         description: String!
         imageUrl: String!
+    }
+
+    type Sentiment {
+        text: String
     }
 
     type User {
@@ -30,6 +36,7 @@ module.exports = buildSchema(`
     input ModelInput {
         title: String!
         description: String!
+        modelTypeId: Int!
     }
 
     input ModelTypeInput {
@@ -46,9 +53,11 @@ module.exports = buildSchema(`
     type RootQuery {
         models: [Model!]!
         users: [User!]! 
+        sentimentAnalysis(text: String!): [Sentiment!]!
         modelsTypes: [ModelType!]!
         login(email: String!, password: String!): AuthData!
     }
+
     type RootMutation {
         createModel(modelInput: ModelInput): Model
         createModelType(modelTypeInput: ModelTypeInput): ModelType

@@ -1,18 +1,17 @@
 import { authHeader } from '../helpers';
 import axios from 'axios';
 
-export const modelService = {
-	getAll,
+export const sentimentService = {
+	execute,
 };
 
-function getAll() {
+function execute(text) {
 	const requestBody = {
 		query: `
 	     query{
-	        models{
-				title
-				description
-				modelTypeId
+	        sentimentAnalysis(text: "${text}"{
+				text
+				
 	        }
 	      }
 	    `,

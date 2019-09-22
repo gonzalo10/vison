@@ -9,6 +9,7 @@ import {
 	Dashboard,
 	LoginPage,
 	SignupPage,
+	SentimentAnalysis,
 } from './containers/Pages';
 
 export default class App extends React.Component {
@@ -17,6 +18,10 @@ export default class App extends React.Component {
 			<Router history={history}>
 				<Layout history={history}>
 					<PrivateRoutes path='/dashboard' component={Dashboard} />
+					<PrivateRoutes
+						path='/model/sentiment'
+						component={SentimentAnalysis}
+					/>
 					<Route exact path='/' component={LandingPage} />
 					<Route path='/login' component={LoginPage} />
 					<Route path='/signup' component={SignupPage} />

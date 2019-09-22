@@ -1,21 +1,16 @@
-import ModelTypes from '../../models/modelTypes';
+const ModelType = require('../../models/modelTypes');
 module.exports = {
 	createModelType: async (args, req) => {
-		const { title, description, imageUrl } = args.modelInput;
+		const { title, description, imageUrl } = args.modelTypeInput;
 		try {
-			// if (!req.isAuth) {
-			// 	throw new Error('Unauthenticated!');
-			// }
-			return ModelTypes.create({
+			if (!req.isAuth) {
+				throw new Error('Unauthenticated!');
+			}
+			return ModelType.create({
 				title,
 				description,
 				imageUrl,
 			});
-			// return req.user.createModelType({
-			// 	title,
-			// 	description,
-			// 	imageUrl,
-			// });
 		} catch (err) {
 			console.log(err);
 			throw err;

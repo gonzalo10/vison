@@ -18,6 +18,7 @@ const theme = {
 	white: 'white',
 	color: {
 		dark: '#4553ff',
+		lightGrey: '#7f8a96',
 	},
 };
 

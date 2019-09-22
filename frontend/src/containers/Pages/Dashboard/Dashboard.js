@@ -1,29 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import visionLogo from '../../../assets/images/vision.svg';
 import { modelActions } from '../../../_actions';
-
-const LateralMenu = styled.div`
-	width: 100px;
-	height: 100vh;
-	position: absolute;
-	justify-content: space-between;
-	flex-direction: column;
-	display: flex;
-	background-color: ${props => props.theme.color.dark};
-`;
-const TopMenu = styled.div`
-	margin-top: 50px;
-`;
-const BottomMenu = styled.div`
-	margin-bottom: 50px;
-`;
-const MenuItem = styled.div`
-	margin-left: 20px;
-	color: ${props => props.theme.white};
-`;
+import { Sidebar } from '../../Layout/Sidebar';
 
 const Container = styled.div`
 	display: flex;
@@ -60,9 +41,11 @@ const CardMenu = styled.div`
 const Card = styled.div`
 	cursor: pointer;
 	margin: 15px;
+	max-height: 300px;
 	position: relative;
 	display: flex;
 	text-align: center;
+	justify-content: space-evenly;
 	flex-direction: column;
 	background-color: #fff;
 	border-radius: 8px;
@@ -82,19 +65,14 @@ const CardText = styled.h3``;
 const CardDescription = styled.p``;
 const CardCallToAction = styled.button``;
 
-const Dashboard = ({ dispatch }) => {
+const Dashboard = ({ dispatch, modelList }) => {
+	useEffect(() => {
+		dispatch(modelActions.getAll());
+	}, []);
+	console.log(modelList ? modelList.models : null);
 	return (
 		<>
-			<LateralMenu>
-				<TopMenu>
-					<MenuItem>Discover</MenuItem>
-					<MenuItem>Explore</MenuItem>
-				</TopMenu>
-				<BottomMenu>
-					<MenuItem>Profile</MenuItem>
-					<MenuItem>Log out</MenuItem>
-				</BottomMenu>
-			</LateralMenu>
+			<Sidebar />
 			<Container>
 				<Header>
 					<Logo src={visionLogo} />
@@ -103,26 +81,21 @@ const Dashboard = ({ dispatch }) => {
 						RFRESH
 					</button>
 				</Header>
+
 				<Models>
 					<CardMenu>
-						<Card>
-							<CardIcon>😍/😡</CardIcon>
-							<CardText>Sentiment Analysis</CardText>
-							<CardDescription>
-								Detect sentiment in texts (positive, negative or neutral).
-							</CardDescription>
-							<CardCallToAction>Start</CardCallToAction>
-						</Card>
-						<Card />
-						<Card />
-						<Card>
-							<CardIcon>😍/😡</CardIcon>
-							<CardText>Sentiment Analysis</CardText>
-							<CardDescription>
-								Detect sentiment in texts (positive, negative or neutral).
-							</CardDescription>
-							<CardCallToAction>Start</CardCallToAction>
-						</Card>
+						{modelList
+							? modelList.models.map(model => {
+									return (
+										<Card>
+											<CardIcon>😍/😡</CardIcon>
+											<CardText>{model.title}</CardText>
+											<CardDescription>{model.description}</CardDescription>
+											<CardCallToAction>Start</CardCallToAction>
+										</Card>
+									);
+							  })
+							: null}
 					</CardMenu>
 				</Models>
 			</Container>
@@ -131,8 +104,9 @@ const Dashboard = ({ dispatch }) => {
 };
 
 function mapStateToProps(state) {
-	const {} = state;
-	return {};
+	const { modelList } = state.models;
+	console.log('state', state);
+	return { modelList };
 }
 
 const connectedDashboard = connect(mapStateToProps)(Dashboard);

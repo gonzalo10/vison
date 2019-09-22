@@ -1,6 +1,6 @@
 module.exports = {
 	createModel: async (args, req) => {
-		const { title, description, price, imageUrl, modelType } = args.modelInput;
+		const { title, description, modelTypeId } = args.modelInput;
 		try {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
@@ -8,7 +8,7 @@ module.exports = {
 			return req.user.createModel({
 				title,
 				description,
-				modelType,
+				modelTypeId: modelTypeId,
 			});
 		} catch (err) {
 			console.log(err);
@@ -16,7 +16,6 @@ module.exports = {
 		}
 	},
 	models: async (args, req) => {
-		console.log(req);
 		try {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');

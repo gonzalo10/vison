@@ -1,20 +1,20 @@
 import { modelConstants } from '../constants';
-import { modelService } from '../_services';
+import { sentimentService } from '../_services';
 import { history } from '../helpers';
 
 import { notificationsActions } from './';
 
-export const modelActions = {
-	getAll,
+export const sentimentActions = {
+	execute,
 };
 
-function getAll() {
+function execute({ text }) {
 	return dispatch => {
 		dispatch(request());
 
-		modelService.getAll().then(
+		console.log(text);
+		sentimentService.execute(text).then(
 			models => {
-				console.log(models);
 				dispatch(success(models));
 			},
 			error => {
@@ -26,12 +26,12 @@ function getAll() {
 	};
 
 	function request() {
-		return { type: modelConstants.GETALL_REQUEST };
+		return { type: modelConstants.EXECUTE_SENTIMENT_REQUEST };
 	}
 	function success(models) {
-		return { type: modelConstants.GETALL_SUCCESS, models };
+		return { type: modelConstants.EXECUTE_SENTIMENT_SUCCESS, models };
 	}
 	function failure(error) {
-		return { type: modelConstants.GETALL_FAILURE, error };
+		return { type: modelConstants.EXECUTE_SENTIMENT_FAILURE, error };
 	}
 }
