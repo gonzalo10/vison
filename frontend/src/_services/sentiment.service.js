@@ -8,12 +8,18 @@ export const sentimentService = {
 function execute(text) {
 	const requestBody = {
 		query: `
-	     query{
-	        sentimentAnalysis(text: "${text}"{
+	    {
+	        sentimentAnalysis(text: "${text}") {
 				text
-				
+                sentiment
+                SentimentScore {
+                    Positive
+                    Negative
+                    Neutral
+                    Mixed
+                }
 	        }
-	      }
+	    }
 	    `,
 	};
 	const requestOptions = {

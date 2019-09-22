@@ -14,8 +14,9 @@ function execute({ text }) {
 
 		console.log(text);
 		sentimentService.execute(text).then(
-			models => {
-				dispatch(success(models));
+			sentiment => {
+				console.log(sentiment);
+				dispatch(success(sentiment));
 			},
 			error => {
 				console.log('error', error);

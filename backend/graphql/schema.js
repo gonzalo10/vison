@@ -15,8 +15,18 @@ module.exports = buildSchema(`
         imageUrl: String!
     }
 
+    type SentimentScore {
+        Positive: Float!
+        Negative: Float!
+        Neutral: Float!
+        Mixed: Float!
+    }
+    
+
     type Sentiment {
-        text: String
+        text: String!
+        sentiment: String!
+        SentimentScore: SentimentScore!
     }
 
     type User {
