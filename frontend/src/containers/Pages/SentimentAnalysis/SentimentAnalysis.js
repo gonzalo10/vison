@@ -39,8 +39,9 @@ const BadgeGroup = styled.div`
 	justify-content: space-around;
 	margin: 10px;
 `;
-const Badges = styled.div`
+const Badge = styled.div`
 	background-color: ${props => props.theme.color.dark};
+	font-size: 14px;
 	border-radius: 20px;
 	padding: 4px 10px;
 	color: ${props => props.theme.white};
@@ -81,10 +82,22 @@ const Ouput = styled.div``;
 const OutputTitle = styled.h5``;
 const OutputStats = styled.div`
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
 `;
+const Col = styled.div``;
+const StatTitle = styled.div`
+	margin-bottom: 10px;
+	border-bottom: 1px solid blue;
+`;
+const StatResult = styled.div``;
 
-const SentimentAnalysis = ({ dispatch, sentimentResult }) => {
+const SentimentAnalysis = ({
+	dispatch,
+	sentimentTitle,
+	sentimentValue,
+	icon,
+	isLoading,
+}) => {
 	const [text, setText] = useState('');
 	const handleChange = e => {
 		setText(e.target.value);
@@ -93,7 +106,24 @@ const SentimentAnalysis = ({ dispatch, sentimentResult }) => {
 		dispatch(sentimentActions.execute(text));
 	};
 
-	console.log('sentimentResult', sentimentResult);
+	const StatTable = () => (
+		<OutputStats>
+			<Col>
+				<StatTitle>Icon</StatTitle>
+				<StatResult>{icon}</StatResult>
+			</Col>
+			<Col>
+				<StatTitle>Result</StatTitle>
+				<StatResult>
+					<Badge>{sentimentTitle}</Badge>
+				</StatResult>
+			</Col>
+			<Col>
+				<StatTitle>Confidence</StatTitle>
+				<StatResult>{sentimentValue}%</StatResult>
+			</Col>
+		</OutputStats>
+	);
 
 	return (
 		<>
@@ -108,9 +138,9 @@ const SentimentAnalysis = ({ dispatch, sentimentResult }) => {
 						English. It works great in any kind of texts. If you are not sure of
 						which sentiment analysis classifier to use, use this one.
 						<BadgeGroup>
-							<Badges>Positive</Badges>
-							<Badges>Neutral</Badges>
-							<Badges>Negative</Badges>
+							<Badge>Positive</Badge>
+							<Badge>Neutral</Badge>
+							<Badge>Negative</Badge>
 						</BadgeGroup>
 					</Description>
 				</Header>
@@ -121,20 +151,14 @@ const SentimentAnalysis = ({ dispatch, sentimentResult }) => {
 						<button onClick={execute}>Run</button>
 					</Left>
 					<Right>
-						{sentimentResult ? (
-							<Ouput>
-								<OutputTitle>Results</OutputTitle>
-								<OutputStats>
-									<div>SentimentScore</div>
-									<div>Positive:{sentimentResult.SentimentScore.Positive}</div>
-									<div>Negative:{sentimentResult.SentimentScore.Negative}</div>
-									<div>Neutral:{sentimentResult.SentimentScore.Neutral}</div>
-									<div>Mixed:{sentimentResult.SentimentScore.Mixed}</div>
-									😍 99% <Badges>{sentimentResult.sentiment}</Badges>
-								</OutputStats>
-							</Ouput>
-						) : (
+						{isLoading ? (
 							<div>Loading...</div>
+						) : (
+							<Ouput>
+								<OutputTitle>Sentiment Analysis</OutputTitle>
+								{console.log(icon)}
+								{sentimentValue ? <StatTable /> : null}
+							</Ouput>
 						)}
 					</Right>
 				</Body>
@@ -144,9 +168,13 @@ const SentimentAnalysis = ({ dispatch, sentimentResult }) => {
 };
 
 function mapStateToProps(state) {
-	const { sentimentResult } = state.sentiment;
-	console.log('state', state);
-	return { sentimentResult };
+	const { sentimentTitle, sentimentValue, isLoading, icon } = state.sentiment;
+	return {
+		sentimentTitle,
+		sentimentValue,
+		isLoading,
+		icon,
+	};
 }
 
 const connectedSentiment = connect(mapStateToProps)(SentimentAnalysis);

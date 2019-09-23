@@ -9,7 +9,9 @@ export function sentiment(state = {}, action) {
 		case modelConstants.EXECUTE_SENTIMENT_SUCCESS:
 			return {
 				isLoading: false,
-				sentimentResult: { ...action.sentiment.sentimentAnalysis[0] },
+				sentimentTitle: action.sentiment.sentiment,
+				sentimentValue: action.sentiment.value,
+				icon: action.sentiment.icon,
 			};
 		case modelConstants.EXECUTE_SENTIMENT_FAILURE:
 			return {

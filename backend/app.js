@@ -10,15 +10,16 @@ const isAuth = require('./middleware/is-auth');
 const Model = require('./models/model');
 const ModelTypes = require('./models/modelTypes');
 const User = require('./models/user');
+const Sentiment = require('./models/sentimentAnalysis');
 
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
 
 const app = express();
 
-var store = new SequelizeStore({
-	db: sequelize,
-});
+// var store = new SequelizeStore({
+// 	db: sequelize,
+// });
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -90,10 +91,13 @@ app.use(
 		graphiql: true,
 	})
 );
+
 Model.belongsTo(ModelTypes, { constraints: true, onDelete: 'CASCADE' });
 Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+Sentiment.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 ModelTypes.hasMany(Model);
 User.hasMany(Model);
+User.hasMany(Sentiment);
 
 sequelize
 	.sync()

@@ -16,17 +16,20 @@ module.exports = buildSchema(`
     }
 
     type SentimentScore {
-        Positive: Float!
-        Negative: Float!
-        Neutral: Float!
-        Mixed: Float!
+        positive: Float!
+        negative: Float!
+        neutral: Float!
+        mixed: Float!
     }
     
 
     type Sentiment {
         text: String!
         sentiment: String!
-        SentimentScore: SentimentScore!
+        positive: Float!
+        negative: Float!
+        neutral: Float!
+        mixed: Float!
     }
 
     type User {
@@ -59,11 +62,14 @@ module.exports = buildSchema(`
         email: String!
         password: String!
     }
+    input SentimentInput {
+        text: String!
+    }
 
     type RootQuery {
         models: [Model!]!
         users: [User!]! 
-        sentimentAnalysis(text: String!): [Sentiment!]!
+        sentimentAnalysis: [Sentiment!]!
         modelsTypes: [ModelType!]!
         login(email: String!, password: String!): AuthData!
     }
@@ -72,6 +78,7 @@ module.exports = buildSchema(`
         createModel(modelInput: ModelInput): Model
         createModelType(modelTypeInput: ModelTypeInput): ModelType
         createUser(userInput: UserInput): User
+        createSentimentAnalysis(sentimentInput: SentimentInput): Sentiment
     }
     schema {
         query: RootQuery
