@@ -1,7 +1,7 @@
 import { authHeader } from '../helpers';
 import axios from 'axios';
 
-export const sentimentService = {
+export const entityService = {
 	execute,
 };
 
@@ -10,14 +10,15 @@ function execute(text) {
 	const requestBody = {
 		query: `
 		mutation{
-			createSentimentAnalysis(sentimentInput: {text: "hola2"}){
-				text
-				sentiment
-				positive
-				negative
-				neutral
-				mixed
-			}
+            createEntitiesAnalysis(entityInput: {text: "hola2"}){
+                text
+                score
+                type
+                name
+                description
+                articleBody
+                wikiUrl
+            }
 		}
 	    `,
 	};

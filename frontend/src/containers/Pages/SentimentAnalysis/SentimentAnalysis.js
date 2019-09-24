@@ -7,7 +7,8 @@ import { sentimentActions } from '../../../_actions';
 import { Sidebar } from '../../Layout/Sidebar';
 
 const Container = styled.div`
-	margin-left: 100px;
+	margin: auto;
+	width: 60%
 	display: flex;
 	flex-direction: column;
 `;

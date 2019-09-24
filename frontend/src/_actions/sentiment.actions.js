@@ -9,7 +9,6 @@ export const sentimentActions = {
 };
 
 const getSentimentIcon = sentiment => {
-	console.log('the switch', sentiment === 'NEUTRAL');
 	switch (sentiment) {
 		case (sentiment = 'POSITIVE'):
 			return '😍';
@@ -32,19 +31,21 @@ const formatString = str => {
 function execute(text) {
 	return dispatch => {
 		dispatch(request());
-
-		console.log(text);
 		sentimentService.execute(text).then(
-			sentiment => {
-				const result = sentiment.sentimentAnalysis[0];
-				console.log('sentiment', result);
-				console.log(Object.values(result.SentimentScore));
-				const value = Math.max(...Object.values(result.SentimentScore));
-
-				const icon = getSentimentIcon(result.sentiment);
+			({
+				createSentimentAnalysis: {
+					mixed,
+					positive,
+					neutral,
+					negative,
+					sentiment,
+				},
+			}) => {
+				const value = Math.max(mixed, positive, negative, neutral);
+				const icon = getSentimentIcon(sentiment);
 
 				const analysis = {
-					sentiment: formatString(result.sentiment),
+					sentiment: formatString(sentiment),
 					value: (value * 100).toFixed(2),
 					icon,
 				};
