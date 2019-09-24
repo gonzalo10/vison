@@ -51,6 +51,16 @@ module.exports = {
 						url,
 					});
 				}
+				return {
+					text: '',
+					score: 234.08,
+					type: '',
+					name: '',
+					description: '',
+					articleBody: '',
+					wikiUrl: '',
+					url: '',
+				};
 			});
 		} catch (err) {
 			console.log(err);

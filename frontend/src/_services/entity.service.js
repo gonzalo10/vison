@@ -10,7 +10,7 @@ function execute(text) {
 	const requestBody = {
 		query: `
 		mutation{
-            createEntitiesAnalysis(entityInput: {text: "hola2"}){
+            createEntitiesAnalysis(entityInput: {text: "${text}"}){
                 text
                 score
                 type
