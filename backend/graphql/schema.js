@@ -31,6 +31,16 @@ module.exports = buildSchema(`
         neutral: Float!
         mixed: Float!
     }
+    type Entity {
+        text: String!
+        score: Float!
+        type: String!
+        name: String!
+        description: String!
+        articleBody: String!
+        wikiUrl: String!
+        
+    }
 
     type User {
         id: ID!
@@ -65,11 +75,15 @@ module.exports = buildSchema(`
     input SentimentInput {
         text: String!
     }
+    input EntityInput {
+        text: String!
+    }
 
     type RootQuery {
         models: [Model!]!
         users: [User!]! 
         sentimentAnalysis: [Sentiment!]!
+        entitiesAnalysis: [Entity!]!
         modelsTypes: [ModelType!]!
         login(email: String!, password: String!): AuthData!
     }
@@ -79,6 +93,7 @@ module.exports = buildSchema(`
         createModelType(modelTypeInput: ModelTypeInput): ModelType
         createUser(userInput: UserInput): User
         createSentimentAnalysis(sentimentInput: SentimentInput): Sentiment
+        createEntitiesAnalysis(entityInput: EntityInput): [Entity!]!
     }
     schema {
         query: RootQuery

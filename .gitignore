@@ -6,6 +6,7 @@ frontend/yarn.lock
 backend/node_modules
 backend/yarn.lock
 backend/config.json
+backend/credentials.js
 /.pnp
 .pnp.js
 

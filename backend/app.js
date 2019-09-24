@@ -11,6 +11,7 @@ const Model = require('./models/model');
 const ModelTypes = require('./models/modelTypes');
 const User = require('./models/user');
 const Sentiment = require('./models/sentimentAnalysis');
+const Entity = require('./models/entitiesAnalysis');
 
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
@@ -95,9 +96,11 @@ app.use(
 Model.belongsTo(ModelTypes, { constraints: true, onDelete: 'CASCADE' });
 Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 Sentiment.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+Entity.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 ModelTypes.hasMany(Model);
 User.hasMany(Model);
 User.hasMany(Sentiment);
+User.hasMany(Entity);
 
 sequelize
 	.sync()

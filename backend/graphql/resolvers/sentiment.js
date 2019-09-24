@@ -1,4 +1,4 @@
-const analyzeSentiment = require('../../ML/Sentiement/sentiment');
+const analyzeSentiment = require('../../ML/Amazon/sentiment');
 module.exports = {
 	sentimentAnalysis: async (args, req) => {
 		try {
