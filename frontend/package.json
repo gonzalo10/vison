@@ -32,6 +32,18 @@
       "plugin:react/recommended"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint:fix",
+      "npm run test:staged",
+      "git add"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -46,6 +58,8 @@
   },
   "devDependencies": {
     "eslint": "^6.4.0",
-    "eslint-plugin-react": "^7.14.3"
+    "eslint-plugin-react": "^7.14.3",
+    "husky": "^3.0.7",
+    "lint-staged": "^9.4.0"
   }
 }
