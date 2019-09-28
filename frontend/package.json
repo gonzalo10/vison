@@ -33,9 +33,7 @@
     ]
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "*.js": [
@@ -56,8 +54,6 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^6.4.0",
-    "eslint-plugin-react": "^7.14.3",
     "husky": "^3.0.7",
     "lint-staged": "^9.4.0"
   }

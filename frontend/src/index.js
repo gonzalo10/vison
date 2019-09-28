@@ -1,25 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { ThemeProvider } from "styled-components";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ThemeProvider } from 'styled-components';
 
-import App from "./App";
-import "./index.css";
-import * as serviceWorker from "./serviceWorker";
+import App from './App';
+import './index.css';
+import * as serviceWorker from './serviceWorker';
 
-import { Provider } from "react-redux";
-import { store } from "./helpers";
+import { Provider } from 'react-redux';
+import { store } from './helpers';
+import colorPalette from './utils/colors';
 
 const theme = {
-  secondaryColor: "white",
-  primaryColor: "#1fa2ff",
-  borderColor: "#ccc",
-  fontPrimaryColor: "black",
-  fontSecondaryColor: "white",
-  white: "white",
-  color: {
-    dark: "#4553ff",
-    lightGrey: "#7f8a96"
-  }
+  secondaryColor: 'white',
+  primaryColor: '#1fa2ff',
+  borderColor: '#ccc',
+  fontPrimaryColor: 'black',
+  fontSecondaryColor: 'white',
+  white: 'white',
+  color: colorPalette,
 };
 
 ReactDOM.render(
@@ -28,7 +26,7 @@ ReactDOM.render(
       <App />
     </Provider>
   </ThemeProvider>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

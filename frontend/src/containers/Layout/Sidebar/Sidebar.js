@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 const LateralMenu = styled.div`
   width: 100px;
@@ -9,7 +9,7 @@ const LateralMenu = styled.div`
   justify-content: space-between;
   flex-direction: column;
   display: flex;
-  background-color: ${props => props.theme.color.dark};
+  background-color: ${props => props.theme.color.blueDark};
 `;
 const TopMenu = styled.div`
   margin-top: 50px;
@@ -39,7 +39,7 @@ const Sidebar = ({ dispatch }) => {
 
 function mapStateToProps(state) {
   const { modelList } = state.models;
-  console.log("state", state);
+  console.log('state', state);
   return { modelList };
 }
 

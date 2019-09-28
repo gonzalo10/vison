@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 
-import { entityActions } from "../../../_actions";
+import { entityActions } from '../../../_actions';
 
-import { Sidebar } from "../../Layout/Sidebar";
+import { Sidebar } from '../../Layout/Sidebar';
 
 const Container = styled.div`
 	margin: auto;
@@ -41,7 +41,7 @@ const BadgeGroup = styled.div`
   margin: 10px;
 `;
 const Badge = styled.div`
-  background-color: ${props => props.theme.color.dark};
+  background-color: ${props => props.theme.color.blueDark};
   font-size: 14px;
   border-radius: 20px;
   padding: 4px 10px;
@@ -93,7 +93,7 @@ const StatTitle = styled.div`
 const StatResult = styled.div``;
 
 const BusinessAnalysis = ({ dispatch, entities, isLoading }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const handleChange = e => {
     setText(e.target.value);
   };
@@ -173,7 +173,7 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading }) => {
 function mapStateToProps(state) {
   const { entities } = state.entity;
   return {
-    entities
+    entities,
   };
 }
 

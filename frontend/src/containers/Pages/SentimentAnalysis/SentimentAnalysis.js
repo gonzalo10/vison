@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 
-import { sentimentActions } from "../../../_actions";
+import { sentimentActions } from '../../../_actions';
 
-import { Sidebar } from "../../Layout/Sidebar";
+import { Sidebar } from '../../Layout/Sidebar';
 
 const Container = styled.div`
 	margin: auto;
@@ -41,7 +41,7 @@ const BadgeGroup = styled.div`
   margin: 10px;
 `;
 const Badge = styled.div`
-  background-color: ${props => props.theme.color.dark};
+  background-color: ${props => props.theme.color.blueDark};
   font-size: 14px;
   border-radius: 20px;
   padding: 4px 10px;
@@ -97,9 +97,9 @@ const SentimentAnalysis = ({
   sentimentTitle,
   sentimentValue,
   icon,
-  isLoading
+  isLoading,
 }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const handleChange = e => {
     setText(e.target.value);
   };
@@ -174,7 +174,7 @@ function mapStateToProps(state) {
     sentimentTitle,
     sentimentValue,
     isLoading,
-    icon
+    icon,
   };
 }
 
