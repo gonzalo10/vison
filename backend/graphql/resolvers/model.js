@@ -1,3 +1,4 @@
+const ModelType = require('../../models/modelType');
 module.exports = {
 	createModel: async (args, req) => {
 		const { title, description, modelTypeId } = args.modelInput;
@@ -20,7 +21,9 @@ module.exports = {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
 			}
-			const models = await req.user.getModels();
+			const models = await req.user.getModels({
+				include: [{ model: ModelType }],
+			});
 			return models;
 		} catch (err) {
 			console.log(err);

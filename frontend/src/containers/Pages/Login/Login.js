@@ -53,12 +53,13 @@ const LoginPage = ({ dispatch, isOpen, message }) => {
 
   const handleLogin = e => {
     e.preventDefault();
+    console.log('username', username, 'password', password);
     dispatch(userActions.login(username, password));
   };
 
   const handlePassword = e => {
     console.log(e.target.value);
-    sethidedPassword('*'.repeat(e.target.value.length));
+    // sethidedPassword('*'.repeat(e.target.value.length));
     setPassword(e.target.value);
   };
 
@@ -80,7 +81,7 @@ const LoginPage = ({ dispatch, isOpen, message }) => {
               onChange={e => setUsername(e.target.value)}
               value={username || ''}
             />
-            <Input onChange={handlePassword} value={hidedPassword || ''} />
+            <Input onChange={handlePassword} value={password || ''} />
             <Button color='blueDark' type='submit' value='Submit'>
               Login
             </Button>

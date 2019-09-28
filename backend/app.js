@@ -8,7 +8,7 @@ const sequelize = require('./utils/database');
 const isAuth = require('./middleware/is-auth');
 
 const Model = require('./models/model');
-const ModelTypes = require('./models/modelTypes');
+const ModelType = require('./models/modelType');
 const User = require('./models/user');
 const Sentiment = require('./models/sentimentAnalysis');
 const Entity = require('./models/entitiesAnalysis');
@@ -93,11 +93,11 @@ app.use(
 	})
 );
 
-Model.belongsTo(ModelTypes, { constraints: true, onDelete: 'CASCADE' });
+Model.belongsTo(ModelType, { constraints: true, onDelete: 'CASCADE' });
 Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 Sentiment.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 Entity.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-ModelTypes.hasMany(Model);
+ModelType.hasMany(Model);
 User.hasMany(Model);
 User.hasMany(Sentiment);
 User.hasMany(Entity);

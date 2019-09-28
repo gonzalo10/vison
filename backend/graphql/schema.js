@@ -6,6 +6,7 @@ module.exports = buildSchema(`
         title: String!
         description: String!
         modelTypeId: Int!
+        modelType: ModelType
     }
 
     type ModelType {
@@ -84,7 +85,7 @@ module.exports = buildSchema(`
         users: [User!]! 
         sentimentAnalysis: [Sentiment!]!
         entitiesAnalysis: [Entity!]!
-        modelsTypes: [ModelType!]!
+        modelType: [ModelType!]!
         login(email: String!, password: String!): AuthData!
     }
 

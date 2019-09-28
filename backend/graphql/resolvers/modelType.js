@@ -1,4 +1,4 @@
-const ModelType = require('../../models/modelTypes');
+const ModelType = require('../../models/modelType');
 module.exports = {
 	createModelType: async (args, req) => {
 		const { title, description, imageUrl } = args.modelTypeInput;
@@ -16,13 +16,13 @@ module.exports = {
 			throw err;
 		}
 	},
-	modelsTypes: async (args, req) => {
+	modelType: async (args, req) => {
 		try {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
 			}
-			const models = await req.user.getModelsTypes();
-			return models;
+			const modelTypes = await ModelType.findAll();
+			return modelTypes;
 		} catch (err) {
 			console.log(err);
 			throw err;

@@ -3,13 +3,13 @@ const usersResolver = require('./users');
 const modelResolver = require('./model');
 const sentmientResolver = require('./sentiment');
 const entitiesResolver = require('./entities');
-const modelTypesResolver = require('./modelTypes');
+const modelTypeResolver = require('./modelType');
 
 const rootResolver = {
 	...authResolver,
 	...usersResolver,
 	...modelResolver,
-	...modelTypesResolver,
+	...modelTypeResolver,
 	...sentmientResolver,
 	...entitiesResolver,
 };

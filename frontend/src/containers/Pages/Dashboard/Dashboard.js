@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 
-import visionLogo from "../../../assets/images/vision.svg";
-import { modelActions } from "../../../_actions";
-import { Sidebar } from "../../Layout/Sidebar";
+import visionLogo from '../../../assets/images/vision.svg';
+import { modelActions } from '../../../_actions';
+import { Sidebar } from '../../Layout/Sidebar';
+
+import { Button } from '../../../utils/Designs';
 
 const Container = styled.div`
   display: flex;
@@ -15,6 +17,7 @@ const Header = styled.div`
   height: 100px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const Logo = styled.img`
@@ -63,35 +66,74 @@ const Card = styled.div`
 const CardIcon = styled.h1``;
 const CardText = styled.h3``;
 const CardDescription = styled.p``;
-const CardCallToAction = styled.button``;
+const HeaderLeft = styled.div`
+  align-items: center;
+  display: flex;
+`;
+const HeaderRight = styled.div``;
+const Modal = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+const ModelWizard = styled.div`
+  width: 50vh;
+  height: 50vw;
+  background-color: white;
+`;
 
 const Dashboard = ({ dispatch, modelList }) => {
   useEffect(() => {
     dispatch(modelActions.getAll());
   }, []);
-  console.log(modelList ? modelList.models : null);
+  const [modelWizar, setModelWizar] = useState(false);
+  const handleStartProject = e => {
+    const modelType = dispatch(modelActions.createModel());
+    console.log(e.target.id);
+  };
+  const handleCreateModel = e => {
+    dispatch(modelActions.getModelTypes());
+    setModelWizar(true);
+  };
   return (
     <>
       <Sidebar />
       <Container>
         <Header>
-          <Logo src={visionLogo} />
-          <TitleHeader>Models</TitleHeader>
-          <button onClick={() => dispatch(modelActions.getAll())}>
-            RFRESH
-          </button>
+          <HeaderLeft>
+            <Logo src={visionLogo} />
+            <TitleHeader>My Models</TitleHeader>
+            <Button
+              color='lightGrey'
+              onClick={() => dispatch(modelActions.getAll())}>
+              RFRESH
+            </Button>
+          </HeaderLeft>
+          <HeaderRight>
+            <Button color='blueDark' onClick={handleCreateModel}>
+              + Create Model
+            </Button>
+          </HeaderRight>
         </Header>
-
         <Models>
           <CardMenu>
             {modelList
               ? modelList.models.map(model => {
                   return (
-                    <Card>
-                      <CardIcon>😍/😡</CardIcon>
+                    <Card
+                      key={model.id}
+                      id={model.id}
+                      onClick={handleStartProject}>
+                      <CardIcon>{model.modelType.imageUrl}</CardIcon>
                       <CardText>{model.title}</CardText>
                       <CardDescription>{model.description}</CardDescription>
-                      <CardCallToAction>Start</CardCallToAction>
                     </Card>
                   );
                 })
@@ -99,13 +141,34 @@ const Dashboard = ({ dispatch, modelList }) => {
           </CardMenu>
         </Models>
       </Container>
+      {modelWizar ? (
+        <Modal>
+          <ModelWizard>
+            <CardMenu>
+              {modelList
+                ? modelList.models.map(model => {
+                    return (
+                      <Card
+                        key={model.id}
+                        id={model.id}
+                        onClick={handleStartProject}>
+                        <CardIcon>{model.modelType.imageUrl}</CardIcon>
+                        <CardText>{model.title}</CardText>
+                      </Card>
+                    );
+                  })
+                : null}
+            </CardMenu>
+          </ModelWizard>
+        </Modal>
+      ) : null}
     </>
   );
 };
 
 function mapStateToProps(state) {
   const { modelList } = state.models;
-  console.log("state", state);
+  console.log('state', state);
   return { modelList };
 }
 

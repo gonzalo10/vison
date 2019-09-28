@@ -1,8 +1,9 @@
-import { authHeader } from "../helpers";
-import axios from "axios";
+import { authHeader } from '../helpers';
+import axios from 'axios';
 
 export const modelService = {
-  getAll
+  getAll,
+  getModelTypes,
 };
 
 function getAll() {
@@ -10,20 +11,49 @@ function getAll() {
     query: `
 	     query{
 	        models{
-				title
-				description
-				modelTypeId
+            id
+            title
+            description
+            modelTypeId
+            modelType {
+              title
+              description
+              imageUrl
+            }
 	        }
 	      }
-	    `
+	    `,
   };
   const requestOptions = {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(requestBody),
-    headers: authHeader()
+    headers: authHeader(),
   };
 
-  return fetch("http://localhost:3000/graphql", requestOptions).then(response =>
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+function getModelTypes() {
+  const requestBody = {
+    query: `
+      {
+        modelType{
+            id,
+            title,
+            description,
+            imageUrl,
+        }
+      }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
     handleResponse(response)
   );
 }

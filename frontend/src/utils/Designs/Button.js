@@ -19,9 +19,11 @@ export const Button = styled.button`
   border-radius: 4px;
   font-size: 15px;
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.025em;
   text-decoration: none;
   -webkit-transition: all 0.15s ease;
   transition: all 0.15s ease;
+  &:hover {
+    filter: grayscale(20%);
+  }
 `;
