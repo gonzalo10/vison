@@ -43,7 +43,6 @@ function getModelTypes() {
 
     modelService.getModelTypes().then(
       modelTypes => {
-        console.log(modelTypes);
         dispatch(success(modelTypes));
       },
       error => {
@@ -64,14 +63,14 @@ function getModelTypes() {
     return { type: modelConstants.GET_MODEL_TYPES_FAILURE, error };
   }
 }
-function createModel() {
+function createModel(newModelData) {
   return dispatch => {
     dispatch(request());
 
-    modelService.getAll().then(
+    modelService.createModel(newModelData).then(
       models => {
-        console.log(models);
-        dispatch(success(models));
+        // dispatch(success());
+        dispatch(getAll());
       },
       error => {
         console.log('error', error);
@@ -82,12 +81,12 @@ function createModel() {
   };
 
   function request() {
-    return { type: modelConstants.GETALL_REQUEST };
+    return { type: modelConstants.CREATE_MODEL_REQUEST };
   }
   function success(models) {
-    return { type: modelConstants.GETALL_SUCCESS, models };
+    return { type: modelConstants.CREATE_MODEL_SUCCESS, models };
   }
   function failure(error) {
-    return { type: modelConstants.GETALL_FAILURE, error };
+    return { type: modelConstants.CREATE_MODEL_FAILURE, error };
   }
 }

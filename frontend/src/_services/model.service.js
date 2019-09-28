@@ -4,6 +4,7 @@ import axios from 'axios';
 export const modelService = {
   getAll,
   getModelTypes,
+  createModel,
 };
 
 function getAll() {
@@ -45,6 +46,29 @@ function getModelTypes() {
             imageUrl,
         }
       }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+function createModel({ selectedModelType, description, title }) {
+  const requestBody = {
+    query: `
+    mutation {
+      createModel(modelInput: {title: "${title}", description: "${description}",modelTypeId:${selectedModelType}}) {
+        id
+        title
+        description
+        modelTypeId
+      }
+    }
 	    `,
   };
   const requestOptions = {
