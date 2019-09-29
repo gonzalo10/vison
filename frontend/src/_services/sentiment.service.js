@@ -1,16 +1,16 @@
-import { authHeader } from "../helpers";
-import axios from "axios";
+import { authHeader } from '../helpers';
+import axios from 'axios';
 
 export const sentimentService = {
-  execute
+  execute,
 };
 
-function execute(text) {
-  console.log("execute", text);
+function execute(text, modelId) {
+  console.log('execute', text);
   const requestBody = {
     query: `
 		mutation{
-			createSentimentAnalysis(sentimentInput: {text: "hola2"}){
+			createSentimentAnalysis(sentimentInput: {text: "${text}", modelId:${modelId}}){
 				text
 				sentiment
 				positive
@@ -19,15 +19,15 @@ function execute(text) {
 				mixed
 			}
 		}
-	    `
+	    `,
   };
   const requestOptions = {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(requestBody),
-    headers: authHeader()
+    headers: authHeader(),
   };
 
-  return fetch("http://localhost:3000/graphql", requestOptions).then(response =>
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
     handleResponse(response)
   );
 }

@@ -16,7 +16,7 @@ module.exports = {
 		}
 	},
 	createSentimentAnalysis: async (args, req) => {
-		const { text } = args.sentimentInput;
+		const { text, modelId } = args.sentimentInput;
 		try {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
@@ -25,6 +25,7 @@ module.exports = {
 			console.log('req.user', req.user);
 			return req.user.createSentiment({
 				text: text,
+				modelId,
 				sentiment: result.Sentiment,
 				positive: result.SentimentScore.Positive,
 				negative: result.SentimentScore.Negative,

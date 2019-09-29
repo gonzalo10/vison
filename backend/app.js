@@ -96,7 +96,9 @@ app.use(
 Model.belongsTo(ModelType, { constraints: true, onDelete: 'CASCADE' });
 Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 Sentiment.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+Sentiment.belongsTo(Model, { constraints: true, onDelete: 'CASCADE' });
 Entity.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+Entity.belongsTo(Model, { constraints: true, onDelete: 'CASCADE' });
 ModelType.hasMany(Model);
 User.hasMany(Model);
 User.hasMany(Sentiment);

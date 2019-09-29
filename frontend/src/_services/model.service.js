@@ -5,6 +5,7 @@ export const modelService = {
   getAll,
   getModelTypes,
   createModel,
+  getSentimentModel,
 };
 
 function getAll() {
@@ -67,6 +68,39 @@ function createModel({ selectedModelType, description, title }) {
         title
         description
         modelTypeId
+      }
+    }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+
+function getSentimentModel(id) {
+  const requestBody = {
+    query: `
+    {
+      sentimentModel(id: ${id}) {
+        id
+        title
+        description
+        modelTypeId
+        data {
+          text
+          sentiment
+          positive
+          negative
+          neutral
+          mixed
+          modelId
+        }
       }
     }
 	    `,

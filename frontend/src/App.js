@@ -19,8 +19,8 @@ export default class App extends React.Component {
       <Router history={history}>
         <Layout history={history}>
           <PrivateRoutes path='/dashboard' component={Dashboard} />
-          <PrivateRoutes path='/model/1' component={SentimentAnalysis} />
-          <PrivateRoutes path='/model/2/' component={BusinessAnalysis} />
+          <PrivateRoutes path='/model/1/:id' component={SentimentAnalysis} />
+          <PrivateRoutes path='/model/2/:id' component={BusinessAnalysis} />
           <Route exact path='/' component={LandingPage} />
           <Route path='/login' component={LoginPage} />
           <Route path='/signup' component={SignupPage} />

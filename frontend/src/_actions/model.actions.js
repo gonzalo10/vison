@@ -8,16 +8,22 @@ export const modelActions = {
   getAll,
   createModel,
   getModelTypes,
+  getModel,
 };
+
+const arrayToObject = array =>
+  array.reduce((obj, item) => {
+    obj[item.id] = item;
+    return obj;
+  }, {});
 
 function getAll() {
   return dispatch => {
     dispatch(request());
 
     modelService.getAll().then(
-      models => {
-        console.log(models);
-        dispatch(success(models));
+      ({ models }) => {
+        dispatch(success(arrayToObject(models)));
       },
       error => {
         console.log('error', error);
@@ -63,6 +69,7 @@ function getModelTypes() {
     return { type: modelConstants.GET_MODEL_TYPES_FAILURE, error };
   }
 }
+
 function createModel(newModelData) {
   return dispatch => {
     dispatch(request());
@@ -88,5 +95,43 @@ function createModel(newModelData) {
   }
   function failure(error) {
     return { type: modelConstants.CREATE_MODEL_FAILURE, error };
+  }
+}
+
+function getModel(id, modelType) {
+  return dispatch => {
+    dispatch(request());
+    let getModelType = undefined;
+
+    switch (modelType) {
+      case '1':
+        getModelType = modelService.getSentimentModel;
+        break;
+      case '2':
+        getModelType = modelService.getEntityModel;
+        break;
+      default:
+        break;
+    }
+    getModelType(id).then(
+      model => {
+        dispatch(success(model));
+      },
+      error => {
+        console.log('error', error);
+        dispatch(failure(error.toString()));
+        // dispatch(notificationsActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: modelConstants.GET_MODEL_REQUEST };
+  }
+  function success(model) {
+    return { type: modelConstants.GET_MODEL_SUCCESS, model };
+  }
+  function failure(error) {
+    return { type: modelConstants.GET_MODEL_FAILURE, error };
   }
 }

@@ -50,6 +50,22 @@ export function models(state = {}, action) {
         message: action.message,
       };
 
+    case modelConstants.GET_MODEL_REQUEST:
+      return {
+        ...state,
+      };
+
+    case modelConstants.GET_MODEL_SUCCESS:
+      return {
+        ...state,
+        selectedModel: action.model,
+      };
+
+    case modelConstants.GET_MODEL_FAILURE:
+      return {
+        message: action.message,
+      };
+
     default:
       return state;
   }

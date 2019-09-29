@@ -1,23 +1,23 @@
-import { modelConstants } from "../constants";
-import { sentimentService } from "../_services";
-import { history } from "../helpers";
+import { modelConstants } from '../constants';
+import { sentimentService } from '../_services';
+import { history } from '../helpers';
 
-import { notificationsActions } from "./";
+import { notificationsActions } from './';
 
 export const sentimentActions = {
-  execute
+  execute,
 };
 
 const getSentimentIcon = sentiment => {
   switch (sentiment) {
-    case (sentiment = "POSITIVE"):
-      return "😍";
-    case (sentiment = "NEGATIVE"):
-      return "😡";
-    case (sentiment = "NEUTRAL"):
-      return "😐";
-    case (sentiment = "MIXED"):
-      return "🤪";
+    case (sentiment = 'POSITIVE'):
+      return '😍';
+    case (sentiment = 'NEGATIVE'):
+      return '😡';
+    case (sentiment = 'NEUTRAL'):
+      return '😐';
+    case (sentiment = 'MIXED'):
+      return '🤪';
     default:
   }
 };
@@ -28,18 +28,18 @@ const formatString = str => {
     .replace(/^[^ ]/g, match => match.toUpperCase());
 };
 
-function execute(text) {
+function execute(text, modelId) {
   return dispatch => {
     dispatch(request());
-    sentimentService.execute(text).then(
+    sentimentService.execute(text, modelId).then(
       ({
         createSentimentAnalysis: {
           mixed,
           positive,
           neutral,
           negative,
-          sentiment
-        }
+          sentiment,
+        },
       }) => {
         const value = Math.max(mixed, positive, negative, neutral);
         const icon = getSentimentIcon(sentiment);
@@ -47,12 +47,12 @@ function execute(text) {
         const analysis = {
           sentiment: formatString(sentiment),
           value: (value * 100).toFixed(2),
-          icon
+          icon,
         };
         dispatch(success(analysis));
       },
       error => {
-        console.log("error", error);
+        console.log('error', error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }

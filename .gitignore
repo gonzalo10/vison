@@ -2,6 +2,7 @@
 
 # dependencies
 frontend/node_modules
+backend/config/
 frontend/yarn.lock
 backend/node_modules
 backend/yarn.lock
