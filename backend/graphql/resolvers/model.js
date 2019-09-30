@@ -38,7 +38,6 @@ module.exports = {
 				throw new Error('Unauthenticated!');
 			}
 			const { id } = args;
-			console.log('model id', id);
 			const model = await req.user.getModels({ where: { id } });
 			const modelType = model[0].modelTypeId;
 			let resultData = await SentimentData.findAll({
@@ -52,7 +51,6 @@ module.exports = {
 				modelTypeId: modelType,
 				data: resultData,
 			};
-			console.log(modelObject);
 			return modelObject;
 		} catch (err) {
 			console.log(err);
@@ -65,7 +63,6 @@ module.exports = {
 				throw new Error('Unauthenticated!');
 			}
 			const { id } = args;
-			console.log('model id', id);
 			const model = await req.user.getModels({ where: { id } });
 			const modelType = model[0].modelTypeId;
 			let resultData = await EntitiesData.findAll({
@@ -79,7 +76,6 @@ module.exports = {
 				modelTypeId: modelType,
 				data: resultData,
 			};
-			console.log(modelObject);
 			return modelObject;
 		} catch (err) {
 			console.log(err);

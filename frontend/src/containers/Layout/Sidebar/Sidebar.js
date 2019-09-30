@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
+import { history } from '../../../helpers';
+import { userActions } from '../../../_actions';
+
 const LateralMenu = styled.div`
   width: 100px;
   height: 100vh;
@@ -15,23 +18,41 @@ const TopMenu = styled.div`
   margin-top: 50px;
 `;
 const BottomMenu = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 `;
-const MenuItem = styled.div`
-  margin-left: 20px;
+const MenuItem = styled.button`
+  font-size: 17px;
+  padding: 10px 0px 10px 2px;
   color: ${props => props.theme.white};
+  background-color: ${props =>
+    props.isSelected ? props.theme.color.blueLight : 'transparent'};
+  border: none;
+  cursor: pointer;
+  width: 100%;
 `;
 
 const Sidebar = ({ dispatch }) => {
+  const isSelected = () => {
+    if (history.location.pathname === '/dashboard') {
+      return true;
+    }
+  };
   return (
     <LateralMenu>
       <TopMenu>
-        <MenuItem>Discover</MenuItem>
-        <MenuItem>Explore</MenuItem>
+        <MenuItem
+          id='myModels'
+          onClick={() => history.push('/dashboard')}
+          isSelected={isSelected()}>
+          My Models
+        </MenuItem>
+        <MenuItem>+ Model</MenuItem>
       </TopMenu>
       <BottomMenu>
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>Log out</MenuItem>
+        <MenuItem id='profile'>Profile</MenuItem>
+        <MenuItem onClick={() => dispatch(userActions.logout())}>
+          Log out
+        </MenuItem>
       </BottomMenu>
     </LateralMenu>
   );
@@ -39,7 +60,6 @@ const Sidebar = ({ dispatch }) => {
 
 function mapStateToProps(state) {
   const { modelList } = state.models;
-  console.log('state', state);
   return { modelList };
 }
 

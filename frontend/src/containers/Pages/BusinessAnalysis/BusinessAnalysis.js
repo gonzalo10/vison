@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -94,11 +94,28 @@ const StatResult = styled.div``;
 
 const BusinessAnalysis = ({ dispatch, entities, isLoading }) => {
   const [text, setText] = useState('');
+
+  useEffect(() => {
+    getModel();
+  }, []);
+  const getModelId = () => {
+    const url = history.location.pathname.split('/');
+    const id = url[url.length - 1];
+    return id;
+  };
+  const getModel = () => {
+    const url = history.location.pathname.split('/');
+    const id = getModelId();
+    const modelType = url[url.length - 2];
+    dispatch(modelActions.getModel(id, modelType));
+  };
   const handleChange = e => {
     setText(e.target.value);
   };
   const execute = () => {
-    dispatch(entityActions.execute(text));
+    const modelId = getModelId();
+    dispatch(entityActions.execute(text, modelId));
+    getModel();
   };
 
   // const StatTable = () => (

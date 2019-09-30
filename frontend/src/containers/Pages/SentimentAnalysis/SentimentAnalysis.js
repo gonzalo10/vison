@@ -21,31 +21,32 @@ const Button = styled(ButtonBase)`
   margin: auto;
 `;
 const Header = styled.div`
-  height: 150px;
+  height: 100px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: start;
   margin: 15px;
   position: relative;
   text-align: center;
-  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 `;
 const Icon = styled.span`
-  font-size: 40px;
+  font-size: 30px;
 `;
-const Title = styled.h3`
+const Title = styled.h2`
+  margin-top: 0px;
+  margin-bottom: 0px;
   display: flex;
+  justify-content: space-evenly;
   flex-direction: column;
 `;
-const Description = styled.h4`
+const Description = styled.div`
   height: 90%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  max-width: 40vw;
+  justify-content: start;
+  max-width: 600px;
+  margin-left: 20px;
   color: ${props => props.theme.color.lightGrey};
 `;
 const BadgeGroup = styled.div`
@@ -55,9 +56,11 @@ const BadgeGroup = styled.div`
 `;
 const Badge = styled.div`
   background-color: ${props => props.theme.color.blueDark};
-  font-size: 14px;
+  font-size: 20px;
   border-radius: 20px;
   padding: 4px 10px;
+  margin: 15px;
+  min-width: 100px;
   color: ${props => props.theme.white};
 `;
 const Body = styled.div`
@@ -108,18 +111,22 @@ const StatTitle = styled.div`
 const StatResult = styled.div``;
 const ContentArea = styled.div`
   margin: auto;
-  width: 85%;
+  margin-top: 0px;
+  width: 90%;
 `;
 const ResultRow = styled.div`
   display: grid;
   width: 100%;
+  max-height: 18px;
   grid-template-columns: 3fr 1fr 1fr;
   border-bottom: 1px solid lightgrey;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  overflow: scroll;
 `;
 
 const ResultsArea = styled.div`
-  height: 200px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -235,25 +242,25 @@ const SentimentAnalysis = ({
     <>
       <Sidebar />
       <Container>
+        <Header>
+          <Title>
+            Sentiment Analysis
+            <br />
+            <Icon>😍/😡</Icon>
+          </Title>
+          <Description>
+            <BadgeGroup>
+              <Badge>Positive</Badge>
+              <Badge>Neutral</Badge>
+              <Badge>Negative</Badge>
+              <Badge>Mixed</Badge>
+            </BadgeGroup>
+          </Description>
+        </Header>
         <ContentArea>
-          <Header>
-            <Title>
-              <Icon>😍/😡</Icon>Sentiment Analysis
-            </Title>
-            <Description>
-              This is a generic sentiment analysis classifier for texts in
-              English. It works great in any kind of texts. If you are not sure
-              of which sentiment analysis classifier to use, use this one.
-              <BadgeGroup>
-                <Badge>Positive</Badge>
-                <Badge>Neutral</Badge>
-                <Badge>Negative</Badge>
-              </BadgeGroup>
-            </Description>
-          </Header>
           <Body>
             <Left>
-              <BodyTitle>Test with your own text</BodyTitle>
+              <BodyTitle>Analyze your text</BodyTitle>
               <TextArea onChange={handleChange}></TextArea>
               <Button color='blueDark' onClick={execute}>
                 Classify Text
