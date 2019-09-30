@@ -6,6 +6,7 @@ export const modelService = {
   getModelTypes,
   createModel,
   getSentimentModel,
+  getEntityModel,
 };
 
 function getAll() {
@@ -103,6 +104,38 @@ function getSentimentModel(id) {
         }
       }
     }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+function getEntityModel(id) {
+  const requestBody = {
+    query: `
+    {
+      entityModel(id: ${id}){
+        id
+        title
+        description
+        data {
+          text
+          score
+          type
+          name
+          description
+          articleBody
+          wikiUrl
+          modelId
+        }
+      }
+  }
 	    `,
   };
   const requestOptions = {

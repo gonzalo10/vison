@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { entityActions } from '../../../_actions';
+import { entityActions, modelActions } from '../../../_actions';
 
 import { Sidebar } from '../../Layout/Sidebar';
+import { history } from '../../../helpers';
 
 const Container = styled.div`
 	margin: auto;
@@ -80,6 +81,11 @@ const TextArea = styled.textarea`
   border-radius: 10px;
 `;
 const Ouput = styled.div``;
+const ResultsArea = styled.div`
+  width: 60%;
+  height: 400px;
+  overflow: scroll;
+`;
 const OutputTitle = styled.h5``;
 const OutputStats = styled.div`
   display: flex;
@@ -92,7 +98,36 @@ const StatTitle = styled.div`
 `;
 const StatResult = styled.div``;
 
-const BusinessAnalysis = ({ dispatch, entities, isLoading }) => {
+const BusinessCard = styled.div`
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  margin: 15px;
+  position: relative;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
+    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
+`;
+
+const CardHeader = styled.div`
+  grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  width: 100%;
+  justify-content: space-between;
+`;
+const CardBody = styled.div`
+  margin: 10px 0px;
+  font-size: 12px;
+`;
+const CardUrl = styled.a`
+  font-size: 14px;
+`;
+
+const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -117,7 +152,7 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading }) => {
     dispatch(entityActions.execute(text, modelId));
     getModel();
   };
-
+  console.log('entities', entities);
   // const StatTable = () => (
   // 	<OutputStats>
   // 		<Col>
@@ -182,6 +217,26 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading }) => {
             )}
           </Right>
         </Body>
+        <OutputTitle>Business Analysis</OutputTitle>
+        <ResultsArea>
+          {selectedModel &&
+            selectedModel.entityModel.data.map(business => {
+              return (
+                <BusinessCard>
+                  <CardHeader>
+                    <div>{business.name}</div>
+                    <div>{business.type}</div>
+                    <div>{business.description}</div>
+                  </CardHeader>
+                  <CardBody>{business.articleBody}</CardBody>
+                  <CardUrl href={business.wikiUrl} target='_blank'>
+                    {business.wikiUrl}
+                  </CardUrl>
+                  <div>{business.url}</div>
+                </BusinessCard>
+              );
+            })}
+        </ResultsArea>
       </Container>
     </>
   );
@@ -189,8 +244,10 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading }) => {
 
 function mapStateToProps(state) {
   const { entities } = state.entity;
+  const { selectedModel } = state.models;
   return {
     entities,
+    selectedModel,
   };
 }
 

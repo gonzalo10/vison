@@ -100,6 +100,7 @@ module.exports = buildSchema(`
 
     input EntityInput {
         text: String!
+        modelId: Int!
     }
 
     type RootQuery {
