@@ -93,7 +93,7 @@ const TextArea = styled.textarea`
 const Ouput = styled.div``;
 const ResultsArea = styled.div`
   width: 100%;
-  height: 400px;
+  height: 450px;
   overflow: scroll;
   display: flex;
 `;
@@ -146,26 +146,28 @@ const CardType = styled.h4`
   margin: 0px;
 `;
 const DataArea = styled.div`
-  width: 60%;
+  width: 55%;
   overflow: scroll;
   height: 100%;
 `;
-const StatsArea = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 50%;
+const StatsArea = styled(BusinessCard)`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 45%;
 `;
 const CardDesc = styled.h5`
   margin: 0px;
 `;
 
 const DownCaret = styled.div`
+  left: 0;
   position: absolute;
   bottom: -13px;
   background-color: white;
-  border-radius: 50%;
+  border-radius: 10px;
   padding: 10px;
   font-size: 10px;
+  cursor: pointer;
 `;
 
 const data = [
@@ -316,7 +318,6 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
               )}
             </Right>
           </Body>
-          <OutputTitle>Business Analysis</OutputTitle>
           <ResultsArea>
             <DataArea>
               {selectedModel &&
@@ -351,82 +352,79 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
                 })}
             </DataArea>
             <StatsArea>
-              <div>
-                <PieChart width={200} height={200}>
-                  <Pie
-                    data={data}
-                    cx={100}
-                    cy={100}
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={80}
-                    fill='#8884d8'
-                    dataKey='value'>
-                    {data.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-                <PieChart width={200} height={200}>
-                  <Pie
-                    data={data}
-                    cx={100}
-                    cy={100}
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={80}
-                    fill='#8884d8'
-                    dataKey='value'>
-                    {data.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </div>
-              <div>
-                <PieChart width={200} height={200}>
-                  <Pie
-                    data={data}
-                    cx={100}
-                    cy={100}
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={80}
-                    fill='#8884d8'
-                    dataKey='value'>
-                    {data.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-                <PieChart width={200} height={200}>
-                  <Pie
-                    data={data}
-                    cx={100}
-                    cy={100}
-                    labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={80}
-                    fill='#8884d8'
-                    dataKey='value'>
-                    {data.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </div>
+              <PieChart width={200} height={200}>
+                <Pie
+                  data={data}
+                  cx={100}
+                  cy={100}
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius={80}
+                  fill='#8884d8'
+                  dataKey='value'>
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+              <PieChart width={200} height={200}>
+                <Pie
+                  data={data}
+                  cx={100}
+                  cy={100}
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius={80}
+                  fill='#8884d8'
+                  dataKey='value'>
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+
+              <PieChart width={200} height={200}>
+                <Pie
+                  data={data}
+                  cx={100}
+                  cy={100}
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius={80}
+                  fill='#8884d8'
+                  dataKey='value'>
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+              <PieChart width={200} height={200}>
+                <Pie
+                  data={data}
+                  cx={100}
+                  cy={100}
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                  outerRadius={80}
+                  fill='#8884d8'
+                  dataKey='value'>
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
             </StatsArea>
           </ResultsArea>
         </ContentArea>

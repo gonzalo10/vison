@@ -290,7 +290,7 @@ const SentimentAnalysis = ({
                   <strong>Accuracy</strong>
                 </div>
               </ResultRow>
-              {selectedModel
+              {selectedModel && selectedModel.sentimentModel
                 ? selectedModel.sentimentModel.data.map(
                     ({
                       text,
