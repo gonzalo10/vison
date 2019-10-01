@@ -139,9 +139,11 @@ const CardUrl = styled.a`
 `;
 const CardName = styled.h4`
   color: blue;
+  margin: 0px;
 `;
 const CardType = styled.h4`
   color: green;
+  margin: 0px;
 `;
 const DataArea = styled.div`
   width: 60%;
@@ -153,7 +155,18 @@ const StatsArea = styled.div`
   justify-content: center;
   width: 50%;
 `;
-const CardDesc = styled.h5``;
+const CardDesc = styled.h5`
+  margin: 0px;
+`;
+
+const DownCaret = styled.div`
+  position: absolute;
+  bottom: -13px;
+  background-color: white;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 10px;
+`;
 
 const data = [
   { name: 'Group A', value: 400 },
@@ -191,6 +204,7 @@ const renderCustomizedLabel = ({
 
 const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   const [text, setText] = useState('');
+  const [openInfoList, setOpenInfo] = useState([]);
 
   useEffect(() => {
     getModel();
@@ -214,7 +228,21 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
     dispatch(entityActions.execute(text, modelId));
     getModel();
   };
-  console.log('entities', entities);
+  const hanldeClickOpen = key => {
+    if (openInfoList && openInfoList.includes(key)) {
+      const newOpenInfoList = [...openInfoList];
+      console.log('newOpenInfoList', newOpenInfoList);
+      console.log('openInfoList.indexOf(key)', openInfoList.indexOf(key));
+      console.log(
+        'newOpenInfoList.splice(openInfoList.indexOf(key), 1)',
+        newOpenInfoList.splice(openInfoList.indexOf(key), 1)
+      );
+      setOpenInfo(newOpenInfoList.splice(openInfoList.indexOf(key), 1));
+    } else {
+      console.log(openInfoList, key);
+      setOpenInfo([...openInfoList, key]);
+    }
+  };
   // const StatTable = () => (
   // 	<OutputStats>
   // 		<Col>
@@ -233,7 +261,7 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   // 		</Col>
   // 	</OutputStats>
   // );
-
+  console.log('openInfoList', openInfoList);
   return (
     <>
       <Sidebar />
@@ -293,19 +321,31 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
             <DataArea>
               {selectedModel &&
                 selectedModel.entityModel &&
-                selectedModel.entityModel.data.map(business => {
+                selectedModel.entityModel.data.map((business, key) => {
+                  console.log('openInfoList', openInfoList);
                   return (
-                    <BusinessCard>
+                    <BusinessCard key={key}>
                       <CardHeader>
                         <CardName>{business.name}</CardName>
                         <CardType>{business.type}</CardType>
                         <CardDesc>{business.description}</CardDesc>
                       </CardHeader>
-                      <CardBody>{business.articleBody}</CardBody>
-                      <CardUrl href={business.wikiUrl} target='_blank'>
-                        {business.wikiUrl}
-                      </CardUrl>
-                      <div>{business.url}</div>
+                      {openInfoList && openInfoList.includes(key) ? (
+                        <>
+                          <CardBody>{business.articleBody}</CardBody>
+                          <CardUrl href={business.wikiUrl} target='_blank'>
+                            {business.wikiUrl}
+                          </CardUrl>
+                          <DownCaret onClick={() => hanldeClickOpen(key)}>
+                            close
+                          </DownCaret>
+                          <div>{business.url}</div>
+                        </>
+                      ) : (
+                        <DownCaret onClick={() => hanldeClickOpen(key)}>
+                          open
+                        </DownCaret>
+                      )}
                     </BusinessCard>
                   );
                 })}
