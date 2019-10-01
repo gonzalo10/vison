@@ -6,24 +6,26 @@ import { entityActions, modelActions } from '../../../_actions';
 
 import { Sidebar } from '../../Layout/Sidebar';
 import { history } from '../../../helpers';
+import { PieChart, Pie, Sector, Cell } from 'recharts';
 
 const Container = styled.div`
-	margin: auto;
-	width: 60%
-	display: flex;
-	flex-direction: column;
+  margin-left: 100px;
+  height: 100vh;
+  background-color: ${props => props.theme.color.beigeWhite}
+  display: flex;
+  flex-direction: column;
+`;
+const ContentArea = styled.div`
+  margin: auto;
+  margin-top: 0px;
+  width: 90%;
 `;
 const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  margin: 15px;
+  margin: 0px 15px;
   position: relative;
   text-align: center;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 `;
 const Icon = styled.span`
   font-size: 40px;
@@ -32,13 +34,19 @@ const Title = styled.h3`
   display: flex;
   flex-direction: column;
 `;
-const Description = styled.h5`
-  max-width: 40vw;
+const Description = styled.div`
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  max-width: 600px;
+  margin-left: 20px;
   color: ${props => props.theme.color.lightGrey};
 `;
 const BadgeGroup = styled.div`
-  display: flex;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   justify-content: space-around;
+  display: grid;
   margin: 10px;
 `;
 const Badge = styled.div`
@@ -46,6 +54,8 @@ const Badge = styled.div`
   font-size: 14px;
   border-radius: 20px;
   padding: 4px 10px;
+  margin: 5px 15px 0px 15px;
+  min-width: 100px;
   color: ${props => props.theme.white};
 `;
 const Body = styled.div`
@@ -82,9 +92,10 @@ const TextArea = styled.textarea`
 `;
 const Ouput = styled.div``;
 const ResultsArea = styled.div`
-  width: 60%;
+  width: 100%;
   height: 400px;
   overflow: scroll;
+  display: flex;
 `;
 const OutputTitle = styled.h5``;
 const OutputStats = styled.div`
@@ -126,6 +137,57 @@ const CardBody = styled.div`
 const CardUrl = styled.a`
   font-size: 14px;
 `;
+const CardName = styled.h4`
+  color: blue;
+`;
+const CardType = styled.h4`
+  color: green;
+`;
+const DataArea = styled.div`
+  width: 60%;
+  overflow: scroll;
+  height: 100%;
+`;
+const StatsArea = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 50%;
+`;
+const CardDesc = styled.h5``;
+
+const data = [
+  { name: 'Group A', value: 400 },
+  { name: 'Group B', value: 300 },
+  { name: 'Group C', value: 300 },
+  { name: 'Group D', value: 200 },
+];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+  index,
+}) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill='white'
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline='central'>
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
 
 const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   const [text, setText] = useState('');
@@ -178,65 +240,156 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
       <Container>
         <Header>
           <Title>
-            <Icon>💰</Icon>Business Analysis
+            Business Analysis
+            <br />
+            <Icon>💰</Icon>
           </Title>
           <Description>
-            Classifies professional profiles, companies or jobs by industry.
             <BadgeGroup>
               <Badge>Business</Badge>
+              <Badge>Person</Badge>
+              <Badge>Location</Badge>
+              <Badge>Date</Badge>
+              <Badge>Event</Badge>
+              <Badge>Quantity</Badge>
+              <Badge>Brand</Badge>
+              <Badge>Title</Badge>
             </BadgeGroup>
           </Description>
         </Header>
-        <Body>
-          <Left>
-            <BodyTitle>Test with your own text</BodyTitle>
-            <TextArea onChange={handleChange}></TextArea>
-            <button onClick={execute}>Run</button>
-          </Left>
-          <Right>
-            {isLoading ? (
-              <div>Loading...</div>
-            ) : (
-              <Ouput>
-                <OutputTitle>Business Analysis</OutputTitle>
-                {entities &&
-                  entities.map(business => {
-                    return (
-                      <div>
-                        <div>{business.name}</div>
-                        <div>{business.score}</div>
-                        <div>{business.type}</div>
-                        <div>{business.description}</div>
-                        <div>{business.articleBody}</div>
-                        <div>{business.wikiUrl}</div>
-                        <div>{business.url}</div>
-                      </div>
-                    );
-                  })}
-              </Ouput>
-            )}
-          </Right>
-        </Body>
-        <OutputTitle>Business Analysis</OutputTitle>
-        <ResultsArea>
-          {selectedModel &&
-            selectedModel.entityModel.data.map(business => {
-              return (
-                <BusinessCard>
-                  <CardHeader>
-                    <div>{business.name}</div>
-                    <div>{business.type}</div>
-                    <div>{business.description}</div>
-                  </CardHeader>
-                  <CardBody>{business.articleBody}</CardBody>
-                  <CardUrl href={business.wikiUrl} target='_blank'>
-                    {business.wikiUrl}
-                  </CardUrl>
-                  <div>{business.url}</div>
-                </BusinessCard>
-              );
-            })}
-        </ResultsArea>
+        <ContentArea>
+          <Body>
+            <Left>
+              <BodyTitle>Test with your own text</BodyTitle>
+              <TextArea onChange={handleChange}></TextArea>
+              <button onClick={execute}>Run</button>
+            </Left>
+            <Right>
+              {isLoading ? (
+                <div>Loading...</div>
+              ) : (
+                <Ouput>
+                  <OutputTitle>Business Analysis</OutputTitle>
+                  {entities &&
+                    entities.map(business => {
+                      return (
+                        <div>
+                          <div>{business.name}</div>
+                          <div>{business.score}</div>
+                          <div>{business.type}</div>
+                          <div>{business.description}</div>
+                          <div>{business.articleBody}</div>
+                          <div>{business.wikiUrl}</div>
+                          <div>{business.url}</div>
+                        </div>
+                      );
+                    })}
+                </Ouput>
+              )}
+            </Right>
+          </Body>
+          <OutputTitle>Business Analysis</OutputTitle>
+          <ResultsArea>
+            <DataArea>
+              {selectedModel &&
+                selectedModel.entityModel &&
+                selectedModel.entityModel.data.map(business => {
+                  return (
+                    <BusinessCard>
+                      <CardHeader>
+                        <CardName>{business.name}</CardName>
+                        <CardType>{business.type}</CardType>
+                        <CardDesc>{business.description}</CardDesc>
+                      </CardHeader>
+                      <CardBody>{business.articleBody}</CardBody>
+                      <CardUrl href={business.wikiUrl} target='_blank'>
+                        {business.wikiUrl}
+                      </CardUrl>
+                      <div>{business.url}</div>
+                    </BusinessCard>
+                  );
+                })}
+            </DataArea>
+            <StatsArea>
+              <div>
+                <PieChart width={200} height={200}>
+                  <Pie
+                    data={data}
+                    cx={100}
+                    cy={100}
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill='#8884d8'
+                    dataKey='value'>
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+                <PieChart width={200} height={200}>
+                  <Pie
+                    data={data}
+                    cx={100}
+                    cy={100}
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill='#8884d8'
+                    dataKey='value'>
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </div>
+              <div>
+                <PieChart width={200} height={200}>
+                  <Pie
+                    data={data}
+                    cx={100}
+                    cy={100}
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill='#8884d8'
+                    dataKey='value'>
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+                <PieChart width={200} height={200}>
+                  <Pie
+                    data={data}
+                    cx={100}
+                    cy={100}
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={80}
+                    fill='#8884d8'
+                    dataKey='value'>
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </div>
+            </StatsArea>
+          </ResultsArea>
+        </ContentArea>
       </Container>
     </>
   );

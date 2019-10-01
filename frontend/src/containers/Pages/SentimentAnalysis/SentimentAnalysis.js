@@ -237,7 +237,6 @@ const SentimentAnalysis = ({
       </Col>
     </OutputStats>
   );
-  console.log('selectedModel', selectedModel);
   return (
     <>
       <Sidebar />
