@@ -5,8 +5,17 @@ import { connect } from 'react-redux';
 import { sentimentActions, modelActions } from '../../../_actions';
 import { history } from '../../../helpers';
 import { Sidebar } from '../../Layout/Sidebar';
-import { Button as ButtonBase } from '../../../utils/Designs';
-import { PieChart, Pie, Sector, Cell } from 'recharts';
+import {
+  Button as ButtonBase,
+  Badge,
+  BadgeGroup,
+  ModelBody,
+  ModelHeader,
+  ModelHeaderTitle,
+  ModelHeaderDescription,
+  Card,
+} from '../../../utils/Designs';
+import { PieChart } from '../../../components/Charts';
 
 const Container = styled.div`
   margin-left: 100px;
@@ -20,62 +29,11 @@ const Button = styled(ButtonBase)`
   width: 200px;
   margin: auto;
 `;
-const Header = styled.div`
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  margin: 15px;
-  position: relative;
-  text-align: center;
-  border-radius: 8px;
-`;
+
 const Icon = styled.span`
   font-size: 30px;
 `;
-const Title = styled.h2`
-  margin-top: 0px;
-  margin-bottom: 0px;
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: column;
-`;
-const Description = styled.div`
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  max-width: 600px;
-  margin-left: 20px;
-  color: ${props => props.theme.color.lightGrey};
-`;
-const BadgeGroup = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin: 10px;
-`;
-const Badge = styled.div`
-  background-color: ${props => props.theme.color.blueDark};
-  font-size: 20px;
-  border-radius: 20px;
-  padding: 4px 10px;
-  margin: 15px;
-  min-width: 100px;
-  color: ${props => props.theme.white};
-`;
-const Body = styled.div`
-  min-height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin: 15px;
-  position: relative;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
-`;
+
 const Left = styled.div`
   border-right: 1px solid grey;
   width: 100%;
@@ -93,7 +51,7 @@ const Right = styled.div`
 
 const BodyTitle = styled.h3``;
 const TextArea = styled.textarea`
-  min-height: 150px;
+  min-height: 100px;
   border-radius: 10px;
   margin-bottom: 20px;
 `;
@@ -126,62 +84,19 @@ const ResultRow = styled.div`
 `;
 
 const ResultsArea = styled.div`
-  height: 300px;
+  width: 100%;
+  height: 400px;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin: 15px;
-  position: relative;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 `;
-const DataArea = styled.div`
+const DataArea = styled(Card)`
   width: 60%;
   overflow: scroll;
-  height: 100%;
 `;
-const StatsArea = styled.div`
+const StatsArea = styled(Card)`
   display: flex;
   justify-content: center;
   width: 50%;
 `;
-
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-  index,
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill='white'
-      textAnchor={x > cx ? 'start' : 'end'}
-      dominantBaseline='central'>
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
 
 const SentimentAnalysis = ({
   dispatch,
@@ -189,7 +104,7 @@ const SentimentAnalysis = ({
   sentimentValue,
   icon,
   isLoading,
-  selectedModel,
+  sentimentModel,
 }) => {
   const [text, setText] = useState('');
 
@@ -241,23 +156,23 @@ const SentimentAnalysis = ({
     <>
       <Sidebar />
       <Container>
-        <Header>
-          <Title>
+        <ModelHeader>
+          <ModelHeaderTitle>
             Sentiment Analysis
             <br />
             <Icon>😍/😡</Icon>
-          </Title>
-          <Description>
+          </ModelHeaderTitle>
+          <ModelHeaderDescription>
             <BadgeGroup>
               <Badge>Positive</Badge>
               <Badge>Neutral</Badge>
               <Badge>Negative</Badge>
               <Badge>Mixed</Badge>
             </BadgeGroup>
-          </Description>
-        </Header>
+          </ModelHeaderDescription>
+        </ModelHeader>
         <ContentArea>
-          <Body>
+          <ModelBody>
             <Left>
               <BodyTitle>Analyze your text</BodyTitle>
               <TextArea onChange={handleChange}></TextArea>
@@ -276,7 +191,7 @@ const SentimentAnalysis = ({
                 </Ouput>
               )}
             </Right>
-          </Body>
+          </ModelBody>
           <ResultsArea>
             <DataArea>
               <ResultRow>
@@ -290,8 +205,8 @@ const SentimentAnalysis = ({
                   <strong>Accuracy</strong>
                 </div>
               </ResultRow>
-              {selectedModel && selectedModel.sentimentModel
-                ? selectedModel.sentimentModel.data.map(
+              {sentimentModel
+                ? sentimentModel.data.map(
                     ({
                       text,
                       sentiment,
@@ -319,24 +234,10 @@ const SentimentAnalysis = ({
                 : null}
             </DataArea>
             <StatsArea>
-              <PieChart width={200} height={200}>
-                <Pie
-                  data={data}
-                  cx={100}
-                  cy={100}
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill='#8884d8'
-                  dataKey='value'>
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
+              {console.log(sentimentModel ? sentimentModel.stats : 'no yet')}
+              {sentimentModel && sentimentModel.stats && (
+                <PieChart data={sentimentModel.stats} />
+              )}
               <div>Total: 200</div>
             </StatsArea>
           </ResultsArea>
@@ -349,12 +250,14 @@ const SentimentAnalysis = ({
 function mapStateToProps(state) {
   const { sentimentTitle, sentimentValue, isLoading, icon } = state.sentiment;
   const { selectedModel } = state.models;
+  let sentimentModel = undefined;
+  if (selectedModel) sentimentModel = selectedModel.sentimentModel;
   return {
     sentimentTitle,
     sentimentValue,
     isLoading,
     icon,
-    selectedModel,
+    sentimentModel,
   };
 }
 

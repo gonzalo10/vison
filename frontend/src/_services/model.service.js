@@ -102,6 +102,12 @@ function getSentimentModel(id) {
           mixed
           modelId
         }
+        stats {
+          NEGATIVE
+          NEUTRAL
+          MIXED
+          POSITIVE
+        }
       }
     }
 	    `,

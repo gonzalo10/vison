@@ -6,7 +6,17 @@ import { entityActions, modelActions } from '../../../_actions';
 
 import { Sidebar } from '../../Layout/Sidebar';
 import { history } from '../../../helpers';
-import { PieChart, Pie, Sector, Cell } from 'recharts';
+import {
+  Button as ButtonBase,
+  Card,
+  Badge,
+  BadgeGroup,
+  ModelBody,
+  ModelHeader,
+  ModelHeaderDescription,
+  ModelHeaderTitle,
+} from '../../../utils/Designs';
+import { PieChart } from '../../../components/Charts';
 
 const Container = styled.div`
   margin-left: 100px;
@@ -15,61 +25,20 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const Button = styled(ButtonBase)`
+  width: 200px;
+  margin: auto;
+`;
 const ContentArea = styled.div`
   margin: auto;
   margin-top: 0px;
   width: 90%;
 `;
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0px 15px;
-  position: relative;
-  text-align: center;
-`;
+
 const Icon = styled.span`
   font-size: 40px;
 `;
-const Title = styled.h3`
-  display: flex;
-  flex-direction: column;
-`;
-const Description = styled.div`
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  max-width: 600px;
-  margin-left: 20px;
-  color: ${props => props.theme.color.lightGrey};
-`;
-const BadgeGroup = styled.div`
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  justify-content: space-around;
-  display: grid;
-  margin: 10px;
-`;
-const Badge = styled.div`
-  background-color: ${props => props.theme.color.blueDark};
-  font-size: 14px;
-  border-radius: 20px;
-  padding: 4px 10px;
-  margin: 5px 15px 0px 15px;
-  min-width: 100px;
-  color: ${props => props.theme.white};
-`;
-const Body = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin: 15px;
-  position: relative;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
-`;
+
 const Left = styled.div`
   border-right: 1px solid grey;
   width: 100%;
@@ -89,11 +58,12 @@ const BodyTitle = styled.h3``;
 const TextArea = styled.textarea`
   min-height: 100px;
   border-radius: 10px;
+  margin-bottom: 20px;
 `;
 const Ouput = styled.div``;
 const ResultsArea = styled.div`
   width: 100%;
-  height: 450px;
+  height: 400px;
   overflow: scroll;
   display: flex;
 `;
@@ -109,19 +79,8 @@ const StatTitle = styled.div`
 `;
 const StatResult = styled.div``;
 
-const BusinessCard = styled.div`
+const BusinessCard = styled(Card)`
   padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  flex-direction: column;
-  margin: 15px;
-  position: relative;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 `;
 
 const CardHeader = styled.div`
@@ -148,12 +107,13 @@ const CardType = styled.h4`
 const DataArea = styled.div`
   width: 55%;
   overflow: scroll;
-  height: 100%;
+  height: 98%;
 `;
-const StatsArea = styled(BusinessCard)`
+const StatsArea = styled(Card)`
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 45%;
+  padding: 0;
 `;
 const CardDesc = styled.h5`
   margin: 0px;
@@ -169,40 +129,6 @@ const DownCaret = styled.div`
   font-size: 10px;
   cursor: pointer;
 `;
-
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-  index,
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill='white'
-      textAnchor={x > cx ? 'start' : 'end'}
-      dominantBaseline='central'>
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
 
 const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   const [text, setText] = useState('');
@@ -268,13 +194,13 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
     <>
       <Sidebar />
       <Container>
-        <Header>
-          <Title>
+        <ModelHeader>
+          <ModelHeaderTitle>
             Business Analysis
             <br />
             <Icon>💰</Icon>
-          </Title>
-          <Description>
+          </ModelHeaderTitle>
+          <ModelHeaderDescription>
             <BadgeGroup>
               <Badge>Business</Badge>
               <Badge>Person</Badge>
@@ -285,14 +211,16 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
               <Badge>Brand</Badge>
               <Badge>Title</Badge>
             </BadgeGroup>
-          </Description>
-        </Header>
+          </ModelHeaderDescription>
+        </ModelHeader>
         <ContentArea>
-          <Body>
+          <ModelBody>
             <Left>
               <BodyTitle>Test with your own text</BodyTitle>
               <TextArea onChange={handleChange}></TextArea>
-              <button onClick={execute}>Run</button>
+              <Button color='blueDark' onClick={execute}>
+                Analyse
+              </Button>
             </Left>
             <Right>
               {isLoading ? (
@@ -317,7 +245,7 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
                 </Ouput>
               )}
             </Right>
-          </Body>
+          </ModelBody>
           <ResultsArea>
             <DataArea>
               {selectedModel &&
@@ -352,79 +280,10 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
                 })}
             </DataArea>
             <StatsArea>
-              <PieChart width={200} height={200}>
-                <Pie
-                  data={data}
-                  cx={100}
-                  cy={100}
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill='#8884d8'
-                  dataKey='value'>
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-              <PieChart width={200} height={200}>
-                <Pie
-                  data={data}
-                  cx={100}
-                  cy={100}
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill='#8884d8'
-                  dataKey='value'>
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-
-              <PieChart width={200} height={200}>
-                <Pie
-                  data={data}
-                  cx={100}
-                  cy={100}
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill='#8884d8'
-                  dataKey='value'>
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-              <PieChart width={200} height={200}>
-                <Pie
-                  data={data}
-                  cx={100}
-                  cy={100}
-                  labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={80}
-                  fill='#8884d8'
-                  dataKey='value'>
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
+              <PieChart />
+              <PieChart />
+              <PieChart />
+              <PieChart />
             </StatsArea>
           </ResultsArea>
         </ContentArea>

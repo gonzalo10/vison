@@ -115,6 +115,7 @@ function getModel(id, modelType) {
     }
     getModelType(id).then(
       model => {
+        console.log('model', model);
         dispatch(success(model));
       },
       error => {

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Card = styled.div`
   cursor: pointer;
   margin: 15px;
-  max-height: 300px;
   position: relative;
   display: flex;
   text-align: center;

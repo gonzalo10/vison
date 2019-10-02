@@ -9,6 +9,13 @@ module.exports = buildSchema(`
         modelType: ModelType
     }
 
+    type SentimentStats {
+        NEUTRAL: Int
+        POSITIVE: Int
+        NEGATIVE: Int
+        MIXED: Int
+    }
+
     type SentimentModel {
         id: ID!
         title: String!
@@ -16,6 +23,7 @@ module.exports = buildSchema(`
         modelTypeId: Int!
         modelType: ModelType
         data: [Sentiment!]!
+        stats: SentimentStats
     }
 
     type EntityModel {

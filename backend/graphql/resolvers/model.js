@@ -1,6 +1,9 @@
+const Sequelize = require('sequelize');
+
 const ModelType = require('../../models/modelType');
 const SentimentData = require('../../models/sentimentAnalysis');
 const EntitiesData = require('../../models/entitiesAnalysis');
+
 module.exports = {
 	createModel: async (args, req) => {
 		const { title, description, modelTypeId } = args.modelInput;
@@ -43,6 +46,25 @@ module.exports = {
 			let resultData = await SentimentData.findAll({
 				where: { modelId: id },
 			});
+			let statsResults = await SentimentData.findAll({
+				where: { modelId: id },
+				attributes: [
+					'sentiment',
+					[Sequelize.fn('COUNT', Sequelize.col('sentiment')), 'sentimentCount'],
+				],
+				group: ['sentiment'],
+			});
+			const stats = {};
+			for (let i = 0; i < statsResults.length; i++) {
+				const {
+					sentiment,
+					dataValues: { sentimentCount },
+				} = statsResults[i];
+				stats[sentiment] = sentimentCount;
+			}
+
+			console.log(stats);
+
 			const { title, description } = model[0];
 			const modelObject = {
 				id,
@@ -50,6 +72,7 @@ module.exports = {
 				description,
 				modelTypeId: modelType,
 				data: resultData,
+				stats,
 			};
 			return modelObject;
 		} catch (err) {
