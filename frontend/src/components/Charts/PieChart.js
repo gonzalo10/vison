@@ -11,14 +11,15 @@ export const PieChart = ({ data }) => {
   const [chartValues, setChartValues] = useState();
 
   useEffect(() => {
-    if (data && !chartValues) {
+    console.log(chartValues, data);
+    if (data) {
       const values = [];
       Object.keys(data).forEach(item => {
         values.push({ name: item, value: data[item] });
       });
       setChartValues(values);
     }
-  }, [chartValues]);
+  }, [data]);
 
   const renderCustomizedLabel = ({
     cx,
@@ -32,7 +33,6 @@ export const PieChart = ({ data }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    console.log('index', index, percent);
     return (
       <text
         x={x}
@@ -40,7 +40,7 @@ export const PieChart = ({ data }) => {
         fill='white'
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline='central'>
-        {`${(percent * 100).toFixed(0)}%`}
+        {percent * 100 > 0 && `${(percent * 100).toFixed(0)}%`}
       </text>
     );
   };

@@ -207,16 +207,12 @@ const SentimentAnalysis = ({
               </ResultRow>
               {sentimentModel
                 ? sentimentModel.data.map(
-                    ({
-                      text,
-                      sentiment,
-                      mixed,
-                      neutral,
-                      positive,
-                      negative,
-                    }) => {
+                    (
+                      { text, sentiment, mixed, neutral, positive, negative },
+                      key
+                    ) => {
                       return (
-                        <ResultRow>
+                        <ResultRow key={key}>
                           <div>{text}</div>
                           <div>{sentiment}</div>
                           <div>
@@ -234,11 +230,9 @@ const SentimentAnalysis = ({
                 : null}
             </DataArea>
             <StatsArea>
-              {console.log(sentimentModel ? sentimentModel.stats : 'no yet')}
               {sentimentModel && sentimentModel.stats && (
                 <PieChart data={sentimentModel.stats} />
               )}
-              <div>Total: 200</div>
             </StatsArea>
           </ResultsArea>
         </ContentArea>
