@@ -35,8 +35,8 @@ const TextArea = styled.textarea`
 `;
 
 const ModelWizard = styled.div`
-  width: 50vh;
-  height: 50vw;
+  width: 50vw;
+  height: 60vh;
   background-color: white;
   padding: 20px;
   border-radius: 15px;
@@ -80,7 +80,6 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
         <>
           <WizardTitle>Choose a Model Type</WizardTitle>
           <CardMenu>
-            {console.log(modelTypes)}
             {modelTypes
               ? modelTypes.map(model => {
                   return (
@@ -113,7 +112,7 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
               value={description || ''}
             />
             <Button color='blueDark' type='submit' value='Submit'>
-              Login
+              Create
             </Button>
           </Form>
         </>

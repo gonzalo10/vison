@@ -7,6 +7,7 @@ export const modelService = {
   createModel,
   getSentimentModel,
   getEntityModel,
+  getSummaryModel,
 };
 
 function getAll() {
@@ -127,6 +128,38 @@ function getEntityModel(id) {
     query: `
     {
       entityModel(id: ${id}){
+        id
+        title
+        description
+        data {
+          text
+          score
+          type
+          name
+          description
+          articleBody
+          wikiUrl
+          modelId
+        }
+      }
+  }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+function getSummaryModel(id) {
+  const requestBody = {
+    query: `
+    {
+      summaryModel(id: ${id}){
         id
         title
         description

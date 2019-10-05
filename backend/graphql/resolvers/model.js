@@ -105,4 +105,30 @@ module.exports = {
 			throw err;
 		}
 	},
+	summaryModel: async (args, req) => {
+		try {
+			if (!req.isAuth) {
+				throw new Error('Unauthenticated!');
+			}
+			const { id } = args;
+			const model = await req.user.getModels({ where: { id } });
+			const modelType = model[0].modelTypeId;
+			let resultData = await EntitiesData.findAll({
+				where: { modelId: id },
+			});
+			console.log(resultData);
+			const { title, description } = model[0];
+			const modelObject = {
+				id,
+				title,
+				description,
+				modelTypeId: modelType,
+				data: resultData,
+			};
+			return modelObject;
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	},
 };

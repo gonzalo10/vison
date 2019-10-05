@@ -11,6 +11,7 @@ import {
   SignupPage,
   SentimentAnalysis,
   BusinessAnalysis,
+  SummaryCreator,
 } from './containers/Pages';
 
 export default class App extends React.Component {
@@ -21,6 +22,7 @@ export default class App extends React.Component {
           <PrivateRoutes path='/dashboard' component={Dashboard} />
           <PrivateRoutes path='/model/1/:id' component={SentimentAnalysis} />
           <PrivateRoutes path='/model/2/:id' component={BusinessAnalysis} />
+          <PrivateRoutes path='/model/3/:id' component={SummaryCreator} />
           <Route exact path='/' component={LandingPage} />
           <Route path='/login' component={LoginPage} />
           <Route path='/signup' component={SignupPage} />

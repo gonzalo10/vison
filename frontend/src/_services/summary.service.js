@@ -1,8 +1,7 @@
 import { authHeader } from '../helpers';
-import { userService } from './user.service';
 import axios from 'axios';
 
-export const sentimentService = {
+export const summaryService = {
   execute,
 };
 
@@ -11,13 +10,9 @@ function execute(text, modelId) {
   const requestBody = {
     query: `
 		mutation{
-			createSentimentAnalysis(sentimentInput: {text: "${text}", modelId:${modelId}}){
+			createSummary(summaryInput: {text: "${encodeURI(text)}", modelId:${modelId}}){
 				text
-				sentiment
-				positive
-				negative
-				neutral
-				mixed
+				summary
 			}
 		}
 	    `,
@@ -39,7 +34,7 @@ function handleResponse(response) {
     const data = text && JSON.parse(text);
     if (!response.ok) {
       if (response.status === 401) {
-        userService.logout();
+        // logout();
         window.location.reload(true);
       }
       const error = (data && data.message) || response.statusText;

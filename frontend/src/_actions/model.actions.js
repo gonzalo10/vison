@@ -110,6 +110,9 @@ function getModel(id, modelType) {
       case '2':
         getModelType = modelService.getEntityModel;
         break;
+      case '3':
+        getModelType = modelService.getSummaryModel;
+        break;
       default:
         break;
     }

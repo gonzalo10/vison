@@ -84,6 +84,11 @@ module.exports = buildSchema(`
         error: String
     }
 
+    type Summary {
+        text: String!
+        summary: String!
+    }
+
     input ModelInput {
         title: String!
         description: String!
@@ -111,6 +116,11 @@ module.exports = buildSchema(`
         modelId: Int!
     }
 
+    input SummaryInput {
+        text: String!
+        modelId: Int!
+    }
+
     type RootQuery {
         models: [Model!]!
         sentimentModel(id: Int!): SentimentModel!
@@ -128,6 +138,7 @@ module.exports = buildSchema(`
         createUser(userInput: UserInput): User
         createSentimentAnalysis(sentimentInput: SentimentInput): Sentiment
         createEntitiesAnalysis(entityInput: EntityInput): [Entity!]!
+        createSummary(summaryInput: SummaryInput ): Summary!
     }
     schema {
         query: RootQuery
