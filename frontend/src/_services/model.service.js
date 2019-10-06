@@ -1,5 +1,7 @@
 import { authHeader } from '../helpers';
 import axios from 'axios';
+import { userActions } from '../_actions';
+import { store } from '../helpers';
 
 export const modelService = {
   getAll,
@@ -212,16 +214,15 @@ function deleteModel(id) {
 
 function handleResponse(response) {
   return response.text().then(text => {
-    console.log(response);
-    const data = text && JSON.parse(text);
     if (!response.ok) {
       if (response.status === 401) {
-        // logout();
+        store.dispatch(userActions.logout());
         window.location.reload(true);
       }
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
+    const data = text && JSON.parse(text);
     return data.data;
   });
 }

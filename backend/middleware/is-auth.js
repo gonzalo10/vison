@@ -16,6 +16,8 @@ module.exports = (req, res, next) => {
 		decodedToken = jwt.verify(token, 'somesupersecretkey');
 	} catch (err) {
 		req.isAuth = false;
+		console.log('send 401');
+		// res.sendStatus(401);
 		return next();
 	}
 	if (!decodedToken) {

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { Input, Button, Card } from '../../../utils/Designs';
 
 const SmallCard = styled(Card)`
   height: 130px;
-  width: 110px;
-  border: 2px solid transparent;
+  border: 1px solid lightgray;
   &:hover {
-    border: 2px solid ${props => props.theme.color.blueDark};
+    border: 1px solid ${props => props.theme.color.blueDark};
   }
+  padding: 10px;
 `;
 
 const SmallCardIcon = styled.h1`
@@ -23,6 +25,11 @@ const WizardTitle = styled.h1`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+`;
+const ArrowIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
+  font-size: 26px;
+  position: absolute;
 `;
 
 const TextArea = styled.textarea`
@@ -79,7 +86,11 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
   return (
     <ModelWizard>
       {wizardStep === 1 && (
-        <div onClick={() => setWizardStep(wizardStep - 1)}>back</div>
+        <ArrowIcon
+          icon={faArrowLeft}
+          onClick={() => setWizardStep(wizardStep - 1)}>
+          back
+        </ArrowIcon>
       )}
       {wizardStep === 0 && (
         <>

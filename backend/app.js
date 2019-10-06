@@ -78,6 +78,7 @@ app.use((req, res, next) => {
 	}
 	User.findByPk(req.userId)
 		.then(user => {
+			console.log(user);
 			req.user = user;
 			next();
 		})
