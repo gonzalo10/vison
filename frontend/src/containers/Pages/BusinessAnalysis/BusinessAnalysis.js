@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import { entityActions, modelActions } from '../../../_actions';
-
 import { Sidebar } from '../../Layout/Sidebar';
 import { history } from '../../../helpers';
 import {
   Button as ButtonBase,
-  Card,
+  PlainCard,
   Badge,
   BadgeGroup,
   ModelBody,
@@ -63,7 +64,7 @@ const TextArea = styled.textarea`
 const Ouput = styled.div``;
 const ResultsArea = styled.div`
   width: 100%;
-  height: 400px;
+  height: 370px;
   overflow: scroll;
   display: flex;
 `;
@@ -79,7 +80,7 @@ const StatTitle = styled.div`
 `;
 const StatResult = styled.div``;
 
-const BusinessCard = styled(Card)`
+const BusinessCard = styled(PlainCard)`
   padding: 10px;
 `;
 
@@ -88,6 +89,7 @@ const CardHeader = styled.div`
   display: grid;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 `;
 const CardBody = styled.div`
   margin: 10px 0px;
@@ -96,11 +98,11 @@ const CardBody = styled.div`
 const CardUrl = styled.a`
   font-size: 14px;
 `;
-const CardName = styled.h4`
+const CardName = styled.h5`
   color: blue;
   margin: 0px;
 `;
-const CardType = styled.h4`
+const CardType = styled.h5`
   color: green;
   margin: 0px;
 `;
@@ -109,24 +111,24 @@ const DataArea = styled.div`
   overflow: scroll;
   height: 98%;
 `;
-const StatsArea = styled(Card)`
+const StatsArea = styled(PlainCard)`
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 45%;
   padding: 0;
 `;
-const CardDesc = styled.h5`
+const CardDesc = styled.h6`
   margin: 0px;
 `;
 
-const DownCaret = styled.div`
+const DownCaret = styled(FontAwesomeIcon)`
   left: 0;
   position: absolute;
-  bottom: -13px;
-  background-color: white;
+  bottom: -3px;
+  background-color: transparent;
   border-radius: 10px;
-  padding: 10px;
-  font-size: 10px;
+  padding: 0px 10px;
+  font-size: 18px;
   cursor: pointer;
 `;
 
@@ -158,38 +160,17 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   };
   const hanldeClickOpen = key => {
     if (openInfoList && openInfoList.includes(key)) {
-      const newOpenInfoList = [...openInfoList];
-      console.log('newOpenInfoList', newOpenInfoList);
-      console.log('openInfoList.indexOf(key)', openInfoList.indexOf(key));
-      console.log(
-        'newOpenInfoList.splice(openInfoList.indexOf(key), 1)',
-        newOpenInfoList.splice(openInfoList.indexOf(key), 1)
-      );
-      setOpenInfo(newOpenInfoList.splice(openInfoList.indexOf(key), 1));
+      const indexOfKey = openInfoList.indexOf(key);
+      const newArray = [...openInfoList];
+      newArray.splice(indexOfKey, 1);
+      setOpenInfo([...newArray]);
     } else {
-      console.log(openInfoList, key);
-      setOpenInfo([...openInfoList, key]);
+      const newList = openInfoList;
+      newList.push(key);
+      setOpenInfo([...newList]);
     }
   };
-  // const StatTable = () => (
-  // 	<OutputStats>
-  // 		<Col>
-  // 			<StatTitle>Icon</StatTitle>
-  // 			<StatResult>{icon}</StatResult>
-  // 		</Col>
-  // 		<Col>
-  // 			<StatTitle>Result</StatTitle>
-  // 			<StatResult>
-  // 				<Badge>{sentimentTitle}</Badge>
-  // 			</StatResult>
-  // 		</Col>
-  // 		<Col>
-  // 			<StatTitle>Confidence</StatTitle>
-  // 			<StatResult>{sentimentValue}%</StatResult>
-  // 		</Col>
-  // 	</OutputStats>
-  // );
-  console.log('openInfoList', openInfoList);
+
   return (
     <>
       <Sidebar />
@@ -216,10 +197,10 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
         <ContentArea>
           <ModelBody>
             <Left>
-              <BodyTitle>Test with your own text</BodyTitle>
+              <BodyTitle>Analyze your text</BodyTitle>
               <TextArea onChange={handleChange}></TextArea>
               <Button color='blueDark' onClick={execute}>
-                Analyse
+                Analyze
               </Button>
             </Left>
             <Right>
@@ -251,7 +232,6 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
               {selectedModel &&
                 selectedModel.entityModel &&
                 selectedModel.entityModel.data.map((business, key) => {
-                  console.log('openInfoList', openInfoList);
                   return (
                     <BusinessCard key={key}>
                       <CardHeader>
@@ -265,15 +245,16 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
                           <CardUrl href={business.wikiUrl} target='_blank'>
                             {business.wikiUrl}
                           </CardUrl>
-                          <DownCaret onClick={() => hanldeClickOpen(key)}>
-                            close
-                          </DownCaret>
-                          <div>{business.url}</div>
+                          <DownCaret
+                            icon={faCaretUp}
+                            onClick={() => hanldeClickOpen(key)}
+                          />
                         </>
                       ) : (
-                        <DownCaret onClick={() => hanldeClickOpen(key)}>
-                          open
-                        </DownCaret>
+                        <DownCaret
+                          icon={faCaretDown}
+                          onClick={() => hanldeClickOpen(key)}
+                        />
                       )}
                     </BusinessCard>
                   );

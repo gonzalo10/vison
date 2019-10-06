@@ -96,9 +96,6 @@ const StatsArea = styled(Card)`
 const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
   const [text, setText] = useState('');
 
-  console.log(preSummaryText && preSummaryText.length);
-  console.log(summary && summary.length);
-
   //   useEffect(() => {
   //     getModel();
   //   }, []);

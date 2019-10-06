@@ -45,7 +45,6 @@ export const PieChart = ({ data }) => {
     );
   };
 
-  console.log(chartValues);
   if (!chartValues) return null;
   return (
     <PieChartBase width={200} height={200}>

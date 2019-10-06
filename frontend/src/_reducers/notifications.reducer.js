@@ -1,33 +1,34 @@
-import { notificationsConstants } from "../constants";
+import { notificationsConstants } from '../constants';
 
 export function notifications(state = {}, action) {
   switch (action.type) {
     case notificationsConstants.SUCCESS:
       return {
-        type: "success",
+        type: 'success',
         message: action.message,
-        isOpen: true
+        isOpen: true,
       };
     case notificationsConstants.ERROR:
       return {
-        type: "error",
+        type: 'error',
         message: action.message,
-        isOpen: true
+        isOpen: true,
       };
     case notificationsConstants.WARNING:
       return {
-        type: "warning",
+        type: 'warning',
         message: action.message,
-        isOpen: true
+        isOpen: true,
       };
     case notificationsConstants.INFO:
       return {
-        type: "info",
+        type: 'info',
         message: action.message,
-        isOpen: true
+        isOpen: true,
       };
     case notificationsConstants.CLEAR:
-      return {};
+      console.log('clear2');
+      return null;
     default:
       return state;
   }

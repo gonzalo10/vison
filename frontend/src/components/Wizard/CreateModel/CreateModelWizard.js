@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Input, Button, Card, CardMenu } from '../../../utils/Designs';
+import { Input, Button, Card } from '../../../utils/Designs';
 
 const SmallCard = styled(Card)`
   height: 130px;
@@ -43,7 +43,12 @@ const ModelWizard = styled.div`
 `;
 
 const CardText = styled.h3``;
-const CardDescription = styled.p``;
+const CardMenu = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: scroll;
+`;
 
 export const CreateModelWizard = ({ modelTypes, createModel }) => {
   const [wizardStep, setWizardStep] = useState(0);

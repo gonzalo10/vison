@@ -66,6 +66,21 @@ export function models(state = {}, action) {
         message: action.message,
       };
 
+    case modelConstants.DELETE_MODEL_REQUEST:
+      return {
+        ...state,
+      };
+
+    case modelConstants.DELETE_MODEL_SUCCESS:
+      return {
+        ...state,
+      };
+
+    case modelConstants.DELETE_MODEL_FAILURE:
+      return {
+        message: action.message,
+      };
+
     default:
       return state;
   }

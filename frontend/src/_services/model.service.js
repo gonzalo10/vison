@@ -8,6 +8,7 @@ export const modelService = {
   getSentimentModel,
   getEntityModel,
   getSummaryModel,
+  deleteModel,
 };
 
 function getAll() {
@@ -177,6 +178,27 @@ function getSummaryModel(id) {
   }
 	    `,
   };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+function deleteModel(id) {
+  const requestBody = {
+    query: `
+      mutation {
+        deleteModel(id: ${id}){
+          text
+        }
+      }
+    `,
+  };
+
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(requestBody),

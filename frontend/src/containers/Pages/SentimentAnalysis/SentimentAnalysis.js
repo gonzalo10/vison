@@ -13,7 +13,7 @@ import {
   ModelHeader,
   ModelHeaderTitle,
   ModelHeaderDescription,
-  Card,
+  PlainCard,
 } from '../../../utils/Designs';
 import { PieChart } from '../../../components/Charts';
 
@@ -35,7 +35,6 @@ const Icon = styled.span`
 `;
 
 const Left = styled.div`
-  border-right: 1px solid grey;
   width: 100%;
   justify-content: center;
   display: flex;
@@ -88,11 +87,11 @@ const ResultsArea = styled.div`
   height: 400px;
   display: flex;
 `;
-const DataArea = styled(Card)`
+const DataArea = styled(PlainCard)`
   width: 60%;
   overflow: scroll;
 `;
-const StatsArea = styled(Card)`
+const StatsArea = styled(PlainCard)`
   display: flex;
   justify-content: center;
   width: 50%;

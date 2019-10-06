@@ -1,16 +1,17 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-// import Notification from '../../components/Utils/Notifications';
-import Navbar from "../Navigation";
+import { Notifications } from '../../utils/Notifications';
+import Navbar from '../Navigation';
 
 class Layout extends Component {
   render() {
     const { history, dispatch } = this.props;
     let url = history.location.pathname;
 
-    if (url === "/login" || url === "/dashboard" || url.includes("/model/")) {
+    if (url === '/login' || url === '/dashboard' || url.includes('/model/')) {
       return (
         <React.Fragment>
+          <Notifications />
           <main>{this.props.children}</main>
         </React.Fragment>
       );
@@ -19,10 +20,7 @@ class Layout extends Component {
     return (
       <>
         <Navbar history={history} dispatch={dispatch} url={url} />
-        {/* <Notification
-					notifications={this.props.notifications}
-					dispatch={this.props.dispatch}
-				/> */}
+        <Notifications />
         {this.props.children}
       </>
     );

@@ -9,6 +9,7 @@ export const modelActions = {
   createModel,
   getModelTypes,
   getModel,
+  deleteModel,
 };
 
 const arrayToObject = array =>
@@ -137,5 +138,33 @@ function getModel(id, modelType) {
   }
   function failure(error) {
     return { type: modelConstants.GET_MODEL_FAILURE, error };
+  }
+}
+function deleteModel(id) {
+  return dispatch => {
+    dispatch(request());
+
+    modelService.deleteModel(id).then(
+      response => {
+        console.log(response);
+        dispatch(getAll());
+        dispatch(notificationsActions.success('The model has been deleted'));
+      },
+      error => {
+        console.log('error', error);
+        dispatch(failure(error.toString()));
+        // dispatch(notificationsActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: modelConstants.DELETE_MODEL_REQUEST };
+  }
+  function success(model) {
+    return { type: modelConstants.DELETE_MODEL_SUCCESS, model };
+  }
+  function failure(error) {
+    return { type: modelConstants.DELETE_MODEL_FAILURE, error };
   }
 }

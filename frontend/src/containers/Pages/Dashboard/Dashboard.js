@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 import visionLogo from '../../../assets/images/vision.svg';
 import { modelActions } from '../../../_actions';
@@ -35,12 +37,34 @@ const Models = styled.div`
   display: flex;
 `;
 
-const SmallCard = styled(Card)`
-  height: 130px;
-  width: 110px;
-  border: 2px solid transparent;
+const ModelMenu = styled(FontAwesomeIcon)`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 10px;
+`;
+
+const OptionsMenu = styled.div`
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  background: white;
+  height; 60px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  box-shadow: -1px 7px 24px -6px rgba(0,0,0,0.43);
+`;
+
+const OptionsMenuItem = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
+  color: ${props => (props.delete ? 'red' : '')};
   &:hover {
-    border: 2px solid ${props => props.theme.color.blueDark};
+    background-color: ${props => (props.delete ? 'red' : 'lightgray')};
+    color: ${props => (props.delete ? 'white' : '')};
   }
 `;
 const CardIcon = styled.h1``;
@@ -69,6 +93,7 @@ const Modal = styled.div`
 `;
 
 const Dashboard = ({ dispatch, modelList, modelTypes }) => {
+  const [menuOpenId, setMenuOpen] = useState();
   useEffect(() => {
     dispatch(modelActions.getAll());
   }, []);
@@ -93,6 +118,15 @@ const Dashboard = ({ dispatch, modelList, modelTypes }) => {
   const handleOpenWizard = () => {
     dispatch(modelActions.getModelTypes());
     setModelWizar(true);
+  };
+
+  const handleOpenMenu = id => {
+    if (menuOpenId === id) setMenuOpen();
+    else setMenuOpen(id);
+  };
+
+  const handleDeleteModel = id => {
+    dispatch(modelActions.deleteModel(id));
   };
 
   return (
@@ -125,10 +159,29 @@ const Dashboard = ({ dispatch, modelList, modelTypes }) => {
                       key={model.id}
                       id={model.id}
                       name={model.modelTypeId}
-                      onClick={handleStartProject}>
-                      <CardIcon>{model.modelType.imageUrl}</CardIcon>
-                      <CardText>{model.title}</CardText>
-                      <CardDescription>{model.description}</CardDescription>
+                      // onClick={handleStartProject}
+                    >
+                      <ModelMenu
+                        id='optionsMenu'
+                        icon={faEllipsisV}
+                        onClick={() => handleOpenMenu(model.id)}
+                      />
+                      {menuOpenId === model.id && (
+                        <OptionsMenu>
+                          <OptionsMenuItem>Edit</OptionsMenuItem>
+                          <OptionsMenuItem
+                            delete
+                            onClick={() => handleDeleteModel(model.id)}>
+                            Delete
+                          </OptionsMenuItem>
+                        </OptionsMenu>
+                      )}
+                      <div id={model.id} onClick={handleStartProject}>
+                        <CardIcon>{model.modelType.imageUrl}</CardIcon>
+
+                        <CardText>{model.title}</CardText>
+                        <CardDescription>{model.description}</CardDescription>
+                      </div>
                     </Card>
                   );
                 })

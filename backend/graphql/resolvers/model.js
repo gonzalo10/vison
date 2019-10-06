@@ -131,4 +131,27 @@ module.exports = {
 			throw err;
 		}
 	},
+	deleteModel: async (args, req) => {
+		try {
+			if (!req.isAuth) {
+				throw new Error('Unauthenticated!');
+			}
+
+			let status;
+			const { id } = args;
+			const model = await req.user.getModels({ where: { id } });
+
+			if (model[0]) {
+				await model[0].destroy();
+				const isModelDeleted = await req.user.getModels({ where: { id } });
+				if (!isModelDeleted[0]) status = 'SUCCESS';
+				else status = 'ERROR, we could not delete it';
+			} else status = 'ERROR, The item does not exist';
+
+			return { text: status };
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	},
 };

@@ -89,6 +89,10 @@ module.exports = buildSchema(`
         summary: String!
     }
 
+    type Status {
+        text: String!
+    }
+
     input ModelInput {
         title: String!
         description: String!
@@ -139,7 +143,9 @@ module.exports = buildSchema(`
         createSentimentAnalysis(sentimentInput: SentimentInput): Sentiment
         createEntitiesAnalysis(entityInput: EntityInput): [Entity!]!
         createSummary(summaryInput: SummaryInput ): Summary!
+        deleteModel(id: Int!): Status!
     }
+
     schema {
         query: RootQuery
         mutation: RootMutation
