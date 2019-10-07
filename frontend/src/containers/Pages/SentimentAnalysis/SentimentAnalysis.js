@@ -79,7 +79,6 @@ const ResultRow = styled.div`
   border-bottom: 1px solid lightgrey;
   padding-bottom: 5px;
   padding-top: 5px;
-  overflow: scroll;
 `;
 
 const ResultsArea = styled.div`
@@ -90,11 +89,18 @@ const ResultsArea = styled.div`
 const DataArea = styled(PlainCard)`
   width: 60%;
   overflow: scroll;
+  justify-content: unset;
 `;
 const StatsArea = styled(PlainCard)`
   display: flex;
   justify-content: center;
   width: 50%;
+`;
+
+const LongTextDiv = styled.div`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const SentimentAnalysis = ({
@@ -212,7 +218,7 @@ const SentimentAnalysis = ({
                     ) => {
                       return (
                         <ResultRow key={key}>
-                          <div>{text}</div>
+                          <LongTextDiv>{text}</LongTextDiv>
                           <div>{sentiment}</div>
                           <div>
                             {Math.max(
