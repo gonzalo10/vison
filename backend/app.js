@@ -12,7 +12,7 @@ const ModelType = require('./models/modelType');
 const User = require('./models/user');
 const Sentiment = require('./models/sentimentAnalysis');
 const Entity = require('./models/entitiesAnalysis');
-
+const path = require('path');
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
 
@@ -20,6 +20,12 @@ const app = express();
 
 // var store = new SequelizeStore({
 // 	db: sequelize,
+// });
+// To serve react app from the backend
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// app.get('/', function(req, res) {
+// 	res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 // });
 
 app.use(bodyParser.json());
