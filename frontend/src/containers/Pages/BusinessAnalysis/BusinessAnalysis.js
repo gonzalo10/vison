@@ -53,6 +53,7 @@ const Right = styled.div`
   justify-content: space-around;
   display: flex;
   flex-direction: column;
+  padding: 10px 0px;
 `;
 
 const BodyTitle = styled.h3``;
@@ -60,25 +61,38 @@ const TextArea = styled.textarea`
   min-height: 100px;
   border-radius: 10px;
   margin-bottom: 20px;
+  font-size: 14px;
 `;
-const Ouput = styled.div``;
+const Ouput = styled.div`
+  height: 225px;
+  overflow: scroll;
+`;
 const ResultsArea = styled.div`
   width: 100%;
-  height: 370px;
+  height: 360px;
   overflow: scroll;
   display: flex;
 `;
-const OutputTitle = styled.h5``;
+const OutputTitle = styled.h3``;
 const OutputStats = styled.div`
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
-const Col = styled.div``;
+const Col = styled.div`
+  font-size: 14px;
+`;
 const StatTitle = styled.div`
   margin-bottom: 10px;
   border-bottom: 1px solid blue;
 `;
-const StatResult = styled.div``;
+const StatResult = styled.p`
+  margin: 0;
+  padding: 0;
+`;
+
+const ResultType = styled(StatResult)`
+  color: ${props => props.theme.color.blueDark};
+`;
 
 const BusinessCard = styled(PlainCard)`
   padding: 10px;
@@ -132,6 +146,39 @@ const DownCaret = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
 
+const Results = ({ data }) => {
+  if (!data) return null;
+  return (
+    <OutputStats>
+      <Col>
+        <StatTitle>Name</StatTitle>
+      </Col>
+      <Col>
+        <StatTitle>Type</StatTitle>
+      </Col>
+      <Col>
+        <StatTitle>Confidence</StatTitle>
+      </Col>
+      {data.map(entity => {
+        const { name, score, type } = entity;
+        return (
+          <>
+            <Col>
+              <StatResult>{name}</StatResult>
+            </Col>
+            <Col>
+              <ResultType>{type}</ResultType>
+            </Col>
+            <Col>
+              <StatResult>{(score * 100).toFixed(2)}%</StatResult>
+            </Col>
+          </>
+        );
+      })}
+    </OutputStats>
+  );
+};
+
 const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   const [text, setText] = useState('');
   const [openInfoList, setOpenInfo] = useState([]);
@@ -156,7 +203,6 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
   const execute = () => {
     const modelId = getModelId();
     dispatch(entityActions.execute(text, modelId));
-    getModel();
   };
   const hanldeClickOpen = key => {
     if (openInfoList && openInfoList.includes(key)) {
@@ -198,7 +244,9 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
           <ModelBody>
             <Left>
               <BodyTitle>Analyze your text</BodyTitle>
-              <TextArea onChange={handleChange}></TextArea>
+              <TextArea
+                placeholder='Write here your text to analyze...'
+                onChange={handleChange}></TextArea>
               <Button color='blueDark' onClick={execute}>
                 Analyze
               </Button>
@@ -209,20 +257,7 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
               ) : (
                 <Ouput>
                   <OutputTitle>Business Analysis</OutputTitle>
-                  {entities &&
-                    entities.map(business => {
-                      return (
-                        <div>
-                          <div>{business.name}</div>
-                          <div>{business.score}</div>
-                          <div>{business.type}</div>
-                          <div>{business.description}</div>
-                          <div>{business.articleBody}</div>
-                          <div>{business.wikiUrl}</div>
-                          <div>{business.url}</div>
-                        </div>
-                      );
-                    })}
+                  <Results data={entities} />
                 </Ouput>
               )}
             </Right>

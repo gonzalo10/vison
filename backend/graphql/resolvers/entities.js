@@ -20,7 +20,7 @@ module.exports = {
 		}
 	},
 	createEntitiesAnalysis: async (args, req) => {
-		const { text } = args.entityInput;
+		const { text, modelId } = args.entityInput;
 		try {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
@@ -49,6 +49,7 @@ module.exports = {
 						articleBody,
 						wikiUrl,
 						url,
+						modelId,
 					});
 				}
 				return {

@@ -1,22 +1,23 @@
-import { modelConstants } from "../constants";
-import { entityService } from "../_services";
-import { history } from "../helpers";
-
-import { notificationsActions } from "./";
+import { modelConstants } from '../constants';
+import { entityService } from '../_services';
+import { history } from '../helpers';
+import { modelActions } from './model.actions';
+import { notificationsActions } from './';
 
 export const entityActions = {
-  execute
+  execute,
 };
 
-function execute(text) {
+function execute(text, modelId) {
   return dispatch => {
     dispatch(request());
-    entityService.execute(text).then(
+    entityService.execute(text, modelId).then(
       ({ createEntitiesAnalysis }) => {
         dispatch(success(createEntitiesAnalysis));
+        dispatch(modelActions.getModel(modelId, '2'));
       },
       error => {
-        console.log("error", error);
+        console.log('error', error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }

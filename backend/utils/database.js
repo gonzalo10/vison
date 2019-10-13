@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('vision', 'root', 'gonzalo_vision', {
+const sequelize = new Sequelize('vision', 'gonzalo_root', 'gonzalo_vision', {
 	dialect: 'mysql',
-	host: 'localhost',
+	host: 'mysql_host',
 });
 
 module.exports = sequelize;

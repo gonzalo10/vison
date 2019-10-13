@@ -1,34 +1,34 @@
-import { authHeader } from "../helpers";
-import axios from "axios";
+import { authHeader } from '../helpers';
+import axios from 'axios';
 
 export const entityService = {
-  execute
+  execute,
 };
 
-function execute(text) {
-  console.log("execute", text);
+function execute(text, modelId) {
+  const encodedText = encodeURI(text);
   const requestBody = {
     query: `
 		mutation{
-            createEntitiesAnalysis(entityInput: {text: "${text}"}){
-                text
-                score
-                type
-                name
-                description
-                articleBody
-                wikiUrl
-            }
+      createEntitiesAnalysis(entityInput: {text: "${encodedText}", modelId:${modelId}}){
+        text
+        score
+        type
+        name
+        description
+        articleBody
+        wikiUrl
+      }
 		}
-	    `
+	    `,
   };
   const requestOptions = {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(requestBody),
-    headers: authHeader()
+    headers: authHeader(),
   };
 
-  return fetch("http://localhost:3000/graphql", requestOptions).then(response =>
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
     handleResponse(response)
   );
 }

@@ -26,6 +26,7 @@ module.exports = {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
 			}
+			console.log('user', req.user);
 			const models = await req.user.getModels({
 				include: [{ model: ModelType }],
 			});

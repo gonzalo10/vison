@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
+import welcomeImg from '../../../assets/images/welcome2.jpg';
 import visionLogo from '../../../assets/images/vision.svg';
 import { modelActions } from '../../../_actions';
 import { Sidebar } from '../../Layout/Sidebar';
@@ -92,6 +93,34 @@ const Modal = styled.div`
   justify-content: center;
 `;
 
+const ModelCard = styled(Card)`
+  max-height: 200px;
+`;
+
+const EmtpyDashboardImg = styled.img`
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+`;
+const EmtpyDashboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+`;
+const EmptyDashboardTitle = styled.h1`
+  color: #060aad;
+  text-align: center;
+`;
+const CreateModelStepsText = styled.ol`
+  font-size: 18px;
+  margin: auto;
+`;
+const CreateModelStepItem = styled.li`
+  padding: 5px 25px;
+  color: #060aad;
+`;
+
 const Dashboard = ({ dispatch, modelList, modelTypes }) => {
   const [menuOpenId, setMenuOpen] = useState();
   useEffect(() => {
@@ -149,45 +178,62 @@ const Dashboard = ({ dispatch, modelList, modelTypes }) => {
             </Button>
           </HeaderRight>
         </Header>
-        <Models>
-          <CardMenu>
-            {modelList
-              ? Object.keys(modelList).map(modelId => {
-                  const model = modelList[modelId];
-                  return (
-                    <Card
-                      key={model.id}
-                      id={model.id}
-                      name={model.modelTypeId}
-                      // onClick={handleStartProject}
-                    >
-                      <ModelMenu
-                        id='optionsMenu'
-                        icon={faEllipsisV}
-                        onClick={() => handleOpenMenu(model.id)}
-                      />
-                      {menuOpenId === model.id && (
-                        <OptionsMenu>
-                          <OptionsMenuItem>Edit</OptionsMenuItem>
-                          <OptionsMenuItem
-                            delete
-                            onClick={() => handleDeleteModel(model.id)}>
-                            Delete
-                          </OptionsMenuItem>
-                        </OptionsMenu>
-                      )}
-                      <div id={model.id} onClick={handleStartProject}>
-                        <CardIcon>{model.modelType.imageUrl}</CardIcon>
-
-                        <CardText>{model.title}</CardText>
-                        <CardDescription>{model.description}</CardDescription>
-                      </div>
-                    </Card>
-                  );
-                })
-              : null}
-          </CardMenu>
-        </Models>
+        {modelList && Object.keys(modelList).length ? (
+          <Models>
+            <CardMenu>
+              {Object.keys(modelList).map(modelId => {
+                const model = modelList[modelId];
+                return (
+                  <ModelCard
+                    key={model.id}
+                    id={model.id}
+                    name={model.modelTypeId}
+                    // onClick={handleStartProject}
+                  >
+                    <ModelMenu
+                      id='optionsMenu'
+                      icon={faEllipsisV}
+                      onClick={() => handleOpenMenu(model.id)}
+                    />
+                    {menuOpenId === model.id && (
+                      <OptionsMenu>
+                        <OptionsMenuItem>Edit</OptionsMenuItem>
+                        <OptionsMenuItem
+                          delete
+                          onClick={() => handleDeleteModel(model.id)}>
+                          Delete
+                        </OptionsMenuItem>
+                      </OptionsMenu>
+                    )}
+                    <div id={model.id} onClick={handleStartProject}>
+                      <CardIcon>{model.modelType.imageUrl}</CardIcon>
+                      <CardText>{model.title}</CardText>
+                      <CardDescription>{model.description}</CardDescription>
+                    </div>
+                  </ModelCard>
+                );
+              })}
+            </CardMenu>
+          </Models>
+        ) : (
+          <EmtpyDashboard>
+            <EmtpyDashboardImg src={welcomeImg} />
+            <EmptyDashboardTitle>
+              Create your first Model 😊
+            </EmptyDashboardTitle>
+            <CreateModelStepsText>
+              <CreateModelStepItem>
+                Click <strong>+ Create Model</strong> button 👆
+              </CreateModelStepItem>
+              <CreateModelStepItem>
+                Choose <strong>model</strong> type
+              </CreateModelStepItem>
+              <CreateModelStepItem>
+                Fill title and description ✍️
+              </CreateModelStepItem>
+            </CreateModelStepsText>
+          </EmtpyDashboard>
+        )}
       </Container>
       {modelWizar ? (
         <Modal id={'modal'} onClick={handleClickModal}>

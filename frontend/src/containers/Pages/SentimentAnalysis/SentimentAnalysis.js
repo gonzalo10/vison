@@ -15,6 +15,8 @@ import {
   ModelHeaderDescription,
   PlainCard,
 } from '../../../utils/Designs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartPie, faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import { PieChart } from '../../../components/Charts';
 
 const Container = styled.div`
@@ -53,6 +55,8 @@ const TextArea = styled.textarea`
   min-height: 100px;
   border-radius: 10px;
   margin-bottom: 20px;
+  font-size: 16px;
+  padding: 10px;
 `;
 const Ouput = styled.div``;
 const OutputTitle = styled.h5``;
@@ -75,33 +79,53 @@ const ResultRow = styled.div`
   display: grid;
   width: 100%;
   max-height: 18px;
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 5fr 2fr 2fr;
   border-bottom: 1px solid lightgrey;
   padding-bottom: 5px;
   padding-top: 5px;
+  font-size: 14px;
 `;
 
 const ResultsArea = styled.div`
   width: 100%;
-  height: 400px;
+  height: 380px;
   display: flex;
 `;
 const DataArea = styled(PlainCard)`
   width: 60%;
+  padding: 10px 10px;
+  cursor: default;
   overflow: scroll;
-  justify-content: unset;
+  align-items: center;
+  justify-content: ${props => (props.hasData ? 'start' : 'center')};
 `;
 const StatsArea = styled(PlainCard)`
   display: flex;
   justify-content: center;
   width: 50%;
+  align-items: center;
+  cursor: default;
 `;
 
 const LongTextDiv = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  padding: 0px 10px;
 `;
+
+const SentimentText = styled.p`
+  margin: 0;
+  padding: 0;
+  color: ${props => props.theme.color.blueDark};
+`;
+
+const ChartIcon = styled(FontAwesomeIcon)`
+  font-size: 100px;
+  color: ${props => props.theme.color.blueDark};
+`;
+const TextIcon = styled(ChartIcon)``;
+const EmptyStateText = styled.h1``;
 
 const SentimentAnalysis = ({
   dispatch,
@@ -180,7 +204,9 @@ const SentimentAnalysis = ({
           <ModelBody>
             <Left>
               <BodyTitle>Analyze your text</BodyTitle>
-              <TextArea onChange={handleChange}></TextArea>
+              <TextArea
+                placeholder='Write your text here to analyze....'
+                onChange={handleChange}></TextArea>
               <Button color='blueDark' onClick={execute}>
                 Classify Text
               </Button>
@@ -191,27 +217,27 @@ const SentimentAnalysis = ({
               ) : (
                 <Ouput>
                   <OutputTitle>Sentiment Analysis</OutputTitle>
-                  {console.log(icon)}
                   {sentimentValue ? <StatTable /> : null}
                 </Ouput>
               )}
             </Right>
           </ModelBody>
           <ResultsArea>
-            <DataArea>
-              <ResultRow>
-                <div>
-                  <strong>text</strong>
-                </div>
-                <div>
-                  <strong>sentiment</strong>
-                </div>
-                <div>
-                  <strong>Accuracy</strong>
-                </div>
-              </ResultRow>
-              {sentimentModel
-                ? sentimentModel.data.map(
+            <DataArea hasData={sentimentModel && sentimentModel.data.length} h>
+              {sentimentModel && sentimentModel.data.length ? (
+                <>
+                  <ResultRow>
+                    <div>
+                      <strong>Text</strong>
+                    </div>
+                    <div>
+                      <strong>Sentiment</strong>
+                    </div>
+                    <div>
+                      <strong>Confidence</strong>
+                    </div>
+                  </ResultRow>
+                  {sentimentModel.data.map(
                     (
                       { text, sentiment, mixed, neutral, positive, negative },
                       key
@@ -219,7 +245,7 @@ const SentimentAnalysis = ({
                       return (
                         <ResultRow key={key}>
                           <LongTextDiv>{text}</LongTextDiv>
-                          <div>{sentiment}</div>
+                          <SentimentText>{sentiment}</SentimentText>
                           <div>
                             {Math.max(
                               mixed,
@@ -231,12 +257,29 @@ const SentimentAnalysis = ({
                         </ResultRow>
                       );
                     }
-                  )
-                : null}
+                  )}
+                </>
+              ) : (
+                <>
+                  <TextIcon icon={faAlignJustify} />
+                  <EmptyStateText>No analyzed Text yet!</EmptyStateText>
+                </>
+              )}
             </DataArea>
+            {console.log(
+              'sentimentModel',
+              sentimentModel && sentimentModel.data
+            )}
             <StatsArea>
-              {sentimentModel && sentimentModel.stats && (
+              {sentimentModel &&
+              sentimentModel.data.length &&
+              sentimentModel.stats ? (
                 <PieChart data={sentimentModel.stats} />
+              ) : (
+                <>
+                  <ChartIcon icon={faChartPie} />
+                  <EmptyStateText>No charts yet!</EmptyStateText>
+                </>
               )}
             </StatsArea>
           </ResultsArea>
