@@ -32,7 +32,7 @@ const Entity = sequelize.define(
 			allowNull: false,
 		},
 		articleBody: {
-			type: Sequelize.STRING,
+			type: Sequelize.TEXT,
 			allowNull: false,
 		},
 		wikiUrl: {

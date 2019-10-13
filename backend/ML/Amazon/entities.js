@@ -36,6 +36,13 @@ const analyzeEntities = async text => {
 				BeginOffset: 265,
 				EndOffset: 271,
 			},
+			{
+				Score: 0.9982319474220276,
+				Type: 'PERSON',
+				Text: 'Gonzalo',
+				BeginOffset: 265,
+				EndOffset: 271,
+			},
 		],
 	};
 	return result;

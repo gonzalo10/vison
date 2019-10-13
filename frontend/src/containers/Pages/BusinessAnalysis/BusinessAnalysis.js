@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCaretUp,
+  faPoll,
+  faFileAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { entityActions, modelActions } from '../../../_actions';
 import { Sidebar } from '../../Layout/Sidebar';
@@ -17,7 +22,7 @@ import {
   ModelHeaderDescription,
   ModelHeaderTitle,
 } from '../../../utils/Designs';
-import { PieChart } from '../../../components/Charts';
+import { BussinessPieChart } from '../../../components/Charts';
 
 const Container = styled.div`
   margin-left: 100px;
@@ -54,6 +59,7 @@ const Right = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 0px;
+  align-items: center;
 `;
 
 const BodyTitle = styled.h3``;
@@ -97,6 +103,25 @@ const ResultType = styled(StatResult)`
 const BusinessCard = styled(PlainCard)`
   padding: 10px;
 `;
+const SqueletonCard = styled.div`
+  width: 95%;
+  height: 40px;
+  background-color: #80808014;
+  margin: 15px;
+  border-radius: 5px;
+`;
+const Squeleton = styled.div`
+  position: relative;
+`;
+const SqueletonIcon = styled.div`
+  position: absolute;
+  top: 100px;
+  left: 115px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const CardHeader = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
@@ -126,10 +151,9 @@ const DataArea = styled.div`
   height: 98%;
 `;
 const StatsArea = styled(PlainCard)`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   width: 45%;
   padding: 0;
+  align-items: center;
 `;
 const CardDesc = styled.h6`
   margin: 0px;
@@ -145,6 +169,13 @@ const DownCaret = styled(FontAwesomeIcon)`
   font-size: 18px;
   cursor: pointer;
 `;
+
+const ChartIcon = styled(FontAwesomeIcon)`
+  font-size: 50px;
+  color: ${props => props.theme.color.blueDark};
+`;
+const TextIcon = styled(ChartIcon)``;
+const EmptyStateText = styled.h1``;
 
 const Results = ({ data }) => {
   if (!data) return null;
@@ -251,21 +282,27 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
                 Analyze
               </Button>
             </Left>
-            <Right>
+            <Right hasData={entities}>
               {isLoading ? (
                 <div>Loading...</div>
-              ) : (
+              ) : entities ? (
                 <Ouput>
                   <OutputTitle>Business Analysis</OutputTitle>
                   <Results data={entities} />
                 </Ouput>
+              ) : (
+                <>
+                  <ChartIcon icon={faPoll} />
+                  <EmptyStateText>No Analysis yet!</EmptyStateText>
+                </>
               )}
             </Right>
           </ModelBody>
           <ResultsArea>
             <DataArea>
               {selectedModel &&
-                selectedModel.entityModel &&
+              selectedModel.entityModel &&
+              selectedModel.entityModel.data.length ? (
                 selectedModel.entityModel.data.map((business, key) => {
                   return (
                     <BusinessCard key={key}>
@@ -293,13 +330,24 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
                       )}
                     </BusinessCard>
                   );
-                })}
+                })
+              ) : (
+                <Squeleton>
+                  <SqueletonCard />
+                  <SqueletonCard />
+                  <SqueletonCard />
+                  <SqueletonCard />
+                  <SqueletonCard />
+                  <SqueletonCard />
+                  <SqueletonIcon>
+                    <ChartIcon icon={faFileAlt} />
+                    <EmptyStateText>No history </EmptyStateText>
+                  </SqueletonIcon>
+                </Squeleton>
+              )}
             </DataArea>
             <StatsArea>
-              <PieChart />
-              <PieChart />
-              <PieChart />
-              <PieChart />
+              <BussinessPieChart data={selectedModel} />
             </StatsArea>
           </ResultsArea>
         </ContentArea>
