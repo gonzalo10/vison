@@ -122,6 +122,7 @@ module.exports = buildSchema(`
 
     input SummaryInput {
         text: String!
+        summarySize: Int!
         modelId: Int!
     }
 

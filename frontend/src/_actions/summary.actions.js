@@ -5,10 +5,10 @@ export const summaryActions = {
   execute,
 };
 
-function execute(text, modelId) {
+function execute(text, summarySize, modelId) {
   return dispatch => {
     dispatch(request());
-    summaryService.execute(text, modelId).then(
+    summaryService.execute(text, summarySize, modelId).then(
       ({ createSummary }) => {
         const { text, summary } = createSummary;
 

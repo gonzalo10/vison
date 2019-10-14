@@ -16,7 +16,11 @@ import {
   PlainCard,
 } from '../../../utils/Designs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartPie, faAlignJustify } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChartPie,
+  faAlignJustify,
+  faFileAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import { PieChart } from '../../../components/Charts';
 
 const Container = styled.div`
@@ -88,7 +92,7 @@ const ResultRow = styled.div`
 
 const ResultsArea = styled.div`
   width: 100%;
-  height: 380px;
+  height: 360px;
   display: flex;
 `;
 const DataArea = styled(PlainCard)`
@@ -121,11 +125,31 @@ const SentimentText = styled.p`
 `;
 
 const ChartIcon = styled(FontAwesomeIcon)`
-  font-size: 100px;
+  font-size: 50px;
   color: ${props => props.theme.color.blueDark};
 `;
 const TextIcon = styled(ChartIcon)``;
-const EmptyStateText = styled.h1``;
+const EmptyStateText = styled.h2``;
+const SqueletonCard = styled.div`
+  width: 95%;
+  height: 40px;
+  background-color: #80808014;
+  margin: 15px;
+  border-radius: 5px;
+`;
+const Squeleton = styled.div`
+  width: 100%;
+  position: relative;
+`;
+const SqueletonIcon = styled.div`
+  position: absolute;
+  top: 36%;
+  left: 40%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const SentimentAnalysis = ({
   dispatch,
@@ -260,10 +284,20 @@ const SentimentAnalysis = ({
                   )}
                 </>
               ) : (
-                <>
-                  <TextIcon icon={faAlignJustify} />
-                  <EmptyStateText>No analyzed Text yet!</EmptyStateText>
-                </>
+                !isLoading && (
+                  <Squeleton>
+                    <SqueletonCard />
+                    <SqueletonCard />
+                    <SqueletonCard />
+                    <SqueletonCard />
+                    <SqueletonCard />
+                    <SqueletonCard />
+                    <SqueletonIcon>
+                      <ChartIcon icon={faFileAlt} />
+                      <EmptyStateText>No history </EmptyStateText>
+                    </SqueletonIcon>
+                  </Squeleton>
+                )
               )}
             </DataArea>
             {console.log(

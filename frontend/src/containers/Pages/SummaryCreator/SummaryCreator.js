@@ -8,10 +8,16 @@ import { Sidebar } from '../../Layout/Sidebar';
 import {
   Button as ButtonBase,
   ModelBody as ModelBodyBase,
-  ModelHeader,
-  ModelHeaderTitle,
+  ModelHeader as ModelHeaderBase,
+  ModelHeaderTitle as ModelHeaderTitleBase,
   Card,
 } from '../../../utils/Designs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChartPie,
+  faAlignJustify,
+  faFileAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
   margin-left: 100px;
@@ -21,6 +27,14 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+const ModelHeader = styled(ModelHeaderBase)`
+  height: 60px;
+`;
+const ModelHeaderTitle = styled(ModelHeaderTitleBase)`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const Button = styled(ButtonBase)`
   width: 200px;
   margin: auto;
@@ -28,18 +42,20 @@ const Button = styled(ButtonBase)`
 
 const Icon = styled.span`
   font-size: 30px;
+  margin-left: 10px;
 `;
 
 const Left = styled.div`
   border-right: 1px solid grey;
-  width: 100%;
+  height: 97%;
+  width: 50%;
   justify-content: center;
   display: flex;
   flex-direction: column;
-  padding: 10px 30px;
+  padding: 10px 20px;
 `;
 const Right = styled.div`
-  width: 100%;
+  width: 50%;
   justify-content: space-around;
   display: flex;
   flex-direction: column;
@@ -49,56 +65,70 @@ const BodyTitle = styled.h3``;
 const TextArea = styled.textarea`
   min-height: 100px;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  height: 100%;
+  font-size: 16px;
 `;
-const Ouput = styled.div``;
-const OutputTitle = styled.h5``;
+const Ouput = styled.div`
+  overflow: scroll;
+  height: 630px;
+  padding: 10px 20px;
+`;
+const OutputTitle = styled.h3``;
 const ModelBody = styled(ModelBodyBase)`
   height: 80vh;
+  width: 100%;
 `;
-const Col = styled.div``;
-const StatTitle = styled.div`
-  margin-bottom: 10px;
-  border-bottom: 1px solid blue;
+
+const EmptySate = styled.div`
+  align-items: center;
 `;
-const StatResult = styled.div``;
+
 const ContentArea = styled.div`
   margin: auto;
   margin-top: 0px;
   width: 90%;
 `;
-const ResultRow = styled.div`
-  display: grid;
-  width: 100%;
-  max-height: 18px;
-  grid-template-columns: 3fr 1fr 1fr;
-  border-bottom: 1px solid lightgrey;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  overflow: scroll;
+const OutputText = styled.p`
+  text-align: justify;
+  display: flex;
 `;
 
-const ResultsArea = styled.div`
-  width: 100%;
-  height: 400px;
-  display: flex;
-`;
-const DataArea = styled(Card)`
-  width: 60%;
-  overflow: scroll;
-`;
-const StatsArea = styled(Card)`
+const SummarySizeArea = styled.div`
+  padding: 10px;
   display: flex;
   justify-content: center;
-  width: 50%;
+  align-items: center;
 `;
+const SummarySizeInput = styled.input`
+  font-size: 14px;
+  width: 40px;
+  padding: 5px;
+  margin-left: 15px;
+  border: none;
+  border-bottom: 2px solid ${props => props.theme.color.blueDark};
+  text-align: center;
+`;
+
+const ChartIcon = styled(FontAwesomeIcon)`
+  font-size: 50px;
+  color: ${props => props.theme.color.blueDark};
+`;
+const TextIcon = styled(ChartIcon)``;
+const EmptyStateText = styled.h2``;
 
 const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
   const [text, setText] = useState('');
+  const [summarySize, setSummarySize] = useState(80);
 
   //   useEffect(() => {
   //     getModel();
   //   }, []);
+
+  const handleSummarySizeChange = e => {
+    const { value } = e.target;
+    setSummarySize(+value);
+  };
 
   const getModelId = () => {
     const url = history.location.pathname.split('/');
@@ -118,7 +148,7 @@ const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
   };
   const execute = () => {
     const modelId = getModelId();
-    dispatch(summaryActions.execute(text, modelId));
+    dispatch(summaryActions.execute(text, summarySize, modelId));
     // getModel();
   };
 
@@ -128,16 +158,25 @@ const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
       <Container>
         <ModelHeader>
           <ModelHeaderTitle>
-            Text summary
-            <br />
-            <Icon>📝</Icon>
+            Text summary<Icon>📝</Icon>
           </ModelHeaderTitle>
         </ModelHeader>
         <ContentArea>
           <ModelBody>
             <Left>
               <BodyTitle>Text to summarize</BodyTitle>
-              <TextArea onChange={handleChange}></TextArea>
+              <TextArea
+                placeholder='Write here the text you want to summarize...'
+                onChange={handleChange}></TextArea>
+              <SummarySizeArea>
+                Sumarize to
+                <SummarySizeInput
+                  placeholder='80'
+                  type='number'
+                  onChange={handleSummarySizeChange}
+                />
+                %
+              </SummarySizeArea>
               <Button color='blueDark' onClick={execute}>
                 Summarize
               </Button>
@@ -145,11 +184,16 @@ const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
             <Right>
               {isLoading ? (
                 <div>Loading...</div>
-              ) : (
+              ) : summary ? (
                 <Ouput>
                   <OutputTitle>Summary</OutputTitle>
-                  {summary}
+                  <OutputText>{summary}</OutputText>
                 </Ouput>
+              ) : (
+                <EmptySate>
+                  <ChartIcon icon={faFileAlt} />
+                  <EmptyStateText>No summary yet!</EmptyStateText>
+                </EmptySate>
               )}
             </Right>
           </ModelBody>

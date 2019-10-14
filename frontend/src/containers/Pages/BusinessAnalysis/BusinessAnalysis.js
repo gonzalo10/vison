@@ -175,7 +175,7 @@ const ChartIcon = styled(FontAwesomeIcon)`
   color: ${props => props.theme.color.blueDark};
 `;
 const TextIcon = styled(ChartIcon)``;
-const EmptyStateText = styled.h1``;
+const EmptyStateText = styled.h2``;
 
 const Results = ({ data }) => {
   if (!data) return null;

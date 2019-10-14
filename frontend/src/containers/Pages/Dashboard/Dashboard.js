@@ -121,7 +121,7 @@ const CreateModelStepItem = styled.li`
   color: #060aad;
 `;
 
-const Dashboard = ({ dispatch, modelList, modelTypes }) => {
+const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
   const [menuOpenId, setMenuOpen] = useState();
   useEffect(() => {
     dispatch(modelActions.getAll());
@@ -178,6 +178,7 @@ const Dashboard = ({ dispatch, modelList, modelTypes }) => {
             </Button>
           </HeaderRight>
         </Header>
+        {console.log('modelList', modelList)}
         {modelList && Object.keys(modelList).length ? (
           <Models>
             <CardMenu>
@@ -216,23 +217,27 @@ const Dashboard = ({ dispatch, modelList, modelTypes }) => {
             </CardMenu>
           </Models>
         ) : (
-          <EmtpyDashboard>
-            <EmtpyDashboardImg src={welcomeImg} />
-            <EmptyDashboardTitle>
-              Create your first Model 😊
-            </EmptyDashboardTitle>
-            <CreateModelStepsText>
-              <CreateModelStepItem>
-                Click <strong>+ Create Model</strong> button 👆
-              </CreateModelStepItem>
-              <CreateModelStepItem>
-                Choose <strong>model</strong> type
-              </CreateModelStepItem>
-              <CreateModelStepItem>
-                Fill title and description ✍️
-              </CreateModelStepItem>
-            </CreateModelStepsText>
-          </EmtpyDashboard>
+          modelList &&
+          Object.keys(modelList).length === 0 && (
+            <EmtpyDashboard>
+              {console.log(isLoading)}
+              <EmtpyDashboardImg src={welcomeImg} />
+              <EmptyDashboardTitle>
+                Create your first Model 😊
+              </EmptyDashboardTitle>
+              <CreateModelStepsText>
+                <CreateModelStepItem>
+                  Click <strong>+ Create Model</strong> button 👆
+                </CreateModelStepItem>
+                <CreateModelStepItem>
+                  Choose <strong>model</strong> type
+                </CreateModelStepItem>
+                <CreateModelStepItem>
+                  Fill title and description ✍️
+                </CreateModelStepItem>
+              </CreateModelStepsText>
+            </EmtpyDashboard>
+          )
         )}
       </Container>
       {modelWizar ? (
@@ -248,8 +253,8 @@ const Dashboard = ({ dispatch, modelList, modelTypes }) => {
 };
 
 function mapStateToProps(state) {
-  const { modelList, modelTypes } = state.models;
-  return { modelList, modelTypes };
+  const { modelList, modelTypes, isLoading } = state.models;
+  return { modelList, modelTypes, isLoading };
 }
 
 const connectedDashboard = connect(mapStateToProps)(Dashboard);

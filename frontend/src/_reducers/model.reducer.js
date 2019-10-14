@@ -5,12 +5,14 @@ export function models(state = {}, action) {
     case modelConstants.GETALL_REQUESTED:
       return {
         ...state,
+        isLoading: true,
       };
 
     case modelConstants.GETALL_SUCCESS:
       return {
         ...state,
         modelList: action.models,
+        isLoading: false,
       };
 
     case modelConstants.GETALL_FAILURE:
@@ -53,12 +55,14 @@ export function models(state = {}, action) {
     case modelConstants.GET_MODEL_REQUEST:
       return {
         ...state,
+        isLoading: true,
       };
 
     case modelConstants.GET_MODEL_SUCCESS:
       return {
         ...state,
         selectedModel: action.model,
+        isLoading: false,
       };
 
     case modelConstants.GET_MODEL_FAILURE:

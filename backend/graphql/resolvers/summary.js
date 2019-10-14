@@ -11,19 +11,19 @@ const textToSummary = require('../../utils/mock-text-summary');
 
 module.exports = {
 	createSummary: (args, req) => {
-		const { text } = args.summaryInput;
+		const { text, summarySize } = args.summaryInput;
 		try {
 			if (!req.isAuth) {
 				throw new Error('Unauthenticated!');
 			}
-			const size = 0.95;
+
 			function runScript() {
 				return spawnSync('python', [
 					'-u',
 					path.join(__dirname, '../../ML/Summary/script.py'),
 					'__main__',
 					decodeURI(text),
-					size,
+					summarySize / 100,
 				]);
 			}
 			const subprocess = runScript();

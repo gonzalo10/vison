@@ -34,8 +34,7 @@ export const BussinessPieChart = ({ data }) => {
   const [totalItems, setTotalItems] = useState();
 
   useEffect(() => {
-    console.log(chartValues, data);
-    if (data && data.entityModel.data) {
+    if (data && data.entityModel && data.entityModel.data) {
       const listValues = data.entityModel.data;
       let values = {};
       setTotalItems(listValues.length);
@@ -79,7 +78,6 @@ export const BussinessPieChart = ({ data }) => {
   };
 
   if (!chartValues) return null;
-  console.log('chartValues', chartValues);
   return (
     <>
       <PieChartBase width={200} height={200}>

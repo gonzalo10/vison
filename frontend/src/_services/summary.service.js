@@ -5,12 +5,14 @@ export const summaryService = {
   execute,
 };
 
-function execute(text, modelId) {
+function execute(text, summarySize, modelId) {
   console.log('execute', text);
   const requestBody = {
     query: `
 		mutation{
-			createSummary(summaryInput: {text: "${encodeURI(text)}", modelId:${modelId}}){
+			createSummary(summaryInput: {text: "${encodeURI(
+        text
+      )}", summarySize: ${summarySize}, modelId:${modelId}}){
 				text
 				summary
 			}
