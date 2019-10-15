@@ -13,7 +13,7 @@ import {
   ModelHeader,
   ModelHeaderTitle,
   ModelHeaderDescription,
-  PlainCard,
+  FlatCard,
 } from '../../../utils/Designs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -95,7 +95,7 @@ const ResultsArea = styled.div`
   height: 360px;
   display: flex;
 `;
-const DataArea = styled(PlainCard)`
+const DataArea = styled(FlatCard)`
   width: 60%;
   padding: 10px 10px;
   cursor: default;
@@ -103,7 +103,7 @@ const DataArea = styled(PlainCard)`
   align-items: center;
   justify-content: ${props => (props.hasData ? 'start' : 'center')};
 `;
-const StatsArea = styled(PlainCard)`
+const StatsArea = styled(FlatCard)`
   display: flex;
   justify-content: center;
   width: 50%;

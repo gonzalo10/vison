@@ -10,7 +10,7 @@ export const notificationsActions = {
 };
 
 const waitAndClear = () => {
-  setTimeout(() => store.dispatch(clear()), 10000);
+  // setTimeout(() => store.dispatch(clear()), 10000);
 };
 
 function success(message) {

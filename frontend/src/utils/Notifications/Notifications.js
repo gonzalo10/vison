@@ -28,6 +28,8 @@ const NotifiactionBase = styled.div`
   box-shadow: -1px 7px 24px -6px rgba(0, 0, 0, 0.43);
   color: white;
   z-index: 9;
+  // transition: transform 1000ms ease-in;
+  animation: slidein 3s linear 1s infinite alternate;
 `;
 const SuccessNotification = styled(NotifiactionBase)`
   background-color: ${color.success};
@@ -42,8 +44,12 @@ const InfoNotifiacation = styled(NotifiactionBase)`
   background-color: ${color.info};
 `;
 
+const NotifiactionText = styled.p`
+  padding: 10px 25px;
+`;
+
 const Icon = styled(FontAwesomeIcon)`
-  padding: 10px;
+  font-size: 22px;
 `;
 const IconClose = styled(FontAwesomeIcon)`
   position: absolute;
@@ -88,7 +94,7 @@ const Notifications = ({ dispatch, notifications }) => {
   return (
     <Notifiaction>
       <Icon icon={notificationIcon} />
-      {notifications.message}
+      <NotifiactionText>{notifications.message}</NotifiactionText>
       <IconClose icon={faTimes} onClick={handleClickClose} />
     </Notifiaction>
   );

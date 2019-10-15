@@ -30,7 +30,7 @@ export const ShadowCard = styled.div`
   box-shadow: -1px 7px 24px -6px rgba(0, 0, 0, 0.43);
   border: 1px solid lightgray;
 `;
-export const PlainCard = styled.div`
+export const FlatCard = styled.div`
   cursor: pointer;
   margin: 15px;
   position: relative;

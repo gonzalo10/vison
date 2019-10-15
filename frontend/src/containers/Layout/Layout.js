@@ -8,7 +8,12 @@ class Layout extends Component {
     const { history, dispatch } = this.props;
     let url = history.location.pathname;
 
-    if (url === '/login' || url === '/dashboard' || url.includes('/model/')) {
+    if (
+      url === '/login' ||
+      url === '/dashboard' ||
+      url.includes('/model/') ||
+      url.includes('/profile')
+    ) {
       return (
         <React.Fragment>
           <Notifications />

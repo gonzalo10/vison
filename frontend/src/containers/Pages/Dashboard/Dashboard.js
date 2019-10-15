@@ -11,7 +11,7 @@ import { Sidebar } from '../../Layout/Sidebar';
 import { history } from '../../../helpers';
 import { Button, Input, Card, CardMenu } from '../../../utils/Designs';
 import { CreateModelWizard } from '../../../components/Wizard/CreateModel';
-
+import { notificationsActions } from '../../../_actions';
 const Container = styled.div`
   display: flex;
   margin-left: 100px;

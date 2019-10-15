@@ -5,3 +5,4 @@ export * from './Signup/Signup';
 export * from './SentimentAnalysis/SentimentAnalysis';
 export * from './BusinessAnalysis/BusinessAnalysis';
 export * from './SummaryCreator/SummaryCreator';
+export * from './UserProfile/UserProfile';

@@ -14,7 +14,7 @@ import { Sidebar } from '../../Layout/Sidebar';
 import { history } from '../../../helpers';
 import {
   Button as ButtonBase,
-  PlainCard,
+  FlatCard,
   Badge,
   BadgeGroup,
   ModelBody,
@@ -100,7 +100,7 @@ const ResultType = styled(StatResult)`
   color: ${props => props.theme.color.blueDark};
 `;
 
-const BusinessCard = styled(PlainCard)`
+const BusinessCard = styled(FlatCard)`
   padding: 10px;
 `;
 const SqueletonCard = styled.div`
@@ -150,7 +150,7 @@ const DataArea = styled.div`
   overflow: scroll;
   height: 98%;
 `;
-const StatsArea = styled(PlainCard)`
+const StatsArea = styled(FlatCard)`
   width: 45%;
   padding: 0;
   align-items: center;
