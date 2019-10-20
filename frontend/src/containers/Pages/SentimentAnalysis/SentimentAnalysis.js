@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { sentimentActions, modelActions } from '../../../_actions';
+import {
+  sentimentActions,
+  modelActions,
+  uploadActions,
+} from '../../../_actions';
 import { history } from '../../../helpers';
 import { Sidebar } from '../../Layout/Sidebar';
 import {
@@ -160,6 +164,7 @@ const SentimentAnalysis = ({
   sentimentModel,
 }) => {
   const [text, setText] = useState('');
+  const [fileToUpload, setFileToUpload] = useState({});
 
   useEffect(() => {
     getModel();
@@ -185,6 +190,17 @@ const SentimentAnalysis = ({
     const modelId = getModelId();
     dispatch(sentimentActions.execute(text, modelId));
     getModel();
+  };
+
+  const onClickLoadFile = e => {
+    console.log(e.target.files[0]);
+    setFileToUpload({ selectedFile: e.target.files[0] });
+  };
+  const onClickHandlerUpload = () => {
+    const data = new FormData();
+    const modelId = getModelId();
+    data.append('file', fileToUpload.selectedFile);
+    dispatch(uploadActions.uploadFile(data, modelId));
   };
 
   const StatTable = () => (
@@ -226,6 +242,10 @@ const SentimentAnalysis = ({
         </ModelHeader>
         <ContentArea>
           <ModelBody>
+            <input type='file' name='file' onChange={onClickLoadFile} />
+            <button type='button' onClick={onClickHandlerUpload}>
+              Upload
+            </button>
             <Left>
               <BodyTitle>Analyze your text</BodyTitle>
               <TextArea

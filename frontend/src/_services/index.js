@@ -3,3 +3,4 @@ export * from './model.service';
 export * from './sentiment.service';
 export * from './entity.service';
 export * from './summary.service';
+export * from './upload.service';

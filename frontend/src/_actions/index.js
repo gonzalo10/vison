@@ -4,3 +4,4 @@ export * from './model.actions';
 export * from './sentiment.actions';
 export * from './entity.actions';
 export * from './summary.actions';
+export * from './uploadFile.actions';

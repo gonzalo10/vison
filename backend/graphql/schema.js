@@ -92,6 +92,9 @@ module.exports = buildSchema(`
     type Status {
         text: String!
     }
+    type File {
+        filename: String!
+    }
 
     input ModelInput {
         title: String!
@@ -125,6 +128,10 @@ module.exports = buildSchema(`
         summarySize: Int!
         modelId: Int!
     }
+    input FileInput {
+        file: String!
+        modelId: Int!
+    }
 
     type RootQuery {
         models: [Model!]!
@@ -145,6 +152,7 @@ module.exports = buildSchema(`
         createEntitiesAnalysis(entityInput: EntityInput): [Entity!]!
         createSummary(summaryInput: SummaryInput ): Summary!
         deleteModel(id: Int!): Status!
+        uploadFile(fileInput: FileInput!): String!
     }
 
     schema {

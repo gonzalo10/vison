@@ -5,6 +5,7 @@ const sentmientResolver = require('./sentiment');
 const entitiesResolver = require('./entities');
 const modelTypeResolver = require('./modelType');
 const summaryResolver = require('./summary');
+const uploadResolber = require('./fileUpload');
 
 const rootResolver = {
 	...authResolver,
@@ -14,6 +15,7 @@ const rootResolver = {
 	...sentmientResolver,
 	...entitiesResolver,
 	...summaryResolver,
+	...uploadResolber,
 };
 
 module.exports = rootResolver;
