@@ -10,28 +10,30 @@ const { spawnSync } = require('child_process');
 const textToSummary = require('../../utils/mock-text-summary');
 
 module.exports = {
-	createSummary: (args, req) => {
-		const { text, summarySize } = args.summaryInput;
-		try {
-			if (!req.isAuth) {
-				throw new Error('Unauthenticated!');
-			}
+	Mutation: {
+		createSummary: (args, req) => {
+			const { text, summarySize } = args.summaryInput;
+			try {
+				if (!req.isAuth) {
+					throw new Error('Unauthenticated!');
+				}
 
-			function runScript() {
-				return spawnSync('python', [
-					'-u',
-					path.join(__dirname, '../../ML/Summary/script.py'),
-					'__main__',
-					decodeURI(text),
-					summarySize / 100,
-				]);
+				function runScript() {
+					return spawnSync('python', [
+						'-u',
+						path.join(__dirname, '../../ML/Summary/script.py'),
+						'__main__',
+						decodeURI(text),
+						summarySize / 100,
+					]);
+				}
+				const subprocess = runScript();
+				const result = subprocess.output[1].toString();
+				return { text: encodeURI(text), summary: encodeURI(result) };
+			} catch (err) {
+				console.log(err);
+				throw err;
 			}
-			const subprocess = runScript();
-			const result = subprocess.output[1].toString();
-			return { text: encodeURI(text), summary: encodeURI(result) };
-		} catch (err) {
-			console.log(err);
-			throw err;
-		}
+		},
 	},
 };

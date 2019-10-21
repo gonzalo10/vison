@@ -1,13 +1,13 @@
-import { userConstants } from "../constants";
-import { userService } from "../_services";
-import { history } from "../helpers";
+import { userConstants } from '../constants';
+import { userService } from '../_services';
+import { history } from '../helpers';
 
-import { notificationsActions } from "./";
+import { notificationsActions } from './';
 
 export const userActions = {
   login,
   logout,
-  register
+  register,
 };
 
 function login(username, password) {
@@ -18,12 +18,12 @@ function login(username, password) {
       user => {
         console.log(user);
         dispatch(success(user));
-        localStorage.removeItem("token");
-        localStorage.setItem("token", user.token);
-        history.push("/dashboard");
+        localStorage.removeItem('token');
+        localStorage.setItem('token', user && user.token);
+        history.push('/dashboard');
       },
       error => {
-        console.log("error", error);
+        console.log('error', error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }
@@ -45,7 +45,7 @@ function logout() {
   return dispatch => {
     userService.logout();
     dispatch(logout());
-    history.push("/login");
+    history.push('/login');
   };
   function logout() {
     return { type: userConstants.LOGOUT };
@@ -59,8 +59,8 @@ function register(username, password) {
     userService.register(username, password).then(
       user => {
         dispatch(success());
-        history.push("/login");
-        dispatch(notificationsActions.success("Registration successful"));
+        history.push('/login');
+        dispatch(notificationsActions.success('Registration successful'));
       },
       error => {
         dispatch(failure(error.toString()));

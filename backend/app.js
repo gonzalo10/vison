@@ -12,11 +12,16 @@ const ModelType = require('./models/modelType');
 const User = require('./models/user');
 const Sentiment = require('./models/sentimentAnalysis');
 const Entity = require('./models/entitiesAnalysis');
-const path = require('path');
+// const path = require('path');
 const graphqlSchema = require('./graphql/schema');
-const graphqlResolver = require('./graphql/resolvers');
+const resolvers = require('./graphql/resolvers');
 
+const typeDefs = require('./graphql/schema');
+const { ApolloServer } = require('apollo-server-express');
+
+const server = new ApolloServer({ typeDefs, resolvers });
 const app = express();
+server.applyMiddleware({ app, path: '/graphql' });
 
 // var store = new SequelizeStore({
 // 	db: sequelize,
@@ -90,14 +95,16 @@ app.use((req, res, next) => {
 		.catch(err => console.log(err));
 });
 
-app.use(
-	'/graphql',
-	graphqlHttp({
-		schema: graphqlSchema,
-		rootValue: graphqlResolver,
-		graphiql: true,
-	})
-);
+// app.use(query());
+
+// app.use(
+// 	'/graphql',
+// 	graphqlHttp({
+// 		schema: graphqlSchema,
+// 		rootValue: graphqlResolver,
+// 		graphiql: true,
+// 	})
+// );
 
 Model.belongsTo(ModelType, { constraints: true, onDelete: 'CASCADE' });
 Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
@@ -110,6 +117,14 @@ User.hasMany(Model);
 User.hasMany(Sentiment);
 User.hasMany(Entity);
 
+// sequelize
+// 	.sync()
+// 	.then(() =>
+// 		server.listen().then(({ url }) => {
+// 			console.log(`🚀 Server ready at ${url}`);
+// 		})
+// 	)
+// 	.catch(err => console.log(err));
 sequelize
 	.sync()
 	.then(() => app.listen(3000))

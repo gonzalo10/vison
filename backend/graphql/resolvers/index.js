@@ -7,8 +7,7 @@ const modelTypeResolver = require('./modelType');
 const summaryResolver = require('./summary');
 const uploadResolber = require('./fileUpload');
 
-const rootResolver = {
-	...authResolver,
+const resolvers = {
 	...usersResolver,
 	...modelResolver,
 	...modelTypeResolver,
@@ -16,6 +15,7 @@ const rootResolver = {
 	...entitiesResolver,
 	...summaryResolver,
 	...uploadResolber,
+	...authResolver,
 };
-
-module.exports = rootResolver;
+console.log(resolvers);
+module.exports = resolvers;
