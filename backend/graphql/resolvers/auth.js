@@ -20,9 +20,7 @@ module.exports = {
 		},
 	},
 	Query: {
-		login2: () => 'hola',
 		login: async (_, { email, password }, req, res) => {
-			console.log('asdfasdfasdfasdfas', email, password);
 			const user = await User.findOne({ where: { email } });
 			if (!user) {
 				return {

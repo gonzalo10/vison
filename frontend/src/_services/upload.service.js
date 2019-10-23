@@ -10,7 +10,7 @@ function uploadFile(data, modelId) {
   const requestBody = {
     query: `
     mutation{
-      uploadFile(fileInput:{file: "${data}", modelId: ${+modelId}})
+      uploadFile(file: ${data})
     }
     `,
   };

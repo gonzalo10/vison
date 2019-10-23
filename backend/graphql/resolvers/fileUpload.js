@@ -14,27 +14,15 @@ var storage = multer.diskStorage({
 });
 module.exports = {
 	Mutation: {
-		uploadFile: async (args, req) => {
-			console.log('args', args);
-			console.log('req', req);
-			const { file, modelId } = args.fileInput;
+		uploadFile: async (parent, args, user, info) => {
+			console.log('argsssssss', args);
+			const { file } = args;
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
-				var upload = multer({ storage: storage }).single('file');
-				upload(req, null, function(err) {
-					if (err instanceof multer.MulterError) {
-						return console.log(err);
-					} else if (err) {
-						return console.log(err);
-					}
-					console.log('muller file', file);
-				});
-				fs.stat(file, val => console.log(val));
 				console.log(upload);
 				console.log('file', file);
-				console.log('modelId', modelId);
 				return 'hola';
 			} catch (err) {
 				console.log(err);

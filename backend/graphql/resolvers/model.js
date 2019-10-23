@@ -6,13 +6,13 @@ const EntitiesData = require('../../models/entitiesAnalysis');
 
 module.exports = {
 	Mutation: {
-		createModel: async (args, req) => {
+		createModel: async (parent, args, user, info) => {
 			const { title, description, modelTypeId } = args.modelInput;
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
-				return req.user.createModel({
+				return user.createModel({
 					title,
 					description,
 					modelTypeId: modelTypeId,
@@ -22,19 +22,19 @@ module.exports = {
 				throw err;
 			}
 		},
-		deleteModel: async (args, req) => {
+		deleteModel: async (parent, args, user, info) => {
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 
 				let status;
 				const { id } = args;
-				const model = await req.user.getModels({ where: { id } });
+				const model = await user.getModels({ where: { id } });
 
 				if (model[0]) {
 					await model[0].destroy();
-					const isModelDeleted = await req.user.getModels({ where: { id } });
+					const isModelDeleted = await user.getModels({ where: { id } });
 					if (!isModelDeleted[0]) status = 'SUCCESS';
 					else status = 'ERROR, we could not delete it';
 				} else status = 'ERROR, The item does not exist';
@@ -47,13 +47,13 @@ module.exports = {
 		},
 	},
 	Query: {
-		models: async (args, req) => {
+		models: async (parent, args, user, info) => {
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
-				console.log('user', req.user);
-				const models = await req.user.getModels({
+				console.log('user', user);
+				const models = await user.getModels({
 					include: [{ model: ModelType }],
 				});
 				return models;
@@ -62,13 +62,13 @@ module.exports = {
 				throw err;
 			}
 		},
-		sentimentModel: async (args, req) => {
+		sentimentModel: async (parent, args, user, info) => {
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 				const { id } = args;
-				const model = await req.user.getModels({ where: { id } });
+				const model = await user.getModels({ where: { id } });
 				const modelType = model[0].modelTypeId;
 				let resultData = await SentimentData.findAll({
 					where: { modelId: id },
@@ -110,13 +110,13 @@ module.exports = {
 				throw err;
 			}
 		},
-		entityModel: async (args, req) => {
+		entityModel: async (parent, args, user, info) => {
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 				const { id } = args;
-				const model = await req.user.getModels({ where: { id } });
+				const model = await user.getModels({ where: { id } });
 				const modelType = model[0].modelTypeId;
 				let resultData = await EntitiesData.findAll({
 					where: { modelId: id },

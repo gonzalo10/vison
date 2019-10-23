@@ -8,14 +8,25 @@ const summaryResolver = require('./summary');
 const uploadResolber = require('./fileUpload');
 
 const resolvers = {
-	...usersResolver,
-	...modelResolver,
-	...modelTypeResolver,
-	...sentmientResolver,
-	...entitiesResolver,
-	...summaryResolver,
-	...uploadResolber,
-	...authResolver,
+	Query: {
+		...usersResolver.Query,
+		...modelResolver.Query,
+		...modelTypeResolver.Query,
+		...sentmientResolver.Query,
+		...entitiesResolver.Query,
+		...summaryResolver.Query,
+		...uploadResolber.Query,
+		...authResolver.Query,
+	},
+	Mutation: {
+		...usersResolver.Mutation,
+		...modelResolver.Mutation,
+		...modelTypeResolver.Mutation,
+		...sentmientResolver.Mutation,
+		...entitiesResolver.Mutation,
+		...summaryResolver.Mutation,
+		...uploadResolber.Mutation,
+		...authResolver.Mutation,
+	},
 };
-console.log(resolvers);
 module.exports = resolvers;

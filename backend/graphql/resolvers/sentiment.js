@@ -1,12 +1,12 @@
 const analyzeSentiment = require('../../ML/Amazon/sentiment');
 module.exports = {
 	Query: {
-		sentimentAnalysis: async (args, req) => {
+		sentimentAnalysis: async (parent, args, user, info) => {
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
-				const sentiments = await req.user.getSentiments({
+				const sentiments = await user.getSentiments({
 					limit: 50,
 					order: [['id', 'DESC']],
 				});
@@ -18,15 +18,14 @@ module.exports = {
 		},
 	},
 	Mutation: {
-		createSentimentAnalysis: async (args, req) => {
+		createSentimentAnalysis: async (parent, args, user, info) => {
 			const { text, modelId } = args.sentimentInput;
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 				const result = await analyzeSentiment(text);
-				console.log('req.user', req.user);
-				return req.user.createSentiment({
+				return user.createSentiment({
 					text: text,
 					modelId,
 					sentiment: result.Sentiment,

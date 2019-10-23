@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { authHeader } from "../helpers";
+import { authHeader } from '../helpers';
 
 const login = async (username, password) => {
   try {
@@ -8,18 +8,18 @@ const login = async (username, password) => {
       query: `
 			 {
 				login(email: "${username}", password: "${password}") {
-				userId
-				token
-				tokenExpiration
-				error
-				}
+            userId
+            token
+            tokenExpiration
+            error
+          }
 			  }
-			`
+			`,
     };
     const response = await axios({
-      url: "http://localhost:3000/graphql",
-      method: "POST",
-      data: requestBody
+      url: 'http://localhost:3000/graphql',
+      method: 'POST',
+      data: requestBody,
     });
     // const response = await fetch('http://localhost:3000/graphql', {
     // 	method: 'POST',
@@ -30,7 +30,7 @@ const login = async (username, password) => {
     // 	credentials: 'same-origin',
     // });
     const {
-      data: { login: result }
+      data: { login: result },
     } = await response.data;
     if (result.error) {
       return Promise.reject(result.error);
@@ -51,20 +51,20 @@ function register(username, password) {
 			  password
 			}
 		  }
-        `
+        `,
   };
-  return fetch("http://localhost:3000/graphql", {
-    method: "POST",
+  return fetch('http://localhost:3000/graphql', {
+    method: 'POST',
     body: JSON.stringify(requestBody),
-    headers: authHeader()
+    headers: authHeader(),
   }).then(response => handleResponse(response));
 }
 
 function logout() {
   // remove user from local storage to log user out
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
-  localStorage.removeItem("refresh_token");
+  localStorage.removeItem('user');
+  localStorage.removeItem('token');
+  localStorage.removeItem('refresh_token');
 }
 
 function handleResponse(response) {
@@ -72,7 +72,7 @@ function handleResponse(response) {
     const data = text && JSON.parse(text);
     if (!response.ok) {
       if (response.status === 401) {
-        console.log("error 401");
+        console.log('error 401');
         // auto logout if 401 response returned from api
         logout();
         window.location.reload(true);
@@ -88,7 +88,7 @@ function handleResponse(response) {
 export const userService = {
   login,
   logout,
-  register
+  register,
   // getAll,
   // getById,
   // update,

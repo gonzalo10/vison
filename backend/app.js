@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const { ApolloServer } = require('apollo-server-express');
 const graphqlHttp = require('express-graphql');
 const session = require('express-session');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
@@ -12,16 +14,40 @@ const ModelType = require('./models/modelType');
 const User = require('./models/user');
 const Sentiment = require('./models/sentimentAnalysis');
 const Entity = require('./models/entitiesAnalysis');
-// const path = require('path');
-const graphqlSchema = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
 
 const typeDefs = require('./graphql/schema');
-const { ApolloServer } = require('apollo-server-express');
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+	typeDefs,
+	resolvers,
+	context: async ({ res, req }) => {
+		// TODO make sure this is not redundant and is already being done by isAuth
+		if (req.isAuth) {
+			const token =
+				(req.headers.authorization &&
+					req.headers.authorization.split(' ')[1]) ||
+				'';
+			let decodedToken;
+			try {
+				decodedToken = jwt.verify(token, 'somesupersecretkey');
+			} catch (err) {
+				throw new AuthenticationError('you must be logged in');
+			}
+			if (!decodedToken) throw new AuthenticationError('you must be logged in');
+			if (!req.isAuth) throw new AuthenticationError('you must be logged in');
+			let myUser;
+			await User.findByPk(decodedToken.userId)
+				.then(user => {
+					myUser = user;
+				})
+				.catch(err => console.log(err));
+			return myUser;
+		}
+		return {};
+	},
+});
 const app = express();
-server.applyMiddleware({ app, path: '/graphql' });
 
 // var store = new SequelizeStore({
 // 	db: sequelize,
@@ -83,19 +109,19 @@ app.use((req, res, next) => {
 
 app.use(isAuth);
 
-app.use((req, res, next) => {
-	if (!req.isAuth) {
-		console.log('no auth');
-	}
-	User.findByPk(req.userId)
-		.then(user => {
-			req.user = user;
-			next();
-		})
-		.catch(err => console.log(err));
-});
+// app.use((req, res, next) => {
+// 	if (!req.isAuth) {
+// 		console.log('no auth');
+// 	}
+// 	User.findByPk(req.userId)
+// 		.then(user => {
+// 			req.user = user;
+// 			next();
+// 		})
+// 		.catch(err => console.log(err));
+// });
 
-// app.use(query());
+server.applyMiddleware({ app, path: '/graphql' });
 
 // app.use(
 // 	'/graphql',
@@ -117,14 +143,6 @@ User.hasMany(Model);
 User.hasMany(Sentiment);
 User.hasMany(Entity);
 
-// sequelize
-// 	.sync()
-// 	.then(() =>
-// 		server.listen().then(({ url }) => {
-// 			console.log(`🚀 Server ready at ${url}`);
-// 		})
-// 	)
-// 	.catch(err => console.log(err));
 sequelize
 	.sync()
 	.then(() => app.listen(3000))

@@ -1,10 +1,10 @@
 const ModelType = require('../../models/modelType');
 module.exports = {
 	Mutation: {
-		createModelType: async (args, req) => {
+		createModelType: async (parent, args, user, info) => {
 			const { title, description, imageUrl } = args.modelTypeInput;
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 				return ModelType.create({
@@ -19,9 +19,9 @@ module.exports = {
 		},
 	},
 	Query: {
-		modelType: async (args, req) => {
+		modelType: async (parent, args, user, info) => {
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 				const modelTypes = await ModelType.findAll();

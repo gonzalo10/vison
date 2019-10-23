@@ -2,7 +2,7 @@ const User = require('../../models/user');
 
 module.exports = {
 	Query: {
-		users: async (args, req) => {
+		users: async (parent, args, user, info) => {
 			try {
 				const users = await User.findAll();
 				return users;

@@ -6,12 +6,12 @@ const googleApi = require('../../credentials');
 const formatText = text => text.trim().replace(/  +/g, '+');
 module.exports = {
 	Query: {
-		entitiesAnalysis: async (args, req) => {
+		entitiesAnalysis: async (parent, args, user, info) => {
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
-				return req.user.getEntities({
+				return user.getEntities({
 					limit: 50,
 					order: [['id', 'DESC']],
 				});
@@ -22,10 +22,10 @@ module.exports = {
 		},
 	},
 	Mutation: {
-		createEntitiesAnalysis: async (args, req) => {
+		createEntitiesAnalysis: async (parent, args, user, info) => {
 			const { text, modelId } = args.entityInput;
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 				const result = await analyzeEntities(text);
@@ -42,7 +42,7 @@ module.exports = {
 						detailedDescription: { articleBody, url: wikiUrl },
 						url,
 					} = googleResult.data.itemListElement[0].result;
-					return req.user.createEntity({
+					return user.createEntity({
 						text: entity.Text,
 						score: entity.Score,
 						type: entity.Type,

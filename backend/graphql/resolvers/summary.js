@@ -11,10 +11,10 @@ const textToSummary = require('../../utils/mock-text-summary');
 
 module.exports = {
 	Mutation: {
-		createSummary: (args, req) => {
+		createSummary: (parent, args, user, info) => {
 			const { text, summarySize } = args.summaryInput;
 			try {
-				if (!req.isAuth) {
+				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
 

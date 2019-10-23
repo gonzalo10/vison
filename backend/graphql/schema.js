@@ -94,6 +94,8 @@ const typeDefs = gql`
 	}
 	type File {
 		filename: String!
+		mimetype: String!
+		encoding: String!
 	}
 
 	input ModelInput {
@@ -153,7 +155,7 @@ const typeDefs = gql`
 		createEntitiesAnalysis(entityInput: EntityInput): [Entity!]!
 		createSummary(summaryInput: SummaryInput): Summary!
 		deleteModel(id: Int!): Status!
-		uploadFile(fileInput: FileInput!): String!
+		uploadFile(file: Upload!): File!
 	}
 
 	schema {
