@@ -1,28 +1,38 @@
 import { authHeader } from '../helpers';
-import axios from 'axios';
+import { client } from '../index';
+import { gql } from 'apollo-boost';
 
 export const uploadService = {
   uploadFile,
 };
 
-function uploadFile(data, modelId) {
-  console.log('uploadFile', data);
-  const requestBody = {
-    query: `
-    mutation{
-      uploadFile(file: ${data})
-    }
-    `,
-  };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
+const axios = require('axios');
 
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+async function uploadFile(formData, modelId) {
+  console.log('uploadFile', formData);
+
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  };
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/upload',
+      formData,
+      {
+        onUploadProgress: ProgressEvent => {
+          console.log(
+            'Progess',
+            (ProgressEvent.loaded / ProgressEvent.total) * 100
+          );
+        },
+      }
+    );
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 function handleResponse(response) {

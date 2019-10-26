@@ -1,39 +1,28 @@
 import axios from 'axios';
+import { client } from '../index';
+import { gql } from 'apollo-boost';
 
 import { authHeader } from '../helpers';
 
 const login = async (username, password) => {
   try {
-    const requestBody = {
-      query: `
-			 {
-				login(email: "${username}", password: "${password}") {
+    const {
+      data: { login: result },
+    } = await client.query({
+      query: gql`
+        {
+          login(email: "hola", password: "hola") {
             userId
             token
             tokenExpiration
             error
           }
-			  }
-			`,
-    };
-    const response = await axios({
-      url: 'http://localhost:3000/graphql',
-      method: 'POST',
-      data: requestBody,
+        }
+      `,
     });
-    // const response = await fetch('http://localhost:3000/graphql', {
-    // 	method: 'POST',
-    // 	body: JSON.stringify(requestBody),
-    // 	headers: {
-    // 		'Content-Type': 'application/json',
-    // 	},
-    // 	credentials: 'same-origin',
-    // });
-    const {
-      data: { login: result },
-    } = await response.data;
+
     if (result.error) {
-      return Promise.reject(result.error);
+      throw new Error(result.error);
     }
     return result;
   } catch (err) {

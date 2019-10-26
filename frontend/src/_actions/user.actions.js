@@ -20,7 +20,7 @@ function login(username, password) {
         dispatch(success(user));
         localStorage.removeItem('token');
         localStorage.setItem('token', user && user.token);
-        history.push('/dashboard');
+        // history.push('/dashboard');
       },
       error => {
         console.log('error', error);

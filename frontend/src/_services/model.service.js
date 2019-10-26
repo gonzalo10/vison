@@ -2,6 +2,8 @@ import { authHeader } from '../helpers';
 import axios from 'axios';
 import { userActions } from '../_actions';
 import { store } from '../helpers';
+import { client } from '../index';
+import { gql } from 'apollo-boost';
 
 export const modelService = {
   getAll,
@@ -11,35 +13,29 @@ export const modelService = {
   getEntityModel,
   getSummaryModel,
   deleteModel,
+  getYoutubeCommentsModel,
 };
 
-function getAll() {
-  const requestBody = {
-    query: `
-	     query{
-	        models{
-            id
+async function getAll() {
+  const { data } = await client.query({
+    query: gql`
+      {
+        models {
+          id
+          title
+          description
+          modelTypeId
+          modelType {
             title
             description
-            modelTypeId
-            modelType {
-              title
-              description
-              imageUrl
-            }
-	        }
-	      }
-	    `,
-  };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
+            imageUrl
+          }
+        }
+      }
+    `,
+  });
 
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return data;
 }
 function getModelTypes() {
   const requestBody = {
@@ -175,6 +171,30 @@ function getSummaryModel(id) {
           articleBody
           wikiUrl
           modelId
+        }
+      }
+  }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+function getYoutubeCommentsModel(id) {
+  const requestBody = {
+    query: `
+    {
+      youtubeModel(id: ${id}){
+          id
+          title
+          description
+          data 
         }
       }
   }

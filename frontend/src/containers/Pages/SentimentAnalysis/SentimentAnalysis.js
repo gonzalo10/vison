@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+// import { Mutation, gql } from 'apollo-boost';
 
 import {
   sentimentActions,
@@ -26,6 +27,8 @@ import {
   faFileAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { PieChart } from '../../../components/Charts';
+const gql = require('graphql-tag');
+const { Mutation } = require('react-apollo');
 
 const Container = styled.div`
   margin-left: 100px;

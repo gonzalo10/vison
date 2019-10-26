@@ -114,6 +114,9 @@ function getModel(id, modelType) {
       case '3':
         getModelType = modelService.getSummaryModel;
         break;
+      case '3':
+        getModelType = modelService.getYoutubeCommentsModel;
+        break;
       default:
         break;
     }

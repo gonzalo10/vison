@@ -5,7 +5,7 @@ const { ApolloServer } = require('apollo-server-express');
 const graphqlHttp = require('express-graphql');
 const session = require('express-session');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
-
+const multer = require('multer');
 const sequelize = require('./utils/database');
 const isAuth = require('./middleware/is-auth');
 
@@ -15,7 +15,7 @@ const User = require('./models/user');
 const Sentiment = require('./models/sentimentAnalysis');
 const Entity = require('./models/entitiesAnalysis');
 const resolvers = require('./graphql/resolvers');
-
+const handleCsv = require('./helpers/handleCsv');
 const typeDefs = require('./graphql/schema');
 
 const server = new ApolloServer({
@@ -49,16 +49,6 @@ const server = new ApolloServer({
 });
 const app = express();
 
-// var store = new SequelizeStore({
-// 	db: sequelize,
-// });
-// To serve react app from the backend
-// app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-// app.get('/', function(req, res) {
-// 	res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-// });
-
 app.use(bodyParser.json());
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -70,67 +60,34 @@ app.use((req, res, next) => {
 	next();
 });
 
-// this is for the cookies
-
-// app.use(
-// 	session({
-// 		secret: 'my secret',
-// 		resave: false,
-// 		saveUninitialized: false,
-// 		store: store,
-// 		cookie: {
-// 			maxAge: 1000 * 60 * 60 * 2,
-// 			sameSite: false,
-// 			httpOnly: false,
-// 			domain: '127.0.0.1',
-// 		},
-// 	})
-// );
-
-// app.use((req, res, next) => {
-// 	console.log(req.session);
-// 	if (!req.session.user) {
-// 		return next();
-// 	}
-// 	User.findByPk(req.session.user.id)
-// 		.then(user => {
-// 			req.user = user;
-// 			next();
-// 		})
-// 		.catch(err => console.log(err));
-// });
-
-// app.use((req, res, next) => {
-// 	res.locals.isAuthenticated = req.session.isLoggedIn;
-// 	next();
-// });
-
-// this is for the bearer token
-
 app.use(isAuth);
 
-// app.use((req, res, next) => {
-// 	if (!req.isAuth) {
-// 		console.log('no auth');
-// 	}
-// 	User.findByPk(req.userId)
-// 		.then(user => {
-// 			req.user = user;
-// 			next();
-// 		})
-// 		.catch(err => console.log(err));
-// });
+var storage = multer.diskStorage({
+	destination: function(req, file, cb) {
+		console.log('destinations', file);
+		cb(null, 'public');
+	},
+	filename: function(req, file, cb) {
+		console.log('file0', file);
+		cb(null, Date.now() + '-' + file.originalname);
+	},
+});
+
+var upload = multer({ storage: storage }).array('file');
+
+app.post('/upload', function(req, res) {
+	upload(req, res, function(err) {
+		if (err instanceof multer.MulterError) {
+			return res.status(500).json(err);
+		} else if (err) {
+			return res.status(500).json(err);
+		}
+		handleCsv();
+		return res.status(200).send(req.file);
+	});
+});
 
 server.applyMiddleware({ app, path: '/graphql' });
-
-// app.use(
-// 	'/graphql',
-// 	graphqlHttp({
-// 		schema: graphqlSchema,
-// 		rootValue: graphqlResolver,
-// 		graphiql: true,
-// 	})
-// );
 
 Model.belongsTo(ModelType, { constraints: true, onDelete: 'CASCADE' });
 Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });

@@ -12,6 +12,7 @@ import { history } from '../../../helpers';
 import { Button, Input, Card, CardMenu } from '../../../utils/Designs';
 import { CreateModelWizard } from '../../../components/Wizard/CreateModel';
 import { notificationsActions } from '../../../_actions';
+
 const Container = styled.div`
   display: flex;
   margin-left: 100px;
@@ -178,7 +179,6 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
             </Button>
           </HeaderRight>
         </Header>
-        {console.log('modelList', modelList)}
         {modelList && Object.keys(modelList).length ? (
           <Models>
             <CardMenu>
