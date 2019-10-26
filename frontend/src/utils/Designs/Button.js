@@ -6,9 +6,14 @@ import colorPalette from '../colors';
 export const Button = styled.button`
   cursor: pointer;
   margin-right: 23px;
-  border: none;
-  color: #fff;
-  background: ${props => colorPalette[props.color]};
+  border: ${props =>
+    props.variant === 'outlined'
+      ? `2px solid ${colorPalette[props.color]}`
+      : 'none'};
+  color: ${props =>
+    props.variant === 'outlined' ? colorPalette[props.color] : '#fff'};
+  background: ${props =>
+    props.variant === 'outlined' ? '#fff' : colorPalette[props.color]};
   text-shadow: 0 1px 3px rgba(36, 180, 126, 0.4);
   white-space: nowrap;
   display: inline-block;

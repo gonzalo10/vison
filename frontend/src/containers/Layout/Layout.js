@@ -11,14 +11,15 @@ class Layout extends Component {
     if (
       url === '/login' ||
       url === '/dashboard' ||
+      url === '/integrations' ||
       url.includes('/model/') ||
       url.includes('/profile')
     ) {
       return (
-        <React.Fragment>
+        <>
           <Notifications />
           <main>{this.props.children}</main>
-        </React.Fragment>
+        </>
       );
     }
 

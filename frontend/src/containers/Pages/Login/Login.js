@@ -53,12 +53,10 @@ const LoginPage = ({ dispatch, isOpen, message }) => {
 
   const handleLogin = e => {
     e.preventDefault();
-    console.log('username', username, 'password', password);
     dispatch(userActions.login(username, password));
   };
 
   const handlePassword = e => {
-    console.log(e.target.value);
     // sethidedPassword('*'.repeat(e.target.value.length));
     setPassword(e.target.value);
   };

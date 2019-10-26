@@ -14,7 +14,7 @@ import {
   Button as ButtonBase,
   Badge,
   BadgeGroup,
-  ModelBody,
+  ModelBody as ModelBodyBase,
   ModelHeader,
   ModelHeaderTitle,
   ModelHeaderDescription,
@@ -29,6 +29,10 @@ import {
 import { PieChart } from '../../../components/Charts';
 const gql = require('graphql-tag');
 const { Mutation } = require('react-apollo');
+
+const ModelBody = styled(ModelBodyBase)`
+  flex-direction: column;
+`;
 
 const Container = styled.div`
   margin-left: 100px;
@@ -68,6 +72,14 @@ const TextArea = styled.textarea`
   margin-bottom: 20px;
   font-size: 16px;
   padding: 10px;
+`;
+const UploadFileArea = styled.div`
+  min-height: 100px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  padding: 10px;
+  display: flex;
 `;
 const Ouput = styled.div``;
 const OutputTitle = styled.h5``;
@@ -158,6 +170,28 @@ const SqueletonIcon = styled.div`
   align-items: center;
 `;
 
+const TabList = styled.div`
+  width: 100%;
+`;
+const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const Tab = styled.button`
+  width: 30%;
+  border: 0px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0px 10px;
+  border-bottom: 2px solid transparent;
+  background-color: white;
+  border-bottom: ${props =>
+    props.isSelected && `2px solid ${props.theme.color.blueDark}`};
+  &:hover {
+    border-bottom: 2px solid ${props => props.theme.color.blueDark};
+  }
+`;
+
 const SentimentAnalysis = ({
   dispatch,
   sentimentTitle,
@@ -168,6 +202,7 @@ const SentimentAnalysis = ({
 }) => {
   const [text, setText] = useState('');
   const [fileToUpload, setFileToUpload] = useState({});
+  const [selectedTab, setSelectedTab] = useState(1);
 
   useEffect(() => {
     getModel();
@@ -200,15 +235,19 @@ const SentimentAnalysis = ({
   };
 
   const onClickLoadFile = e => {
-    console.log(e.target.files[0]);
     setFileToUpload({ selectedFile: e.target.files[0] });
   };
+
   const onClickHandlerUpload = () => {
     const data = new FormData();
     const modelId = getModelId();
     const modelType = getModelType();
     data.append('file', fileToUpload.selectedFile);
     dispatch(uploadActions.uploadFile(data, modelType, modelId));
+  };
+
+  const onClickOpenUplodBox = () => {
+    document.getElementById('uploadDialog').click();
   };
 
   const StatTable = () => (
@@ -250,29 +289,95 @@ const SentimentAnalysis = ({
         </ModelHeader>
         <ContentArea>
           <ModelBody>
-            <input type='file' name='file' onChange={onClickLoadFile} />
-            <button type='button' onClick={onClickHandlerUpload}>
-              Upload
-            </button>
-            <Left>
-              <BodyTitle>Analyze your text</BodyTitle>
-              <TextArea
-                placeholder='Write your text here to analyze....'
-                onChange={handleChange}></TextArea>
-              <Button color='blueDark' onClick={execute}>
-                Classify Text
-              </Button>
-            </Left>
-            <Right>
-              {isLoading ? (
-                <div>Loading...</div>
-              ) : (
-                <Ouput>
-                  <OutputTitle>Sentiment Analysis</OutputTitle>
-                  {sentimentValue ? <StatTable /> : null}
-                </Ouput>
+            <TabList>
+              <Tab
+                onClick={() => setSelectedTab(1)}
+                isSelected={selectedTab === 1}>
+                Upload
+              </Tab>
+              <Tab
+                onClick={() => setSelectedTab(2)}
+                isSelected={selectedTab === 2}>
+                Write
+              </Tab>
+              <Tab
+                onClick={() => setSelectedTab(3)}
+                isSelected={selectedTab === 3}>
+                Integrations
+              </Tab>
+            </TabList>
+            <Content>
+              {selectedTab === 1 && (
+                <>
+                  <Left>
+                    <BodyTitle>Analyze your text</BodyTitle>
+                    <input
+                      style={{ display: 'none' }}
+                      type='file'
+                      id='uploadDialog'
+                      name='file'
+                      onChange={onClickLoadFile}
+                    />
+                    <UploadFileArea>
+                      <Button
+                        variant='outlined'
+                        color='blueDark'
+                        onClick={onClickOpenUplodBox}>
+                        {fileToUpload.selectedFile
+                          ? fileToUpload.selectedFile.name
+                          : 'Upload csv'}
+                      </Button>
+                    </UploadFileArea>
+                    <Button color='blueDark' onClick={onClickHandlerUpload}>
+                      Classify Text
+                    </Button>
+                  </Left>
+                  <Right>
+                    {isLoading ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <Ouput>
+                        <OutputTitle>Sentiment Analysis</OutputTitle>
+                        {sentimentValue ? <StatTable /> : null}
+                      </Ouput>
+                    )}
+                  </Right>
+                </>
               )}
-            </Right>
+              {selectedTab === 2 && (
+                <>
+                  <Left>
+                    <BodyTitle>Analyze your text</BodyTitle>
+                    <TextArea
+                      placeholder='Write your text here to analyze....'
+                      onChange={handleChange}></TextArea>
+                    <Button color='blueDark' onClick={execute}>
+                      Classify Text
+                    </Button>
+                  </Left>
+                  <Right>
+                    {isLoading ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <Ouput>
+                        <OutputTitle>Sentiment Analysis</OutputTitle>
+                        {sentimentValue ? <StatTable /> : null}
+                      </Ouput>
+                    )}
+                  </Right>
+                </>
+              )}
+              {selectedTab === 3 && (
+                <>
+                  <TextArea
+                    placeholder='Write your text here to analyze....'
+                    onChange={handleChange}></TextArea>
+                  <Button color='blueDark' onClick={execute}>
+                    Integrate
+                  </Button>
+                </>
+              )}
+            </Content>
           </ModelBody>
           <ResultsArea>
             <DataArea hasData={sentimentModel && sentimentModel.data.length} h>

@@ -32,10 +32,11 @@ const MenuItem = styled.button`
 `;
 
 const Sidebar = ({ dispatch }) => {
-  const isSelected = () => {
-    if (history.location.pathname === '/dashboard') {
-      return true;
-    }
+  const isMyModelsSelected = () => {
+    if (history.location.pathname === '/dashboard') return true;
+  };
+  const isIntegrationsSelected = () => {
+    if (history.location.pathname === '/integrations') return true;
   };
   return (
     <LateralMenu>
@@ -43,8 +44,14 @@ const Sidebar = ({ dispatch }) => {
         <MenuItem
           id='myModels'
           onClick={() => history.push('/dashboard')}
-          isSelected={isSelected()}>
+          isSelected={isMyModelsSelected()}>
           My Models
+        </MenuItem>
+        <MenuItem
+          id='myModels'
+          onClick={() => history.push('/integrations')}
+          isSelected={isIntegrationsSelected()}>
+          Integrations
         </MenuItem>
         <MenuItem>+ Model</MenuItem>
       </TopMenu>

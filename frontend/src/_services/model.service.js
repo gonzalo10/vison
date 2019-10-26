@@ -17,6 +17,32 @@ export const modelService = {
 };
 
 async function getAll() {
+  const requestBody = {
+    query: `
+    {
+      models {
+        id
+        title
+        description
+        modelTypeId
+        modelType {
+          title
+          description
+          imageUrl
+        }
+      }
+    }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
   const { data } = await client.query({
     query: gql`
       {

@@ -13,6 +13,7 @@ import {
   BusinessAnalysis,
   SummaryCreator,
   UserProfile,
+  Integrations,
 } from './containers/Pages';
 
 export default class App extends React.Component {
@@ -22,6 +23,7 @@ export default class App extends React.Component {
         <Layout history={history}>
           <PrivateRoutes path='/dashboard' component={Dashboard} />
           <PrivateRoutes path='/profile' component={UserProfile} />
+          <PrivateRoutes path='/integrations' component={Integrations} />
           <PrivateRoutes path='/model/1/:id' component={SentimentAnalysis} />
           <PrivateRoutes path='/model/2/:id' component={BusinessAnalysis} />
           <PrivateRoutes path='/model/3/:id' component={SummaryCreator} />
