@@ -62,13 +62,14 @@ app.use((req, res, next) => {
 
 app.use(isAuth);
 
+var fileName;
+
 var storage = multer.diskStorage({
 	destination: function(req, file, cb) {
-		console.log('destinations', file);
 		cb(null, 'public');
 	},
 	filename: function(req, file, cb) {
-		console.log('file0', file);
+		fileName = Date.now() + '-' + file.originalname;
 		cb(null, Date.now() + '-' + file.originalname);
 	},
 });
@@ -76,13 +77,16 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).array('file');
 
 app.post('/upload', function(req, res) {
+	const modelId = req.query.modelId;
+	const modelType = req.query.modelType;
+	const userId = req.userId;
 	upload(req, res, function(err) {
 		if (err instanceof multer.MulterError) {
 			return res.status(500).json(err);
 		} else if (err) {
 			return res.status(500).json(err);
 		}
-		handleCsv();
+		handleCsv(fileName, modelType, modelId, userId);
 		return res.status(200).send(req.file);
 	});
 });

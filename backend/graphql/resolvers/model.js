@@ -93,8 +93,6 @@ module.exports = {
 					stats[sentiment] = sentimentCount;
 				}
 
-				console.log(stats);
-
 				const { title, description } = model[0];
 				const modelObject = {
 					id,

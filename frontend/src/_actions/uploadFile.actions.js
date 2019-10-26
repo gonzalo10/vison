@@ -5,11 +5,11 @@ export const uploadActions = {
   uploadFile,
 };
 
-function uploadFile(data, modelId) {
+function uploadFile(data, modelType, modelId) {
   return dispatch => {
     dispatch(request());
     console.log(data, modelId);
-    uploadService.uploadFile(data, modelId).then(
+    uploadService.uploadFile(data, modelType, modelId).then(
       response => {
         console.log(response);
       },

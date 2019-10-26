@@ -178,11 +178,15 @@ const SentimentAnalysis = ({
     const id = url[url.length - 1];
     return id;
   };
+  const getModelType = () => {
+    const url = history.location.pathname.split('/');
+    const modeType = url[url.length - 2];
+    return modeType;
+  };
 
   const getModel = () => {
-    const url = history.location.pathname.split('/');
     const id = getModelId();
-    const modelType = url[url.length - 2];
+    const modelType = getModelType();
     dispatch(modelActions.getModel(id, modelType));
   };
 
@@ -202,8 +206,9 @@ const SentimentAnalysis = ({
   const onClickHandlerUpload = () => {
     const data = new FormData();
     const modelId = getModelId();
+    const modelType = getModelType();
     data.append('file', fileToUpload.selectedFile);
-    dispatch(uploadActions.uploadFile(data, modelId));
+    dispatch(uploadActions.uploadFile(data, modelType, modelId));
   };
 
   const StatTable = () => (
