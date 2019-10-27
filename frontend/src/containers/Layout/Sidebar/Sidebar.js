@@ -38,6 +38,9 @@ const Sidebar = ({ dispatch }) => {
   const isIntegrationsSelected = () => {
     if (history.location.pathname === '/integrations') return true;
   };
+  const isTrainModelSelected = () => {
+    if (history.location.pathname === '/train') return true;
+  };
   return (
     <LateralMenu>
       <TopMenu>
@@ -52,6 +55,12 @@ const Sidebar = ({ dispatch }) => {
           onClick={() => history.push('/integrations')}
           isSelected={isIntegrationsSelected()}>
           Integrations
+        </MenuItem>
+        <MenuItem
+          id='myModels'
+          onClick={() => history.push('/train')}
+          isSelected={isTrainModelSelected()}>
+          Train Model
         </MenuItem>
         <MenuItem>+ Model</MenuItem>
       </TopMenu>

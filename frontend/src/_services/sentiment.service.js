@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export const sentimentService = {
   execute,
+  analyzeYoutubeVideo,
 };
 
 function execute(text, modelId) {
@@ -12,6 +13,32 @@ function execute(text, modelId) {
     query: `
 		mutation{
 			createSentimentAnalysis(sentimentInput: {text: "${text}", modelId:${modelId}}){
+				text
+				sentiment
+				positive
+				negative
+				neutral
+				mixed
+			}
+		}
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+function analyzeYoutubeVideo(url, modelId) {
+  console.log('analyzeYoutubeVideo', url);
+  const requestBody = {
+    query: `
+		mutation{
+			analyzeYoutubeVideo(url: "${url}", modelId:${+modelId}){
 				text
 				sentiment
 				positive

@@ -6,6 +6,7 @@ const entitiesResolver = require('./entities');
 const modelTypeResolver = require('./modelType');
 const summaryResolver = require('./summary');
 const uploadResolber = require('./fileUpload');
+const analyzeYoutube = require('./youtube');
 
 const resolvers = {
 	Query: {
@@ -27,6 +28,7 @@ const resolvers = {
 		...summaryResolver.Mutation,
 		...uploadResolber.Mutation,
 		...authResolver.Mutation,
+		...analyzeYoutube.Mutation,
 	},
 };
 module.exports = resolvers;

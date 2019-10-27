@@ -6,6 +6,7 @@ import { notificationsActions } from './';
 
 export const sentimentActions = {
   execute,
+  youtubeVideo,
 };
 
 const getSentimentIcon = sentiment => {
@@ -50,6 +51,39 @@ function execute(text, modelId) {
           icon,
         };
         dispatch(success(analysis));
+      },
+      error => {
+        console.log('error', error);
+        dispatch(failure(error.toString()));
+        // dispatch(notificationsActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: modelConstants.EXECUTE_SENTIMENT_REQUEST };
+  }
+  function success(sentiment) {
+    return { type: modelConstants.EXECUTE_SENTIMENT_SUCCESS, sentiment };
+  }
+  function failure(error) {
+    return { type: modelConstants.EXECUTE_SENTIMENT_FAILURE, error };
+  }
+}
+function youtubeVideo(url, modelId) {
+  return dispatch => {
+    dispatch(request());
+    sentimentService.analyzeYoutubeVideo(url, modelId).then(
+      result => {
+        console.log(result);
+        // const value = Math.max(mixed, positive, negative, neutral);
+        // const icon = getSentimentIcon(sentiment);
+        // const analysis = {
+        //   sentiment: formatString(sentiment),
+        //   value: (value * 100).toFixed(2),
+        //   icon,
+        // };
+        // dispatch(success(analysis));
       },
       error => {
         console.log('error', error);

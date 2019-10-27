@@ -19,6 +19,7 @@ import {
   ModelHeaderTitle,
   ModelHeaderDescription,
   FlatCard,
+  Input,
 } from '../../../utils/Designs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -26,6 +27,7 @@ import {
   faAlignJustify,
   faFileAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { PieChart } from '../../../components/Charts';
 const gql = require('graphql-tag');
 const { Mutation } = require('react-apollo');
@@ -60,9 +62,10 @@ const Left = styled.div`
 `;
 const Right = styled.div`
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
   display: flex;
   flex-direction: column;
+  padding: 10px 30px;
 `;
 
 const BodyTitle = styled.h3``;
@@ -81,8 +84,13 @@ const UploadFileArea = styled.div`
   padding: 10px;
   display: flex;
 `;
-const Ouput = styled.div``;
-const OutputTitle = styled.h5``;
+const Ouput = styled.div`
+  align-items: start;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+`;
+const OutputTitle = styled.h3``;
 const OutputStats = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -176,6 +184,7 @@ const TabList = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
 `;
 const Tab = styled.button`
   width: 30%;
@@ -192,6 +201,24 @@ const Tab = styled.button`
   }
 `;
 
+const IntegrationIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
+  font-size: 30px;
+`;
+const YoutubeIcon = styled(IntegrationIcon)`
+  color: #ff0000;
+`;
+
+const IntegrationsDetails = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+const IntegrationCard = styled(FlatCard)`
+  height: 50px;
+  padding: 0px 10px;
+`;
+
 const SentimentAnalysis = ({
   dispatch,
   sentimentTitle,
@@ -203,6 +230,7 @@ const SentimentAnalysis = ({
   const [text, setText] = useState('');
   const [fileToUpload, setFileToUpload] = useState({});
   const [selectedTab, setSelectedTab] = useState(1);
+  const [youtubeUrl, setYotubeUrl] = useState();
 
   useEffect(() => {
     getModel();
@@ -248,6 +276,17 @@ const SentimentAnalysis = ({
 
   const onClickOpenUplodBox = () => {
     document.getElementById('uploadDialog').click();
+  };
+
+  const handleYoutubeChange = e => {
+    const { value } = e.target;
+    setYotubeUrl(value);
+  };
+
+  const onClickAnalyseComments = () => {
+    const modelId = getModelId();
+    const modelType = getModelType();
+    dispatch(sentimentActions.youtubeVideo(youtubeUrl, modelId));
   };
 
   const StatTable = () => (
@@ -337,7 +376,7 @@ const SentimentAnalysis = ({
                       <div>Loading...</div>
                     ) : (
                       <Ouput>
-                        <OutputTitle>Sentiment Analysis</OutputTitle>
+                        <OutputTitle>Upload Preview</OutputTitle>
                         {sentimentValue ? <StatTable /> : null}
                       </Ouput>
                     )}
@@ -360,7 +399,7 @@ const SentimentAnalysis = ({
                       <div>Loading...</div>
                     ) : (
                       <Ouput>
-                        <OutputTitle>Sentiment Analysis</OutputTitle>
+                        <OutputTitle> Analysis</OutputTitle>
                         {sentimentValue ? <StatTable /> : null}
                       </Ouput>
                     )}
@@ -369,12 +408,29 @@ const SentimentAnalysis = ({
               )}
               {selectedTab === 3 && (
                 <>
-                  <TextArea
-                    placeholder='Write your text here to analyze....'
-                    onChange={handleChange}></TextArea>
-                  <Button color='blueDark' onClick={execute}>
-                    Integrate
-                  </Button>
+                  <Left>
+                    <BodyTitle>Integrations</BodyTitle>
+                    <IntegrationCard>
+                      <YoutubeIcon icon={faYoutube} />
+                    </IntegrationCard>
+                    <Input
+                      placeholder='Video Url or Id...'
+                      onChange={handleYoutubeChange}
+                    />
+                    <Button color='blueDark' onClick={onClickAnalyseComments}>
+                      Integrate
+                    </Button>
+                  </Left>
+                  <Right>
+                    {isLoading ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <Ouput>
+                        <OutputTitle> Analysis</OutputTitle>
+                        {sentimentValue ? <StatTable /> : null}
+                      </Ouput>
+                    )}
+                  </Right>
                 </>
               )}
             </Content>
@@ -433,10 +489,6 @@ const SentimentAnalysis = ({
                 )
               )}
             </DataArea>
-            {console.log(
-              'sentimentModel',
-              sentimentModel && sentimentModel.data
-            )}
             <StatsArea>
               {sentimentModel &&
               sentimentModel.data.length &&
