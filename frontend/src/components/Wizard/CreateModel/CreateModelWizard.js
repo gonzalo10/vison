@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faFileCsv } from '@fortawesome/free-solid-svg-icons';
+
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 import { Input, Button, Card } from '../../../utils/Designs';
 
@@ -56,6 +58,29 @@ const CardMenu = styled.div`
   grid-template-columns: repeat(3, 1fr);
   overflow: scroll;
 `;
+const DataOptions = styled(CardMenu)``;
+
+const IntegrationIcon = styled(FontAwesomeIcon)`
+  cursor: pointer;
+  font-size: 30px;
+`;
+const YoutubeIcon = styled(IntegrationIcon)`
+  color: #ff0000;
+`;
+const CsvIcon = styled(IntegrationIcon)`
+  color: #1d8d3e;
+`;
+
+const IntegrationsDetails = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+const IntegrationCard = styled(Card)`
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const CreateModelWizard = ({ modelTypes, createModel }) => {
   const [wizardStep, setWizardStep] = useState(0);
@@ -72,7 +97,18 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
 
   const handleModelDetails = e => {
     e.preventDefault();
-    handleCreateModel();
+    setWizardStep(2);
+    // handleCreateModel();
+  };
+  const hanldeUploadFile = e => {
+    e.preventDefault();
+    setWizardStep(22);
+    // handleCreateModel();
+  };
+  const handleOpenIntegrations = e => {
+    e.preventDefault();
+    setWizardStep(21);
+    // handleCreateModel();
   };
 
   const handleCreateModel = () => {
@@ -83,12 +119,15 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
     createModel(newModelData);
   };
 
+  const onClickGoBack = () => {
+    if (wizardStep === 21 || wizardStep === 22) setWizardStep(2);
+    else setWizardStep(wizardStep - 1);
+  };
+
   return (
     <ModelWizard>
-      {wizardStep === 1 && (
-        <ArrowIcon
-          icon={faArrowLeft}
-          onClick={() => setWizardStep(wizardStep - 1)}>
+      {wizardStep >= 1 && (
+        <ArrowIcon icon={faArrowLeft} onClick={onClickGoBack}>
           back
         </ArrowIcon>
       )}
@@ -128,9 +167,47 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
               value={description || ''}
             />
             <Button color='blueDark' type='submit' value='Submit'>
-              Create
+              Next
             </Button>
           </Form>
+        </>
+      )}
+      {wizardStep === 2 && (
+        <>
+          <WizardTitle>Upload Data</WizardTitle>
+          <DataOptions>
+            <IntegrationCard onClick={handleOpenIntegrations}>
+              <h1 style={{ padding: 0, margin: 0 }}>🧩</h1>
+              <IntegrationsDetails>Integrations</IntegrationsDetails>
+            </IntegrationCard>
+            <IntegrationCard onClick={hanldeUploadFile}>
+              <CsvIcon icon={faFileCsv} />
+              <IntegrationsDetails>Csv</IntegrationsDetails>
+            </IntegrationCard>
+            <IntegrationCard>
+              <h1 style={{ padding: 0, margin: 0 }}>🔦</h1>
+              <IntegrationsDetails>Empty Model</IntegrationsDetails>
+            </IntegrationCard>
+          </DataOptions>
+        </>
+      )}
+      {wizardStep === 21 && (
+        <>
+          <WizardTitle>Upload Data</WizardTitle>
+          <IntegrationCard>
+            <YoutubeIcon icon={faYoutube} />
+            <IntegrationsDetails>Integrations</IntegrationsDetails>
+          </IntegrationCard>
+          <IntegrationCard>
+            <YoutubeIcon icon={faYoutube} />
+            <IntegrationsDetails>Csv</IntegrationsDetails>
+          </IntegrationCard>
+        </>
+      )}
+      {wizardStep === 22 && (
+        <>
+          <WizardTitle>Upload Data</WizardTitle>
+          <WizardTitle>Preview</WizardTitle>
         </>
       )}
     </ModelWizard>

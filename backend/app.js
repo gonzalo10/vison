@@ -104,7 +104,11 @@ User.hasMany(Model);
 User.hasMany(Sentiment);
 User.hasMany(Entity);
 
-sequelize
-	.sync()
-	.then(() => app.listen(3000))
-	.catch(err => console.log(err));
+try {
+	sequelize
+		.sync()
+		.then(() => app.listen(3000))
+		.catch(err => console.log(err));
+} catch (err) {
+	console.log('server err', err);
+}
