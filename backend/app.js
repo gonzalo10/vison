@@ -62,32 +62,28 @@ app.use((req, res, next) => {
 
 app.use(isAuth);
 
-var fileName;
+var csvName;
 
 var storage = multer.diskStorage({
 	destination: function(req, file, cb) {
 		cb(null, 'public');
 	},
 	filename: function(req, file, cb) {
-		fileName = Date.now() + '-' + file.originalname;
-		cb(null, Date.now() + '-' + file.originalname);
+		csvName = Date.now() + '-' + file.originalname;
+		cb(null, csvName);
 	},
 });
 
 var upload = multer({ storage: storage }).array('file');
 
-app.post('/upload', function(req, res) {
-	const modelId = req.query.modelId;
-	const modelType = req.query.modelType;
+app.post('/upload', async function(req, res) {
+	const { modelId, modelType } = req.query;
 	const userId = req.userId;
+
 	upload(req, res, function(err) {
-		if (err instanceof multer.MulterError) {
-			return res.status(500).json(err);
-		} else if (err) {
-			return res.status(500).json(err);
-		}
-		handleCsv(fileName, modelType, modelId, userId);
-		return res.status(200).send(req.file);
+		if (err instanceof multer.MulterError) return res.status(500).json(err);
+		else if (err) return res.status(500).json(err);
+		return handleCsv(csvName, modelType, modelId, userId, res);
 	});
 });
 
@@ -109,6 +105,9 @@ try {
 		.sync()
 		.then(() => app.listen(3000))
 		.catch(err => console.log(err));
+
+	// when it breaks append this .authenticate() then run then delete the word
+	// it works by forcing to re-store the connection
 } catch (err) {
 	console.log('server err', err);
 }

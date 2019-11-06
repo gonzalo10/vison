@@ -6,6 +6,11 @@ import { faArrowLeft, faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 import { Input, Button, Card } from '../../../utils/Designs';
+import UploadFile from '../../../helpers/uploadData';
+import PreviewData from '../../../components/PreviewData';
+
+//Mock data
+import mockPreviewData from '../../../containers/Pages/SentimentAnalysis/previewData';
 
 const SmallCard = styled(Card)`
   height: 130px;
@@ -200,14 +205,16 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
           </IntegrationCard>
           <IntegrationCard>
             <YoutubeIcon icon={faYoutube} />
-            <IntegrationsDetails>Csv</IntegrationsDetails>
+            <IntegrationsDetails>Google sheets</IntegrationsDetails>
           </IntegrationCard>
         </>
       )}
       {wizardStep === 22 && (
         <>
           <WizardTitle>Upload Data</WizardTitle>
+          <UploadFile />
           <WizardTitle>Preview</WizardTitle>
+          <PreviewData data={mockPreviewData} />
         </>
       )}
     </ModelWizard>

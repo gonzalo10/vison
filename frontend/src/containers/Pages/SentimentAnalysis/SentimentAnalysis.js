@@ -29,6 +29,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { PieChart } from '../../../components/Charts';
+import previewData from './previewData';
+
 const gql = require('graphql-tag');
 const { Mutation } = require('react-apollo');
 
@@ -219,6 +221,8 @@ const IntegrationCard = styled(FlatCard)`
   padding: 0px 10px;
 `;
 
+const DataPreview = styled.div``;
+
 const SentimentAnalysis = ({
   dispatch,
   sentimentTitle,
@@ -377,7 +381,7 @@ const SentimentAnalysis = ({
                     ) : (
                       <Ouput>
                         <OutputTitle>Upload Preview</OutputTitle>
-                        {sentimentValue ? <StatTable /> : null}
+                        <DataPreview previewData={previewData} />
                       </Ouput>
                     )}
                   </Right>
