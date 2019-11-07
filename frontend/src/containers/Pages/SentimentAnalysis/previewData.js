@@ -3,12 +3,33 @@ const mockPreviewData = {
     headers: ['Text', 'Results'],
     rows: [
       [
-        'Very unfriendly staff at reception: not responding to needs and giving wrong information.',
+        '1Very unfriendly staff at reception: not responding to needs and giving wrong information.',
         'Second column',
       ],
-      ['The staff are polite, chatty and very helpful.'],
+      ['2The staff are polite, chatty and very helpful.'],
       [
-        'Although clean and the bed comfy, the room was a little on the small side.',
+        '3Although clean and the bed comfy, the room was a little on the small side.',
+      ],
+      [
+        '4Although clean and the bed comfy, the room was a little on the small side.',
+      ],
+      [
+        '5Although clean and the bed comfy, the room was a little on the small side.',
+      ],
+      [
+        '6Although clean and the bed comfy, the room was a little on the small side.',
+      ],
+      [
+        '7Although clean and the bed comfy, the room was a little on the small side.',
+      ],
+      [
+        '8Although clean and the bed comfy, the room was a little on the small side.',
+      ],
+      [
+        '9Although clean and the bed comfy, the room was a little on the small side.',
+      ],
+      [
+        '10Although clean and the bed comfy, the room was a little on the small side.',
       ],
     ],
   },

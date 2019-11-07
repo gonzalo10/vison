@@ -21,6 +21,11 @@ const SmallCard = styled(Card)`
   padding: 10px;
 `;
 
+const UploadFileWrapper = styled.div`
+  justify-content: center;
+  display: flex;
+`;
+
 const SmallCardIcon = styled.h1`
   margin: 0px;
 `;
@@ -212,8 +217,10 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
       {wizardStep === 22 && (
         <>
           <WizardTitle>Upload Data</WizardTitle>
-          <UploadFile />
-          <WizardTitle>Preview</WizardTitle>
+          <UploadFileWrapper>
+            <UploadFile />
+          </UploadFileWrapper>
+          {/* <WizardTitle>Preview</WizardTitle> */}
           <PreviewData data={mockPreviewData} />
         </>
       )}

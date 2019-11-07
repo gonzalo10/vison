@@ -1,40 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-// rows: [
-//     [
-//       'Very unfriendly staff at reception: not responding to needs and giving wrong information.',
-//     ],
-//     ['The staff are polite, chatty and very helpful.'],
-//     [
-//       'Although clean and the bed comfy, the room was a little on the small side.',
-//     ],
-//   ],
-
 const Table = styled.div``;
-const HeaderItem = styled.div``;
+const HeaderItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const RowItem = styled.div`
-  border: 1px solid lightgray;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 11px;
-  height: 20px;
+  height: 30px;
   overflow: hidden;
   white-space: nowrap;
-  justify-content: start;
-  padding: 0px 5px;
+  padding: 0px 18px;
+  text-align: center;
 `;
 
-const RowWrapper = styled.div`
+const HeaderWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   text-align: center;
+  background-color: #6c79e0;
+  color: white;
+  border-bottom: 1px solid lightgray;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  height: 30px;
 `;
-const BodyWrapper = styled.div`
+const RowWrapper = styled.div`
   display: grid;
   grid-template-columns: ${({ columns }) => '1fr '.repeat(columns)};
   text-align: center;
+  border-bottom: 1px solid lightgray;
+`;
+
+const BodyWrapper = styled.div`
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 `;
 
 const Text = styled.p`
@@ -45,11 +52,11 @@ const Text = styled.p`
 
 const Header = ({ headers }) => {
   return (
-    <RowWrapper>
+    <HeaderWrapper>
       {headers.map((head, index) => (
         <HeaderItem key={index}>{head}</HeaderItem>
       ))}
-    </RowWrapper>
+    </HeaderWrapper>
   );
 };
 
@@ -58,19 +65,23 @@ const Body = ({ rows }) => {
   rows.forEach(row => {
     if (row.length > maxColNumber) maxColNumber = row.length;
   });
-  return rows.map((row, index) => {
-    return (
-      <BodyWrapper key={index} columns={maxColNumber}>
-        {row.map((col, index) => {
-          return (
-            <RowItem key={index}>
-              <Text>{col}</Text>
-            </RowItem>
-          );
-        })}
-      </BodyWrapper>
-    );
-  });
+  return (
+    <BodyWrapper>
+      {rows.map((row, index) => {
+        return (
+          <RowWrapper key={index} columns={maxColNumber}>
+            {row.map((col, index) => {
+              return (
+                <RowItem key={index}>
+                  <Text>{col}</Text>
+                </RowItem>
+              );
+            })}
+          </RowWrapper>
+        );
+      })}
+    </BodyWrapper>
+  );
 };
 
 const PreviewData = ({ data }) => {
