@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Table = styled.div``;
+const Table = styled.div`
+  margin-top: 10px;
+`;
 const HeaderItem = styled.div`
   display: flex;
   justify-content: center;
@@ -21,7 +23,7 @@ const RowItem = styled.div`
 
 const HeaderWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: ${({ columns }) => '1fr '.repeat(columns)};
   text-align: center;
   background-color: #6c79e0;
   color: white;
@@ -51,8 +53,10 @@ const Text = styled.p`
 `;
 
 const Header = ({ headers }) => {
+  console.log(headers.length);
+  const columns = headers.length;
   return (
-    <HeaderWrapper>
+    <HeaderWrapper columns={columns}>
       {headers.map((head, index) => (
         <HeaderItem key={index}>{head}</HeaderItem>
       ))}
@@ -85,13 +89,15 @@ const Body = ({ rows }) => {
 };
 
 const PreviewData = ({ data }) => {
-  const { headers, rows } = data.dataSet;
-  return (
-    <Table>
-      <Header headers={headers} />
-      <Body rows={rows} />
-    </Table>
-  );
+  if (data) {
+    const { headers, rows } = data;
+    return (
+      <Table>
+        <Header headers={headers} />
+        <Body rows={rows} />
+      </Table>
+    );
+  } else return <div>emptyState</div>;
 };
 
 export default PreviewData;

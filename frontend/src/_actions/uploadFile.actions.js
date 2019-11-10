@@ -5,13 +5,14 @@ export const uploadActions = {
   uploadFile,
 };
 
-function uploadFile(data, modelType, modelId) {
+function uploadFile(data) {
   return dispatch => {
     dispatch(request());
-    console.log(data, modelId);
-    uploadService.uploadFile(data, modelType, modelId).then(
+    uploadService.uploadFile(data).then(
       response => {
-        console.log(response);
+        const { name, dataSet } = response.data;
+        localStorage.setItem('uploadedFile', name);
+        dispatch(success(dataSet));
       },
       error => {
         console.log('error', error);
@@ -19,12 +20,25 @@ function uploadFile(data, modelType, modelId) {
       }
     );
   };
+  // return dispatch => {
+  //   dispatch(request());
+  //   console.log(data, modelId);
+  //   uploadService.uploadFile(data, modelType, modelId).then(
+  //     response => {
+  //       console.log(response);
+  //     },
+  //     error => {
+  //       console.log('error', error);
+  //       dispatch(failure(error.toString()));
+  //     }
+  //   );
+  // };
 
   function request() {
     return { type: uploadFileConstants.UPLOAD_REQUEST };
   }
-  function success(createdSummary) {
-    return { type: uploadFileConstants.UPLOAD_SUCCESS, createdSummary };
+  function success(dataSetPreview) {
+    return { type: uploadFileConstants.UPLOAD_SUCCESS, dataSetPreview };
   }
   function failure(error) {
     return { type: uploadFileConstants.UPLOAD_FAILURE, error };

@@ -5,6 +5,7 @@ import { models } from './model.reducer';
 import { sentiment } from './sentiment.reducer';
 import { entity } from './entity.reducer';
 import { summary } from './summary.reducer';
+import { uploadedFile } from './uploadFile.reducer';
 
 const rootReducer = combineReducers({
   notifications,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   sentiment,
   entity,
   summary,
+  uploadedFile,
 });
 
 export default rootReducer;

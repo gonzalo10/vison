@@ -134,6 +134,11 @@ const typeDefs = gql`
 		file: String!
 		modelId: Int!
 	}
+	input PopulateModelInput {
+		fileName: String!
+		modelId: Int!
+		modelType: Int!
+	}
 
 	type Query {
 		models: [Model!]!
@@ -157,6 +162,7 @@ const typeDefs = gql`
 		deleteModel(id: Int!): Status!
 		uploadFile(file: Upload!): File!
 		analyzeYoutubeVideo(url: String!, modelId: Int!): [Sentiment!]!
+		populateModel(populateModelInput: PopulateModelInput!): String!
 	}
 
 	schema {

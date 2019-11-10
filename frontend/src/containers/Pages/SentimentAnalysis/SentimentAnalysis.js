@@ -1,42 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-// import { Mutation, gql } from 'apollo-boost';
 
-import {
-  sentimentActions,
-  modelActions,
-  uploadActions,
-} from '../../../_actions';
+import { modelActions } from '../../../_actions';
 import { history } from '../../../helpers';
 import { Sidebar } from '../../Layout/Sidebar';
 import {
-  Button as ButtonBase,
   Badge,
   BadgeGroup,
-  ModelBody as ModelBodyBase,
   ModelHeader,
   ModelHeaderTitle,
   ModelHeaderDescription,
   FlatCard,
-  Input,
 } from '../../../utils/Designs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChartPie,
-  faAlignJustify,
-  faFileAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faChartPie, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { PieChart } from '../../../components/Charts';
-import previewData from './previewData';
-
-const gql = require('graphql-tag');
-const { Mutation } = require('react-apollo');
-
-const ModelBody = styled(ModelBodyBase)`
-  flex-direction: column;
-`;
+import { InputNewData } from './InputNewData';
 
 const Container = styled.div`
   margin-left: 100px;
@@ -46,67 +26,15 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Button = styled(ButtonBase)`
-  width: 200px;
-  margin: auto;
-`;
-
 const Icon = styled.span`
   font-size: 30px;
 `;
 
-const Left = styled.div`
-  width: 100%;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 30px;
-`;
-const Right = styled.div`
-  width: 100%;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 30px;
-`;
-
-const BodyTitle = styled.h3``;
-const TextArea = styled.textarea`
-  min-height: 100px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  font-size: 16px;
-  padding: 10px;
-`;
-const UploadFileArea = styled.div`
-  min-height: 100px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  font-size: 16px;
-  padding: 10px;
-  display: flex;
-`;
-const Ouput = styled.div`
-  align-items: start;
-  display: flex;
-  justify-content: center;
-  height: 100%;
-`;
-const OutputTitle = styled.h3``;
-const OutputStats = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-`;
-const Col = styled.div``;
-const StatTitle = styled.div`
-  margin-bottom: 10px;
-  border-bottom: 1px solid blue;
-`;
-const StatResult = styled.div``;
 const ContentArea = styled.div`
   margin: auto;
   margin-top: 0px;
   width: 90%;
+  height: 100%;
 `;
 const ResultRow = styled.div`
   display: grid;
@@ -121,21 +49,25 @@ const ResultRow = styled.div`
 
 const ResultsArea = styled.div`
   width: 100%;
-  height: 360px;
   display: flex;
+  flex-direction: column;
 `;
 const DataArea = styled(FlatCard)`
-  width: 60%;
   padding: 10px 10px;
   cursor: default;
-  overflow: scroll;
+  height: 300px;
   align-items: center;
   justify-content: ${props => (props.hasData ? 'start' : 'center')};
+`;
+
+const StatsWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 const StatsArea = styled(FlatCard)`
   display: flex;
   justify-content: center;
-  width: 50%;
   align-items: center;
   cursor: default;
 `;
@@ -180,48 +112,9 @@ const SqueletonIcon = styled.div`
   align-items: center;
 `;
 
-const TabList = styled.div`
-  width: 100%;
+const TableBody = styled.div`
+  overflow: scroll;
 `;
-const Content = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-`;
-const Tab = styled.button`
-  width: 30%;
-  border: 0px;
-  cursor: pointer;
-  font-size: 16px;
-  margin: 0px 10px;
-  border-bottom: 2px solid transparent;
-  background-color: white;
-  border-bottom: ${props =>
-    props.isSelected && `2px solid ${props.theme.color.blueDark}`};
-  &:hover {
-    border-bottom: 2px solid ${props => props.theme.color.blueDark};
-  }
-`;
-
-const IntegrationIcon = styled(FontAwesomeIcon)`
-  cursor: pointer;
-  font-size: 30px;
-`;
-const YoutubeIcon = styled(IntegrationIcon)`
-  color: #ff0000;
-`;
-
-const IntegrationsDetails = styled.p`
-  font-size: 16px;
-  font-weight: 700;
-`;
-
-const IntegrationCard = styled(FlatCard)`
-  height: 50px;
-  padding: 0px 10px;
-`;
-
-const DataPreview = styled.div``;
 
 const SentimentAnalysis = ({
   dispatch,
@@ -231,11 +124,6 @@ const SentimentAnalysis = ({
   isLoading,
   sentimentModel,
 }) => {
-  const [text, setText] = useState('');
-  const [fileToUpload, setFileToUpload] = useState({});
-  const [selectedTab, setSelectedTab] = useState(1);
-  const [youtubeUrl, setYotubeUrl] = useState();
-
   useEffect(() => {
     getModel();
   }, []);
@@ -257,60 +145,6 @@ const SentimentAnalysis = ({
     dispatch(modelActions.getModel(id, modelType));
   };
 
-  const handleChange = e => {
-    setText(e.target.value);
-  };
-  const execute = () => {
-    const modelId = getModelId();
-    dispatch(sentimentActions.execute(text, modelId));
-    getModel();
-  };
-
-  const onClickLoadFile = e => {
-    setFileToUpload({ selectedFile: e.target.files[0] });
-  };
-
-  const onClickHandlerUpload = () => {
-    const data = new FormData();
-    const modelId = getModelId();
-    const modelType = getModelType();
-    data.append('file', fileToUpload.selectedFile);
-    dispatch(uploadActions.uploadFile(data, modelType, modelId));
-  };
-
-  const onClickOpenUplodBox = () => {
-    document.getElementById('uploadDialog').click();
-  };
-
-  const handleYoutubeChange = e => {
-    const { value } = e.target;
-    setYotubeUrl(value);
-  };
-
-  const onClickAnalyseComments = () => {
-    const modelId = getModelId();
-    const modelType = getModelType();
-    dispatch(sentimentActions.youtubeVideo(youtubeUrl, modelId));
-  };
-
-  const StatTable = () => (
-    <OutputStats>
-      <Col>
-        <StatTitle>Icon</StatTitle>
-        <StatResult>{icon}</StatResult>
-      </Col>
-      <Col>
-        <StatTitle>Result</StatTitle>
-        <StatResult>
-          <Badge>{sentimentTitle}</Badge>
-        </StatResult>
-      </Col>
-      <Col>
-        <StatTitle>Confidence</StatTitle>
-        <StatResult>{sentimentValue}%</StatResult>
-      </Col>
-    </OutputStats>
-  );
   return (
     <>
       <Sidebar />
@@ -318,6 +152,7 @@ const SentimentAnalysis = ({
         <ModelHeader>
           <ModelHeaderTitle>
             Sentiment Analysis
+            {sentimentModel && sentimentModel.title}
             <br />
             <Icon>😍/😡</Icon>
           </ModelHeaderTitle>
@@ -330,115 +165,14 @@ const SentimentAnalysis = ({
             </BadgeGroup>
           </ModelHeaderDescription>
         </ModelHeader>
+        <InputNewData
+          dispatch={dispatch}
+          sentimentTitle={sentimentTitle}
+          sentimentValue={sentimentValue}
+          icon={icon}
+          isLoading={isLoading}
+        />
         <ContentArea>
-          <ModelBody>
-            <TabList>
-              <Tab
-                onClick={() => setSelectedTab(1)}
-                isSelected={selectedTab === 1}>
-                Upload
-              </Tab>
-              <Tab
-                onClick={() => setSelectedTab(2)}
-                isSelected={selectedTab === 2}>
-                Write
-              </Tab>
-              <Tab
-                onClick={() => setSelectedTab(3)}
-                isSelected={selectedTab === 3}>
-                Integrations
-              </Tab>
-            </TabList>
-            <Content>
-              {selectedTab === 1 && (
-                <>
-                  <Left>
-                    <BodyTitle>Analyze your text</BodyTitle>
-                    <input
-                      style={{ display: 'none' }}
-                      type='file'
-                      id='uploadDialog'
-                      name='file'
-                      onChange={onClickLoadFile}
-                    />
-                    <UploadFileArea>
-                      <Button
-                        variant='outlined'
-                        color='blueDark'
-                        onClick={onClickOpenUplodBox}>
-                        {fileToUpload.selectedFile
-                          ? fileToUpload.selectedFile.name
-                          : 'Upload csv'}
-                      </Button>
-                    </UploadFileArea>
-                    <Button color='blueDark' onClick={onClickHandlerUpload}>
-                      Classify Text
-                    </Button>
-                  </Left>
-                  <Right>
-                    {isLoading ? (
-                      <div>Loading...</div>
-                    ) : (
-                      <Ouput>
-                        <OutputTitle>Upload Preview</OutputTitle>
-                        <DataPreview previewData={previewData} />
-                      </Ouput>
-                    )}
-                  </Right>
-                </>
-              )}
-              {selectedTab === 2 && (
-                <>
-                  <Left>
-                    <BodyTitle>Analyze your text</BodyTitle>
-                    <TextArea
-                      placeholder='Write your text here to analyze....'
-                      onChange={handleChange}></TextArea>
-                    <Button color='blueDark' onClick={execute}>
-                      Classify Text
-                    </Button>
-                  </Left>
-                  <Right>
-                    {isLoading ? (
-                      <div>Loading...</div>
-                    ) : (
-                      <Ouput>
-                        <OutputTitle> Analysis</OutputTitle>
-                        {sentimentValue ? <StatTable /> : null}
-                      </Ouput>
-                    )}
-                  </Right>
-                </>
-              )}
-              {selectedTab === 3 && (
-                <>
-                  <Left>
-                    <BodyTitle>Integrations</BodyTitle>
-                    <IntegrationCard>
-                      <YoutubeIcon icon={faYoutube} />
-                    </IntegrationCard>
-                    <Input
-                      placeholder='Video Url or Id...'
-                      onChange={handleYoutubeChange}
-                    />
-                    <Button color='blueDark' onClick={onClickAnalyseComments}>
-                      Integrate
-                    </Button>
-                  </Left>
-                  <Right>
-                    {isLoading ? (
-                      <div>Loading...</div>
-                    ) : (
-                      <Ouput>
-                        <OutputTitle> Analysis</OutputTitle>
-                        {sentimentValue ? <StatTable /> : null}
-                      </Ouput>
-                    )}
-                  </Right>
-                </>
-              )}
-            </Content>
-          </ModelBody>
           <ResultsArea>
             <DataArea hasData={sentimentModel && sentimentModel.data.length} h>
               {sentimentModel && sentimentModel.data.length ? (
@@ -454,27 +188,29 @@ const SentimentAnalysis = ({
                       <strong>Confidence</strong>
                     </div>
                   </ResultRow>
-                  {sentimentModel.data.map(
-                    (
-                      { text, sentiment, mixed, neutral, positive, negative },
-                      key
-                    ) => {
-                      return (
-                        <ResultRow key={key}>
-                          <LongTextDiv>{text}</LongTextDiv>
-                          <SentimentText>{sentiment}</SentimentText>
-                          <div>
-                            {Math.max(
-                              mixed,
-                              neutral,
-                              negative,
-                              positive
-                            ).toFixed(2)}
-                          </div>
-                        </ResultRow>
-                      );
-                    }
-                  )}
+                  <TableBody>
+                    {sentimentModel.data.map(
+                      (
+                        { text, sentiment, mixed, neutral, positive, negative },
+                        key
+                      ) => {
+                        return (
+                          <ResultRow key={key}>
+                            <LongTextDiv>{text}</LongTextDiv>
+                            <SentimentText>{sentiment}</SentimentText>
+                            <div>
+                              {Math.max(
+                                mixed,
+                                neutral,
+                                negative,
+                                positive
+                              ).toFixed(2)}
+                            </div>
+                          </ResultRow>
+                        );
+                      }
+                    )}
+                  </TableBody>
                 </>
               ) : (
                 !isLoading && (
@@ -493,18 +229,44 @@ const SentimentAnalysis = ({
                 )
               )}
             </DataArea>
-            <StatsArea>
-              {sentimentModel &&
-              sentimentModel.data.length &&
-              sentimentModel.stats ? (
-                <PieChart data={sentimentModel.stats} />
-              ) : (
-                <>
-                  <ChartIcon icon={faChartPie} />
-                  <EmptyStateText>No charts yet!</EmptyStateText>
-                </>
-              )}
-            </StatsArea>
+            <StatsWrapper>
+              <StatsArea>
+                {sentimentModel &&
+                sentimentModel.data.length &&
+                sentimentModel.stats ? (
+                  <PieChart data={sentimentModel.stats} />
+                ) : (
+                  <>
+                    <ChartIcon icon={faChartPie} />
+                    <EmptyStateText>No charts yet!</EmptyStateText>
+                  </>
+                )}
+              </StatsArea>
+              <StatsArea>
+                {sentimentModel &&
+                sentimentModel.data.length &&
+                sentimentModel.stats ? (
+                  <PieChart data={sentimentModel.stats} />
+                ) : (
+                  <>
+                    <ChartIcon icon={faChartPie} />
+                    <EmptyStateText>No charts yet!</EmptyStateText>
+                  </>
+                )}
+              </StatsArea>
+              <StatsArea>
+                {sentimentModel &&
+                sentimentModel.data.length &&
+                sentimentModel.stats ? (
+                  <PieChart data={sentimentModel.stats} />
+                ) : (
+                  <>
+                    <ChartIcon icon={faChartPie} />
+                    <EmptyStateText>No charts yet!</EmptyStateText>
+                  </>
+                )}
+              </StatsArea>
+            </StatsWrapper>
           </ResultsArea>
         </ContentArea>
       </Container>

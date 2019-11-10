@@ -6,11 +6,10 @@ import { faArrowLeft, faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 import { Input, Button, Card } from '../../../utils/Designs';
-import UploadFile from '../../../helpers/uploadData';
-import PreviewData from '../../../components/PreviewData';
 
+import { UploadDataModel } from './UploadDataModel';
 //Mock data
-import mockPreviewData from '../../../containers/Pages/SentimentAnalysis/previewData';
+// import mockPreviewData from '../../../containers/Pages/SentimentAnalysis/previewData';
 
 const SmallCard = styled(Card)`
   height: 130px;
@@ -19,11 +18,6 @@ const SmallCard = styled(Card)`
     border: 1px solid ${props => props.theme.color.blueDark};
   }
   padding: 10px;
-`;
-
-const UploadFileWrapper = styled.div`
-  justify-content: center;
-  display: flex;
 `;
 
 const SmallCardIcon = styled.h1`
@@ -54,8 +48,8 @@ const TextArea = styled.textarea`
 `;
 
 const ModelWizard = styled.div`
-  width: 50vw;
-  height: 60vh;
+  width: 65vw;
+  height: 75vh;
   background-color: white;
   padding: 20px;
   border-radius: 15px;
@@ -215,14 +209,11 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
         </>
       )}
       {wizardStep === 22 && (
-        <>
-          <WizardTitle>Upload Data</WizardTitle>
-          <UploadFileWrapper>
-            <UploadFile />
-          </UploadFileWrapper>
-          {/* <WizardTitle>Preview</WizardTitle> */}
-          <PreviewData data={mockPreviewData} />
-        </>
+        <UploadDataModel
+          modelType={selectedModelType}
+          title={title}
+          description={description}
+        />
       )}
     </ModelWizard>
   );

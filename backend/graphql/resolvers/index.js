@@ -5,8 +5,9 @@ const sentmientResolver = require('./sentiment');
 const entitiesResolver = require('./entities');
 const modelTypeResolver = require('./modelType');
 const summaryResolver = require('./summary');
-const uploadResolber = require('./fileUpload');
+const uploadResolver = require('./fileUpload');
 const analyzeYoutube = require('./youtube');
+const populateModel = require('./populateModel');
 
 const resolvers = {
 	Query: {
@@ -16,8 +17,9 @@ const resolvers = {
 		...sentmientResolver.Query,
 		...entitiesResolver.Query,
 		...summaryResolver.Query,
-		...uploadResolber.Query,
+		...uploadResolver.Query,
 		...authResolver.Query,
+		...populateModel.Query,
 	},
 	Mutation: {
 		...usersResolver.Mutation,
@@ -26,9 +28,10 @@ const resolvers = {
 		...sentmientResolver.Mutation,
 		...entitiesResolver.Mutation,
 		...summaryResolver.Mutation,
-		...uploadResolber.Mutation,
+		...uploadResolver.Mutation,
 		...authResolver.Mutation,
 		...analyzeYoutube.Mutation,
+		...populateModel.Mutation,
 	},
 };
 module.exports = resolvers;

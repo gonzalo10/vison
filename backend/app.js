@@ -15,8 +15,10 @@ const User = require('./models/user');
 const Sentiment = require('./models/sentimentAnalysis');
 const Entity = require('./models/entitiesAnalysis');
 const resolvers = require('./graphql/resolvers');
-const handleCsv = require('./helpers/handleCsv');
+const HandleCsv = require('./helpers/handleCsv');
 const typeDefs = require('./graphql/schema');
+
+const previewCsv = HandleCsv.previewCSV;
 
 const server = new ApolloServer({
 	typeDefs,
@@ -77,15 +79,23 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).array('file');
 
 app.post('/upload', async function(req, res) {
-	const { modelId, modelType } = req.query;
-	const userId = req.userId;
-
 	upload(req, res, function(err) {
 		if (err instanceof multer.MulterError) return res.status(500).json(err);
 		else if (err) return res.status(500).json(err);
-		return handleCsv(csvName, modelType, modelId, userId, res);
+		return previewCsv(csvName, res);
 	});
 });
+
+// app.post('/upload', async function(req, res) {
+// 	const { modelId, modelType } = req.query;
+// 	const userId = req.userId;
+
+// 	upload(req, res, function(err) {
+// 		if (err instanceof multer.MulterError) return res.status(500).json(err);
+// 		else if (err) return res.status(500).json(err);
+// 		return handleCsv(csvName, modelType, modelId, userId, res);
+// 	});
+// });
 
 server.applyMiddleware({ app, path: '/graphql' });
 

@@ -15,7 +15,7 @@ module.exports = {
 				return user.createModel({
 					title,
 					description,
-					modelTypeId: modelTypeId,
+					modelTypeId,
 				});
 			} catch (err) {
 				console.log(err);
@@ -52,7 +52,6 @@ module.exports = {
 				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
-				console.log('user', user);
 				const models = await user.getModels({
 					include: [{ model: ModelType }],
 				});

@@ -5,25 +5,23 @@ const path = require('path');
 AWS.config.loadFromPath(path.join(__dirname, '../../config.json'));
 
 const analyzeSentiment = async text => {
-	console.log('text', text);
 	var comprehend = new AWS.Comprehend();
 	var params = {
 		LanguageCode: 'en',
 		Text: text,
 	};
 
-	const result = await comprehend.detectSentiment(params).promise();
-	// console.log(result);
-	// return {
-	// 	Sentiment: 'NEUTRAL',
-	// 	SentimentScore: {
-	// 		Positive: 0.03146204352378845,
-	// 		Negative: 0.030713696032762527,
-	// 		Neutral: 0.9329584240913391,
-	// 		Mixed: 0.004865831229835749,
-	// 	},
-	// };
-	return result;
+	return {
+		Sentiment: 'NEUTRAL',
+		SentimentScore: {
+			Positive: 0.03146204352378845,
+			Negative: 0.030713696032762527,
+			Neutral: 0.9329584240913391,
+			Mixed: 0.004865831229835749,
+		},
+	};
+	// const result = await comprehend.detectSentiment(params).promise();
+	// return result;
 };
 
 module.exports = analyzeSentiment;

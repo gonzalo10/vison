@@ -7,7 +7,6 @@ module.exports = {
 				if (!user) {
 					throw new Error('Unauthenticated!');
 				}
-				console.log('file', args.file);
 				return args.file;
 			} catch (err) {
 				console.log(err);

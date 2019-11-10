@@ -14,6 +14,7 @@ export const modelService = {
   getSummaryModel,
   deleteModel,
   getYoutubeCommentsModel,
+  createModelFromFile,
 };
 
 async function getAll() {
@@ -90,7 +91,7 @@ function createModel({ selectedModelType, description, title }) {
   const requestBody = {
     query: `
     mutation {
-      createModel(modelInput: {title: "${title}", description: "${description}",modelTypeId:${selectedModelType}}) {
+      createModel(modelInput: {title:"${title}", description:"${description}", modelTypeId:${selectedModelType}}) {
         id
         title
         description
@@ -108,6 +109,45 @@ function createModel({ selectedModelType, description, title }) {
   return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
     handleResponse(response)
   );
+}
+function populateModelFromFile({ fileName, modelId, modelType }) {
+  const requestBody = {
+    query: `
+    mutation {
+      populateModel(populateModelInput: {fileName: "${fileName}", modelId:${modelId}, modelType:${modelType}}) 
+    }
+	    `,
+  };
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(requestBody),
+    headers: authHeader(),
+  };
+
+  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
+    handleResponse(response)
+  );
+}
+async function createModelFromFile({
+  fileName,
+  modelType,
+  title,
+  description,
+}) {
+  const response = await createModel({
+    selectedModelType: modelType,
+    title,
+    description,
+  });
+  const { id } = response.createModel;
+
+  await populateModelFromFile({
+    fileName,
+    modelId: id,
+    modelType,
+  });
+
+  return { modelId: id, modelType };
 }
 
 function getSentimentModel(id) {

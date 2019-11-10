@@ -10,6 +10,7 @@ export const modelActions = {
   getModelTypes,
   getModel,
   deleteModel,
+  createModelFromFile,
 };
 
 const arrayToObject = array =>
@@ -78,6 +79,36 @@ function createModel(newModelData) {
     modelService.createModel(newModelData).then(
       models => {
         // dispatch(success());
+        dispatch(getAll());
+      },
+      error => {
+        console.log('error', error);
+        dispatch(failure(error.toString()));
+        // dispatch(notificationsActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: modelConstants.CREATE_MODEL_REQUEST };
+  }
+  function success(models) {
+    return { type: modelConstants.CREATE_MODEL_SUCCESS, models };
+  }
+  function failure(error) {
+    return { type: modelConstants.CREATE_MODEL_FAILURE, error };
+  }
+}
+function createModelFromFile(newModelData) {
+  return dispatch => {
+    dispatch(request());
+
+    modelService.createModelFromFile(newModelData).then(
+      model => {
+        // dispatch(success());
+        const { modelType, modelId } = model;
+        console.log('createModelFromFile', model);
+        history.push(`/model/${modelType}/${modelId}`);
         dispatch(getAll());
       },
       error => {
