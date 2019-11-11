@@ -153,7 +153,7 @@ const SentimentAnalysis = ({
       !isLoading
     );
   };
-
+  if (!sentimentModel) return null;
   return (
     <>
       <Sidebar />
@@ -161,12 +161,11 @@ const SentimentAnalysis = ({
         <ModelHeader>
           <ModelHeaderTitle>
             <div
-              contenteditable='true'
+              contentEditable='true'
               // onInput={e => console.log('has changed', e.target.textContent)}
               onBlur={e => console.log('has stopeed', e.target.textContent)}>
               {sentimentModel && sentimentModel.title}
             </div>
-            <br />
             <Icon>😍/😡</Icon>
           </ModelHeaderTitle>
           <ModelHeaderDescription>
@@ -268,11 +267,6 @@ const SentimentAnalysis = ({
                   <PieChart data={sentimentModel.stats} />
                 ) : (
                   <>
-                    {console.log(
-                      'inside the empty state',
-                      sentimentModel,
-                      !isLoading
-                    )}
                     <ChartIcon icon={faChartPie} />
                     <EmptyStateText>No charts yet!</EmptyStateText>
                   </>
@@ -287,8 +281,8 @@ const SentimentAnalysis = ({
 };
 
 function mapStateToProps(state) {
-  const { sentimentTitle, sentimentValue, isLoading, icon } = state.sentiment;
-  const { selectedModel } = state.models;
+  const { sentimentTitle, sentimentValue, icon } = state.sentiment;
+  const { selectedModel, isLoading } = state.models;
   let sentimentModel = undefined;
   if (selectedModel) sentimentModel = selectedModel.sentimentModel;
   return {

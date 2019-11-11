@@ -102,7 +102,7 @@ const Modal = styled.div`
 
 const ModelCard = styled(Card)`
   max-height: 200px;
-  background-color: ${props => props.color + '94'};
+  background-color: ${props => props.color};
   &:hover {
     background-color: ${props => props.color};
   }

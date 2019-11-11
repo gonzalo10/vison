@@ -248,6 +248,8 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
     }
   };
 
+  if (!selectedModel) return null;
+
   return (
     <>
       <Sidebar />

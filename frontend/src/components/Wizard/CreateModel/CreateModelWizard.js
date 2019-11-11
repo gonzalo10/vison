@@ -102,17 +102,14 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
   const handleModelDetails = e => {
     e.preventDefault();
     setWizardStep(2);
-    // handleCreateModel();
   };
   const hanldeUploadFile = e => {
     e.preventDefault();
     setWizardStep(22);
-    // handleCreateModel();
   };
   const handleOpenIntegrations = e => {
     e.preventDefault();
     setWizardStep(21);
-    // handleCreateModel();
   };
 
   const handleCreateModel = () => {
@@ -188,7 +185,7 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
               <CsvIcon icon={faFileCsv} />
               <IntegrationsDetails>Csv</IntegrationsDetails>
             </IntegrationCard>
-            <IntegrationCard>
+            <IntegrationCard onClick={handleCreateModel}>
               <h1 style={{ padding: 0, margin: 0 }}>🔦</h1>
               <IntegrationsDetails>Empty Model</IntegrationsDetails>
             </IntegrationCard>

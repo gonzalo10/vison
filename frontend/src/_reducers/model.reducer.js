@@ -39,12 +39,14 @@ export function models(state = {}, action) {
     case modelConstants.CREATE_MODEL_REQUEST:
       return {
         ...state,
+        isLoading: true,
       };
 
     case modelConstants.CREATE_MODEL_SUCCESS:
       return {
         ...state,
         modelTypes: action.modelTypes.modelType,
+        isLoading: false,
       };
 
     case modelConstants.CREATE_MODEL_FAILURE:
