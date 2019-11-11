@@ -65,16 +65,22 @@ const OptionsMenuItem = styled.div`
   border-bottom: 1px solid lightgray;
   color: ${props => (props.delete ? 'red' : '')};
   &:hover {
-    background-color: ${props => (props.delete ? 'red' : 'lightgray')};
-    color: ${props => (props.delete ? 'white' : '')};
+    background-color: lightgray;
+    color: ${props => (props.delete ? 'red' : '')};
   }
 `;
-const CardIcon = styled.h1``;
+const CardIcon = styled.h1`
+  color: ${props => props.color};
+  font-size: ${props => props.fontSize}px;
+`;
+
 const SmallCardIcon = styled(CardIcon)`
   margin: 0px;
 `;
 
-const CardText = styled.h3``;
+const CardText = styled.h3`
+  color: ${props => props.color};
+`;
 const CardDescription = styled.p``;
 const HeaderLeft = styled.div`
   align-items: center;
@@ -96,6 +102,10 @@ const Modal = styled.div`
 
 const ModelCard = styled(Card)`
   max-height: 200px;
+  background-color: ${props => props.color + '94'};
+  &:hover {
+    background-color: ${props => props.color};
+  }
 `;
 
 const EmtpyDashboardImg = styled.img`
@@ -182,6 +192,15 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
         {modelList && Object.keys(modelList).length ? (
           <Models>
             <CardMenu>
+              <ModelCard color='#4553ff'>
+                <ModelMenu />
+                <div onClick={handleOpenWizard}>
+                  <CardIcon fontSize={50} color='white'>
+                    +
+                  </CardIcon>
+                  <CardText color='white'>Create Model</CardText>
+                </div>
+              </ModelCard>
               {Object.keys(modelList).map(modelId => {
                 const model = modelList[modelId];
                 return (

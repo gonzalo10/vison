@@ -46,7 +46,7 @@ export const FlatCard = styled.div`
 export const CardMenu = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   height: 85vh;
   overflow: scroll;
 `;

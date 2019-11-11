@@ -145,14 +145,27 @@ const SentimentAnalysis = ({
     dispatch(modelActions.getModel(id, modelType));
   };
 
+  const areStatsReady = () => {
+    return (
+      sentimentModel &&
+      sentimentModel.data.length &&
+      sentimentModel.stats &&
+      !isLoading
+    );
+  };
+
   return (
     <>
       <Sidebar />
       <Container>
         <ModelHeader>
           <ModelHeaderTitle>
-            Sentiment Analysis
-            {sentimentModel && sentimentModel.title}
+            <div
+              contenteditable='true'
+              // onInput={e => console.log('has changed', e.target.textContent)}
+              onBlur={e => console.log('has stopeed', e.target.textContent)}>
+              {sentimentModel && sentimentModel.title}
+            </div>
             <br />
             <Icon>😍/😡</Icon>
           </ModelHeaderTitle>
@@ -165,16 +178,16 @@ const SentimentAnalysis = ({
             </BadgeGroup>
           </ModelHeaderDescription>
         </ModelHeader>
-        <InputNewData
+        {/* <InputNewData
           dispatch={dispatch}
           sentimentTitle={sentimentTitle}
           sentimentValue={sentimentValue}
           icon={icon}
           isLoading={isLoading}
-        />
+        /> */}
         <ContentArea>
           <ResultsArea>
-            <DataArea hasData={sentimentModel && sentimentModel.data.length} h>
+            <DataArea hasData={sentimentModel && sentimentModel.data.length}>
               {sentimentModel && sentimentModel.data.length ? (
                 <>
                   <ResultRow>
@@ -231,9 +244,7 @@ const SentimentAnalysis = ({
             </DataArea>
             <StatsWrapper>
               <StatsArea>
-                {sentimentModel &&
-                sentimentModel.data.length &&
-                sentimentModel.stats ? (
+                {areStatsReady() ? (
                   <PieChart data={sentimentModel.stats} />
                 ) : (
                   <>
@@ -243,9 +254,7 @@ const SentimentAnalysis = ({
                 )}
               </StatsArea>
               <StatsArea>
-                {sentimentModel &&
-                sentimentModel.data.length &&
-                sentimentModel.stats ? (
+                {areStatsReady() ? (
                   <PieChart data={sentimentModel.stats} />
                 ) : (
                   <>
@@ -255,12 +264,15 @@ const SentimentAnalysis = ({
                 )}
               </StatsArea>
               <StatsArea>
-                {sentimentModel &&
-                sentimentModel.data.length &&
-                sentimentModel.stats ? (
+                {areStatsReady() ? (
                   <PieChart data={sentimentModel.stats} />
                 ) : (
                   <>
+                    {console.log(
+                      'inside the empty state',
+                      sentimentModel,
+                      !isLoading
+                    )}
                     <ChartIcon icon={faChartPie} />
                     <EmptyStateText>No charts yet!</EmptyStateText>
                   </>
