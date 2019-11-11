@@ -1,6 +1,5 @@
 import { authHeader } from '../helpers';
-import { client } from '../index';
-import { gql } from 'apollo-boost';
+import { backendURL } from './helpers';
 
 export const uploadService = {
   uploadFile,
@@ -17,7 +16,7 @@ async function uploadFile(formData) {
   };
   try {
     const response = await axios.post(
-      `http://localhost:3000/upload`,
+      `${backendURL}/upload`,
       formData,
       config,
       {
@@ -61,19 +60,3 @@ async function uploadFile(formData) {
 //     console.log(err);
 //   }
 // }
-
-function handleResponse(response) {
-  return response.text().then(text => {
-    console.log(response);
-    const data = text && JSON.parse(text);
-    if (!response.ok) {
-      if (response.status === 401) {
-        // logout();
-        window.location.reload(true);
-      }
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-    }
-    return data.data;
-  });
-}

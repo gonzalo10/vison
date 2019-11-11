@@ -35,6 +35,7 @@ const ContentArea = styled.div`
   margin-top: 0px;
   width: 90%;
   height: 100%;
+  display: ${props => !props.isLoad && 'none'};
 `;
 const ResultRow = styled.div`
   display: grid;
@@ -153,7 +154,6 @@ const SentimentAnalysis = ({
       !isLoading
     );
   };
-  if (!sentimentModel) return null;
   return (
     <>
       <Sidebar />
@@ -184,7 +184,7 @@ const SentimentAnalysis = ({
           icon={icon}
           isLoading={isLoading}
         /> */}
-        <ContentArea>
+        <ContentArea isLoad={!!sentimentModel}>
           <ResultsArea>
             <DataArea hasData={sentimentModel && sentimentModel.data.length}>
               {sentimentModel && sentimentModel.data.length ? (

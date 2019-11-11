@@ -113,7 +113,7 @@ User.hasMany(Entity);
 try {
 	sequelize
 		.sync()
-		.then(() => app.listen(3000))
+		.then(() => app.listen(3001))
 		.catch(err => console.log(err));
 
 	// when it breaks append this .authenticate() then run then delete the word

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { client } from '../index';
 import { gql } from 'apollo-boost';
+import { API } from './helpers';
 
 import { authHeader } from '../helpers';
 
@@ -42,11 +43,7 @@ function register(username, password) {
 		  }
         `,
   };
-  return fetch('http://localhost:3000/graphql', {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  }).then(response => handleResponse(response));
+  return API(requestBody);
 }
 
 function logout() {

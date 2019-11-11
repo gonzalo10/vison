@@ -1,7 +1,4 @@
-import { authHeader } from '../helpers';
-import axios from 'axios';
-import { userActions } from '../_actions';
-import { store } from '../helpers';
+import { API } from './helpers';
 import { client } from '../index';
 import { gql } from 'apollo-boost';
 
@@ -35,15 +32,9 @@ async function getAll() {
     }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
 
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
+
   const { data } = await client.query({
     query: gql`
       {
@@ -77,15 +68,7 @@ function getModelTypes() {
       }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
-
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
 }
 function createModel({ selectedModelType, description, title }) {
   const requestBody = {
@@ -100,15 +83,8 @@ function createModel({ selectedModelType, description, title }) {
     }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
 
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
 }
 function populateModelFromFile({ fileName, modelId, modelType }) {
   const requestBody = {
@@ -118,15 +94,7 @@ function populateModelFromFile({ fileName, modelId, modelType }) {
     }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
-
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
 }
 async function createModelFromFile({
   fileName,
@@ -178,15 +146,7 @@ function getSentimentModel(id) {
     }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
-
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
 }
 function getEntityModel(id) {
   const requestBody = {
@@ -210,15 +170,8 @@ function getEntityModel(id) {
   }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
 
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
 }
 function getSummaryModel(id) {
   const requestBody = {
@@ -242,15 +195,7 @@ function getSummaryModel(id) {
   }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
-
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
 }
 function getYoutubeCommentsModel(id) {
   const requestBody = {
@@ -266,15 +211,7 @@ function getYoutubeCommentsModel(id) {
   }
 	    `,
   };
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
-
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
+  return API(requestBody);
 }
 function deleteModel(id) {
   const requestBody = {
@@ -286,29 +223,5 @@ function deleteModel(id) {
       }
     `,
   };
-
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-    headers: authHeader(),
-  };
-
-  return fetch('http://localhost:3000/graphql', requestOptions).then(response =>
-    handleResponse(response)
-  );
-}
-
-function handleResponse(response) {
-  return response.text().then(text => {
-    if (!response.ok) {
-      if (response.status === 401) {
-        store.dispatch(userActions.logout());
-        window.location.reload(true);
-      }
-      const error = (data && data.message) || response.statusText;
-      return Promise.reject(error);
-    }
-    const data = text && JSON.parse(text);
-    return data.data;
-  });
+  return API(requestBody);
 }
