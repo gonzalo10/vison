@@ -8,8 +8,6 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { Input, Button, Card } from '../../../utils/Designs';
 
 import { UploadDataModel } from './UploadDataModel';
-//Mock data
-// import mockPreviewData from '../../../containers/Pages/SentimentAnalysis/previewData';
 
 const SmallCard = styled(Card)`
   height: 130px;
