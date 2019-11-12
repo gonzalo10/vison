@@ -91,6 +91,33 @@ const BillingArea = styled(FlatCard)`
   padding: 30px 0px;
   align-items: center;
 `;
+const UsageArea = styled(FlatCard)`
+  padding: 30px 0px;
+  align-items: center;
+`;
+const ProgressBar = styled.div`
+  display: inline-block;
+  width: 400px;
+  height: 50px;
+  margin: 15px;
+  border-radius: 20px;
+  background: #f9f9f9;
+`;
+
+const InsideBar = styled.div`
+  border-radius: 20px;
+  width: ${props => props.progress || '0'}%;
+  height: 100%;
+  transition: width;
+  transition-duration: 1s;
+  transition-timing-function: cubic-bezier(0.36, 0.55, 0.63, 0.48);
+  box-shadow: 0px 45px 50px rgba(0, 0, 0, 0.25);
+  background-color: #b5ccbf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: blue;
+`;
 const EmailArea = styled(FlatCard)`
   padding: 30px 0px;
   align-items: center;
@@ -146,13 +173,24 @@ const UserProfile = ({ dispatch, isLoading }) => {
             <Input placeholder='Repeat new password' type='text' />
             <Button color='blueDark'>Change password</Button>
           </PasswordArea>
+          <UsageArea>
+            Models Usage
+            <ProgressBar>
+              <InsideBar progress={30}>1/3</InsideBar>
+            </ProgressBar>
+            Requests Usage
+            <ProgressBar>
+              <InsideBar progress={100}>600/600</InsideBar>
+            </ProgressBar>
+            <Button color='blueDark'>Upgrade Plan</Button>
+          </UsageArea>
           <BillingArea>
             <Input type='text' />
             <Input type='text' />
             <Input type='text' />
             <Button color='blueDark'>Change billing address</Button>
           </BillingArea>
-          <EmailArea>
+          {/* <EmailArea>
             <EmailAreaTop>
               <EmailAreaEmail>Supercollemail@gmail.com</EmailAreaEmail>
             </EmailAreaTop>
@@ -164,7 +202,7 @@ const UserProfile = ({ dispatch, isLoading }) => {
               <EmailToggleTitle>Weekly report </EmailToggleTitle>
               <Toggle />
             </EmailAreaBottom>
-          </EmailArea>
+          </EmailArea> */}
         </Body>
       </Container>
     </MainContainer>

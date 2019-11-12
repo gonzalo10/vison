@@ -5,13 +5,19 @@ const User = require('../../models/user');
 
 module.exports = {
 	Mutation: {
-		createUser: async (args, req) => {
+		createUser: async (_, args, req, res) => {
 			const { email, password } = args.userInput;
 			try {
 				const isOldRecord = await User.findOne({ where: { email } });
 				if (!isOldRecord) {
 					const hashedPassword = await bcrypt.hash(password, 12);
-					return User.create({ email: email, password: hashedPassword });
+					console.log('we are going to create a user');
+					return User.create({
+						email: email,
+						password: hashedPassword,
+						requestsUsage: 0,
+						modelsUsage: 0,
+					});
 				}
 				throw new Error('User already exist!');
 			} catch (err) {

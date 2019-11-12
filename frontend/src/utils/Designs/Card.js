@@ -12,7 +12,7 @@ export const Card = styled.div`
   border-radius: 8px;
   border: 1px solid lightgray;
   transition-property: color, background-color, box-shadow, transform;
-  transition-duration: 0.15s;
+  transition-duration: 0.5s;
   &:hover {
     box-shadow: -1px 7px 24px -6px rgba(0, 0, 0, 0.43);
   }
@@ -41,6 +41,7 @@ export const FlatCard = styled.div`
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid lightgray;
+  cursor: default;
 `;
 
 export const CardMenu = styled.div`

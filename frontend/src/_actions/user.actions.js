@@ -57,6 +57,7 @@ function register(username, password) {
 
     userService.register(username, password).then(
       user => {
+        console.log('user', user);
         dispatch(success());
         history.push('/login');
         dispatch(notificationsActions.success('Registration successful'));

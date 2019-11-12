@@ -9,11 +9,8 @@ const multer = require('multer');
 const sequelize = require('./utils/database');
 const isAuth = require('./middleware/is-auth');
 
-const Model = require('./models/model');
-const ModelType = require('./models/modelType');
+const applyDbRelations = require('./models/relations');
 const User = require('./models/user');
-const Sentiment = require('./models/sentimentAnalysis');
-const Entity = require('./models/entitiesAnalysis');
 const resolvers = require('./graphql/resolvers');
 const HandleCsv = require('./helpers/handleCsv');
 const typeDefs = require('./graphql/schema');
@@ -43,7 +40,7 @@ const server = new ApolloServer({
 				.then(user => {
 					myUser = user;
 				})
-				.catch(err => console.log(err));
+				.catch(err => console.log('error graphql', err));
 			return myUser;
 		}
 		return {};
@@ -99,16 +96,7 @@ app.post('/upload', async function(req, res) {
 
 server.applyMiddleware({ app, path: '/graphql' });
 
-Model.belongsTo(ModelType, { constraints: true, onDelete: 'CASCADE' });
-Model.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-Sentiment.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-Sentiment.belongsTo(Model, { constraints: true, onDelete: 'CASCADE' });
-Entity.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-Entity.belongsTo(Model, { constraints: true, onDelete: 'CASCADE' });
-ModelType.hasMany(Model);
-User.hasMany(Model);
-User.hasMany(Sentiment);
-User.hasMany(Entity);
+applyDbRelations();
 
 try {
 	sequelize
