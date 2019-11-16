@@ -74,7 +74,10 @@ const typeDefs = gql`
 		id: ID!
 		email: String!
 		password: String!
-		createModel: [Model!]
+		modelsUsage: Int!
+		requestsUsage: Int!
+		userTypeId: Int!
+		createdAt: String!
 	}
 
 	type AuthData {
@@ -96,6 +99,18 @@ const typeDefs = gql`
 		filename: String!
 		mimetype: String!
 		encoding: String!
+	}
+	type UserType {
+		name: String!
+		price: Int!
+		models: Int!
+		modelRow: Int!
+		requests: Int!
+	}
+
+	type Account {
+		user: User!
+		userType: UserType!
 	}
 
 	input ModelInput {
@@ -144,7 +159,9 @@ const typeDefs = gql`
 		models: [Model!]!
 		sentimentModel(id: Int!): SentimentModel!
 		entityModel(id: Int!): EntityModel!
-		users: [User!]!
+		getAllUsers: [User!]!
+		getUser: User!
+		getAccount: Account!
 		sentimentAnalysis: [Sentiment!]!
 		entitiesAnalysis: [Entity!]!
 		modelType: [ModelType!]!

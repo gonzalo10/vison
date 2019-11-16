@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 
-import { userActions } from "../../../_actions";
+import { userActions } from '../../../_actions';
 
 export const LoginSection = styled.div`
   display: flex;
@@ -15,6 +15,7 @@ export const LoginSection = styled.div`
 const SignupPage = ({ dispatch }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [plan, setPlan] = useState();
 
   const handleLogin = () => {
     dispatch(userActions.register(username, password));
@@ -24,14 +25,24 @@ const SignupPage = ({ dispatch }) => {
     <LoginSection>
       <h1>Signup</h1>
       <input
-        type="text"
+        type='text'
         onChange={e => setUsername(e.target.value)}
-        value={username || ""}
+        placeholder='email'
+        type='email'
+        value={username || ''}
       />
       <input
         onChange={e => setPassword(e.target.value)}
-        value={password || ""}
+        placeholder='password'
+        value={password || ''}
       />
+      <input
+        onChange={e => setPlan(e.target.value)}
+        type='number'
+        value={plan || 1}
+        placeholder='1'
+      />
+
       <button onClick={handleLogin}>Login</button>
     </LoginSection>
   );

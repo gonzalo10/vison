@@ -47,7 +47,6 @@ const server = new ApolloServer({
 	},
 });
 const app = express();
-
 app.use(bodyParser.json());
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -58,7 +57,6 @@ app.use((req, res, next) => {
 	}
 	next();
 });
-
 app.use(isAuth);
 
 var csvName;

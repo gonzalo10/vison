@@ -6,7 +6,7 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 import welcomeImg from '../../../assets/images/welcome2.jpg';
 import visionLogo from '../../../assets/images/vision.svg';
-import { modelActions } from '../../../_actions';
+import { userActions } from '../../../_actions';
 import { Sidebar } from '../../Layout/Sidebar';
 import { history } from '../../../helpers';
 import {
@@ -138,7 +138,7 @@ const EmailToggleTitle = styled.h5``;
 const UserProfile = ({ dispatch, isLoading }) => {
   const [menuOpenId, setMenuOpen] = useState();
   useEffect(() => {
-    // dispatch(modelActions.getAll());
+    dispatch(userActions.getUserAccount());
   }, []);
 
   return (

@@ -7,14 +7,14 @@ class Layout extends Component {
   render() {
     const { history, dispatch } = this.props;
     let url = history.location.pathname;
-
-    if (
-      url === '/login' ||
-      url === '/dashboard' ||
-      url === '/integrations' ||
-      url.includes('/model/') ||
-      url.includes('/profile')
-    ) {
+    const pages = [
+      '/login',
+      '/dashboard',
+      '/integrations',
+      '/model/',
+      '/profile',
+    ];
+    if (pages.includes(url)) {
       return (
         <>
           <Notifications />

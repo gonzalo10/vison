@@ -3,10 +3,12 @@ const fs = require('fs');
 const path = require('path');
 const analyzeSentiment = require('../ML/Amazon/sentiment');
 const User = require('../models/user');
+const UserType = require('../models/userType');
 
 const sentimentAnalysis = async (text, modelId, user) => {
 	const result = await analyzeSentiment(text);
 	const { SentimentScore, Sentiment } = result;
+	user.increment('requestsUsage', { by: 1 });
 	user.createSentiment({
 		text,
 		modelId,
@@ -23,9 +25,9 @@ const analyseDataAndSave = async (data, modelType, modelId, user) => {
 	if (modelType === 1) sentimentAnalysis(text, modelId, user);
 };
 
-const getUser = userId => {
-	return User.findByPk(userId)
-		.then(user => user)
+const getUserTypeFeatures = typeId => {
+	return UserType.findByPk(typeId)
+		.then(userType => userType)
 		.catch(err => console.log(err));
 };
 
@@ -63,6 +65,14 @@ exports.analyzeCsv = async function analyzeCsv(name, modelType, modelId, user) {
 		headers: [],
 		rows: [],
 	};
+	const { id, userTypeId, modelsUsage, requestsUsage } = user.dataValues;
+
+	const { models, modelRow, requests } = await getUserTypeFeatures(userTypeId);
+
+	if (modelsUsage >= models)
+		throw new Error('You have reach the maximun number of models');
+	if (requestsUsage >= requests)
+		throw new Error('You have reach the maximun number of requests');
 
 	return fs
 		.createReadStream(path.join(__dirname, '../public/' + name))
@@ -77,5 +87,8 @@ exports.analyzeCsv = async function analyzeCsv(name, modelType, modelId, user) {
 		.on('error', err => {
 			throw new Error(err);
 		})
-		.on('end', () => 'The csv was analyze correctly');
+		.on('end', () => {
+			user.increment('modelsUsage', { by: 1 });
+			return 'The csv was analyze correctly';
+		});
 };

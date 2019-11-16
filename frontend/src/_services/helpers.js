@@ -18,10 +18,11 @@ function handleResponse(response) {
         store.dispatch(userActions.logout());
         window.location.reload(true);
       }
-      const error = (data && data.message) || response.statusText;
+      const error = response.statusText;
       return Promise.reject(error);
     }
     const data = text && JSON.parse(text);
+    console.log(data);
     return data.data;
   });
 }
