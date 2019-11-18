@@ -15,10 +15,11 @@ export const LoginSection = styled.div`
 const SignupPage = ({ dispatch }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [plan, setPlan] = useState();
+  const [plan, setPlan] = useState(0);
 
   const handleLogin = () => {
-    dispatch(userActions.register(username, password));
+    console.log(username, password, plan);
+    dispatch(userActions.register(username, password, plan));
   };
 
   return (
@@ -39,7 +40,7 @@ const SignupPage = ({ dispatch }) => {
       <input
         onChange={e => setPlan(e.target.value)}
         type='number'
-        value={plan || 1}
+        value={plan}
         placeholder='1'
       />
 

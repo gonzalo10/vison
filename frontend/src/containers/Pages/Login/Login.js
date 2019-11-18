@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { userActions } from '../../../_actions';
 
-import { Button, Input } from '../../../utils/Designs';
+import { Button, Input as InputBase } from '../../../utils/Designs';
 
 export const LoginSection = styled.div`
   display: flex;
@@ -46,10 +46,14 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
+const InputPassword = styled(InputBase)`
+  -webkit-text-security: disc;
+  text-security: disc;
+`;
+
 const LoginPage = ({ dispatch, isOpen, message }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState();
-  const [hidedPassword, sethidedPassword] = useState();
 
   const handleLogin = e => {
     e.preventDefault();
@@ -57,7 +61,6 @@ const LoginPage = ({ dispatch, isOpen, message }) => {
   };
 
   const handlePassword = e => {
-    // sethidedPassword('*'.repeat(e.target.value.length));
     setPassword(e.target.value);
   };
 
@@ -74,12 +77,12 @@ const LoginPage = ({ dispatch, isOpen, message }) => {
           <h1>Login</h1>
           {isOpen ? <div>{message}</div> : null}
           <Form onSubmit={handleLogin}>
-            <Input
+            <InputBase
               type='text'
               onChange={e => setUsername(e.target.value)}
               value={username || ''}
             />
-            <Input onChange={handlePassword} value={password || ''} />
+            <InputPassword onChange={handlePassword} value={password || ''} />
             <Button color='blueDark' type='submit' value='Submit'>
               Login
             </Button>

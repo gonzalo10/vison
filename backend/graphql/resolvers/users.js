@@ -11,8 +11,8 @@ module.exports = {
 	Query: {
 		getAllUsers: async (parent, args, user, info) => {
 			try {
-				console.log();
-				if (user.dataValues.userType !== 0)
+				console.log(user.dataValues);
+				if (user.dataValues.userTypeId !== 3)
 					throw new Error('Yo do not have perission');
 				const users = await User.findAll();
 				return users;

@@ -57,11 +57,11 @@ const login = async (username, password) => {
   }
 };
 
-function register(username, password) {
+function register(username, password, plan) {
   const requestBody = {
     query: `
 	  mutation{
-      createUser(userInput:{email: "${username}", password: "${password}"}) {
+      createUser(userInput:{email: "${username}", password: "${password}", plan: ${plan}}) {
        id
       }
     }
@@ -98,6 +98,21 @@ function getUserAccount() {
   };
   return API(requestBody);
 }
+
+function getUser() {
+  const requestBody = {
+    query: `
+		query {
+			getUser {
+        email
+        userTypeId
+			}
+		}
+    `,
+  };
+  return API(requestBody);
+}
+
 function getAllUsers() {
   const requestBody = {
     query: `
@@ -147,6 +162,7 @@ export const userService = {
   register,
   getUserAccount,
   getAllUsers,
+  getUser,
   // getAll,
   // getById,
   // update,

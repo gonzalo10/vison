@@ -53,7 +53,7 @@ const Text = styled.p`
 `;
 
 const Header = ({ headers }) => {
-  console.log(headers.length);
+  console.log(headers);
   const columns = headers.length;
   return (
     <HeaderWrapper columns={columns}>
@@ -65,6 +65,7 @@ const Header = ({ headers }) => {
 };
 
 const Body = ({ rows }) => {
+  console.log(rows);
   let maxColNumber = 0;
   rows.forEach(row => {
     if (row.length > maxColNumber) maxColNumber = row.length;

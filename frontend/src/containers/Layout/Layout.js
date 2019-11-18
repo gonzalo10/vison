@@ -13,6 +13,7 @@ class Layout extends Component {
       '/integrations',
       '/model/',
       '/profile',
+      '/admin',
     ];
     if (pages.includes(url)) {
       return (

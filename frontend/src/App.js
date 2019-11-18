@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
 
-import { PrivateRoute, AdminRoutes } from './containers/Navigation/Routes';
+import { PrivateRoute, AdminRoute } from './containers/Navigation/Routes';
 import { history } from './helpers';
 import Layout from './containers/Layout';
 import {
@@ -19,12 +19,13 @@ import {
 
 export default class App extends React.Component {
   render() {
+    console.log(this.props);
     return (
       <Router history={history}>
         <Layout history={history}>
           <PrivateRoute path='/dashboard' component={Dashboard} />
           <PrivateRoute path='/profile' component={UserProfile} />
-          <AdminRoutes path='/admin' component={Admin} />
+          <PrivateRoute path='/admin' component={Admin} />
           <PrivateRoute path='/integrations' component={Integrations} />
           <PrivateRoute path='/model/1/:id' component={SentimentAnalysis} />
           <PrivateRoute path='/model/2/:id' component={BusinessAnalysis} />
@@ -32,6 +33,7 @@ export default class App extends React.Component {
           <Route exact path='/' component={LandingPage} />
           <Route path='/login' component={LoginPage} />
           <Route path='/signup' component={SignupPage} />
+          {/* <Route component={() => <div>No Match</div>} /> */}
         </Layout>
       </Router>
     );

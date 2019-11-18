@@ -1,6 +1,6 @@
 const analyzeSentiment = require('../../ML/Amazon/sentiment');
 const axios = require('axios');
-const googleApi = require('../../credentials');
+const credentials = require('../../credentials');
 
 const youtubeApiCall = async (
 	videoId,
@@ -11,7 +11,9 @@ const youtubeApiCall = async (
 	contador
 ) => {
 	var response = await axios.get(
-		`https://www.googleapis.com/youtube/v3/commentThreads?videoId=${videoId}&key=${youtubeKey}&textFormat=plainText&part=snippet&maxResults=${maxResults}${
+		`https://www.googleapis.com/youtube/v3/commentThreads?videoId=${videoId}&key=${
+			credentials.google
+		}&textFormat=plainText&part=snippet&maxResults=${maxResults}${
 			nextPageToken ? `&pageToken=${nextPageToken}` : ''
 		}`
 	);

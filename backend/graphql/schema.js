@@ -128,6 +128,7 @@ const typeDefs = gql`
 	input UserInput {
 		email: String!
 		password: String!
+		plan: Int!
 	}
 
 	input SentimentInput {
@@ -154,6 +155,10 @@ const typeDefs = gql`
 		modelId: Int!
 		modelType: Int!
 	}
+	input UpdatePasswordInput {
+		oldPassword: String!
+		newPassword: String!
+	}
 
 	type Query {
 		models: [Model!]!
@@ -173,6 +178,7 @@ const typeDefs = gql`
 		createModel(modelInput: ModelInput): Model
 		createModelType(modelTypeInput: ModelTypeInput): ModelType
 		createUser(userInput: UserInput): User
+		updatePassword(updatePasswordInput: UpdatePasswordInput): String!
 		createSentimentAnalysis(sentimentInput: SentimentInput): Sentiment
 		createEntitiesAnalysis(entityInput: EntityInput): [Entity!]!
 		createSummary(summaryInput: SummaryInput): Summary!

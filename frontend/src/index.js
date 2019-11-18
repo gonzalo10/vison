@@ -47,7 +47,7 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <App />
+        <App store={store} />
       </ThemeProvider>
     </Provider>
   </ApolloProvider>,

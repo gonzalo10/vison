@@ -10,6 +10,7 @@ export const userActions = {
   register,
   getUserAccount,
   getAllUsers,
+  getUser,
 };
 
 function login(username, password) {
@@ -54,11 +55,11 @@ function logout() {
   }
 }
 
-function register(username, password) {
+function register(username, password, plan) {
   return dispatch => {
     dispatch(request());
 
-    userService.register(username, password).then(
+    userService.register(username, password, plan).then(
       user => {
         console.log('user', user);
         dispatch(success());
@@ -106,6 +107,31 @@ function getUserAccount() {
     return { type: userConstants.REGISTER_FAILURE, error };
   }
 }
+function getUser() {
+  return dispatch => {
+    dispatch(request());
+    userService.getUser().then(
+      user => {
+        dispatch(success(user.getUser));
+      },
+      error => {
+        dispatch(failure(error.toString()));
+        dispatch(notificationsActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: userConstants.GET_USER_REQUEST };
+  }
+  function success(user) {
+    return { type: userConstants.GET_USER_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.GET_USER_FAILURE, error };
+  }
+}
+
 function getAllUsers() {
   return dispatch => {
     dispatch(request());
