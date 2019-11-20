@@ -41,6 +41,9 @@ const Sidebar = ({ dispatch }) => {
   const isTrainModelSelected = () => {
     if (history.location.pathname === '/train') return true;
   };
+  const isProfileSelected = () => {
+    if (history.location.pathname === '/profile') return true;
+  };
   return (
     <LateralMenu>
       <TopMenu>
@@ -65,7 +68,12 @@ const Sidebar = ({ dispatch }) => {
         <MenuItem>+ Model</MenuItem>
       </TopMenu>
       <BottomMenu>
-        <MenuItem id='profile'>Profile</MenuItem>
+        <MenuItem
+          id='profile'
+          onClick={() => history.push('/profile')}
+          isSelected={isProfileSelected()}>
+          Profile
+        </MenuItem>
         <MenuItem onClick={() => dispatch(userActions.logout())}>
           Log out
         </MenuItem>

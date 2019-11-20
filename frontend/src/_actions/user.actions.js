@@ -88,7 +88,14 @@ function getUserAccount() {
     dispatch(request());
     userService.getUserAccount().then(
       account => {
-        dispatch(success());
+        console.log(account.getAccount);
+        const user = account.getAccount;
+        dispatch(
+          success({
+            ...user.user,
+            ...user.userType,
+          })
+        );
       },
       error => {
         dispatch(failure(error.toString()));
@@ -98,13 +105,13 @@ function getUserAccount() {
   };
 
   function request() {
-    return { type: userConstants.REGISTER_REQUEST };
+    return { type: userConstants.GET_USER_ACCOUNT_REQUEST };
   }
-  function success(user) {
-    return { type: userConstants.REGISTER_SUCCESS, user };
+  function success(account) {
+    return { type: userConstants.GET_USER_ACCOUNT_SUCCESS, account };
   }
   function failure(error) {
-    return { type: userConstants.REGISTER_FAILURE, error };
+    return { type: userConstants.GET_USER_ACCOUNT_FAILURE, error };
   }
 }
 function getUser() {

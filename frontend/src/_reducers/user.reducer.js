@@ -41,6 +41,18 @@ export function user(state = {}, action) {
       };
     case userConstants.GET_USER_FAILURE:
       return {};
+    case userConstants.GET_USER_ACCOUNT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case userConstants.GET_USER_ACCOUNT_SUCCESS:
+      return {
+        ...state,
+        myAccount: action.account,
+      };
+    case userConstants.GET_USER_ACCOUNT_FAILURE:
+      return {};
 
     default:
       return state;

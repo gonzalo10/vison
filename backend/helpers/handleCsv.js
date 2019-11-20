@@ -68,7 +68,8 @@ exports.analyzeCsv = async function analyzeCsv(name, modelType, modelId, user) {
 	const { id, userTypeId, modelsUsage, requestsUsage } = user.dataValues;
 
 	const { models, modelRow, requests } = await getUserTypeFeatures(userTypeId);
-
+	console.log('modelsUsage', modelsUsage);
+	console.log('models', models);
 	if (modelsUsage >= models)
 		throw new Error('You have reach the maximun number of models');
 	if (requestsUsage >= requests)
@@ -81,7 +82,7 @@ exports.analyzeCsv = async function analyzeCsv(name, modelType, modelId, user) {
 			if (!dataSet.headers.length) {
 				dataSet.headers = Object.keys(row);
 			}
-			analyseDataAndSave(Object.values(row), +modelType, +modelId, user);
+			analyseDataAndSave(Object.values(row), +modelType, modelId, user);
 			dataSet.rows.push(Object.values(row));
 		})
 		.on('error', err => {

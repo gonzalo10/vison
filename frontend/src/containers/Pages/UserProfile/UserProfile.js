@@ -102,6 +102,7 @@ const ProgressBar = styled.div`
   margin: 15px;
   border-radius: 20px;
   background: #f9f9f9;
+  position: relative;
 `;
 
 const InsideBar = styled.div`
@@ -135,11 +136,32 @@ const EmailAreaBottom = styled.div`
 `;
 const EmailToggleTitle = styled.h5``;
 
-const UserProfile = ({ dispatch, isLoading }) => {
+const UserProfile = ({ dispatch, isLoading, myAccount }) => {
   const [menuOpenId, setMenuOpen] = useState();
   useEffect(() => {
     dispatch(userActions.getUserAccount());
   }, []);
+
+  if (!myAccount)
+    return (
+      <MainContainer>
+        <Sidebar />
+        <Container />
+      </MainContainer>
+    );
+
+  const {
+    createdAt,
+    email,
+    modelRow,
+    models,
+    modelsUsage,
+    name,
+    price,
+    requests,
+    requestsUsage,
+    userTypeId,
+  } = myAccount && myAccount;
 
   return (
     <MainContainer>
@@ -162,9 +184,10 @@ const UserProfile = ({ dispatch, isLoading }) => {
             </UserInfoAreaLeft>
             <UserInfoAreaRight>
               <Input placeholder='Name' type='text' />
-              <Input placeholder='Email' type='text' />
+              <Input placeholder='Email' type='text' value={email} />
               <Input placeholder='Company' type='text' />
               <Input placeholder='Location' type='text' />
+              <div>{new Date(+createdAt).toLocaleDateString()}</div>
             </UserInfoAreaRight>
           </UserInfoArea>
           <PasswordArea>
@@ -176,11 +199,27 @@ const UserProfile = ({ dispatch, isLoading }) => {
           <UsageArea>
             Models Usage
             <ProgressBar>
-              <InsideBar progress={30}>1/3</InsideBar>
+              <InsideBar progress={(modelsUsage / models) * 100}></InsideBar>
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '30%',
+                  left: '40%',
+                }}>
+                {modelsUsage}/{models}
+              </span>
             </ProgressBar>
             Requests Usage
             <ProgressBar>
-              <InsideBar progress={100}>600/600</InsideBar>
+              <InsideBar progress={(requestsUsage / requests) * 100} />
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '30%',
+                  left: '40%',
+                }}>
+                {requestsUsage}/{requests}
+              </span>
             </ProgressBar>
             <Button color='blueDark'>Upgrade Plan</Button>
           </UsageArea>
@@ -210,8 +249,8 @@ const UserProfile = ({ dispatch, isLoading }) => {
 };
 
 function mapStateToProps(state) {
-  const { isLoading } = state;
-  return {};
+  const { myAccount } = state.user;
+  return { myAccount };
 }
 
 const connectedUserProfile = connect(mapStateToProps)(UserProfile);
