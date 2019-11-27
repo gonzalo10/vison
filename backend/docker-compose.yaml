@@ -1,0 +1,23 @@
+version: "3"
+services:
+  web:
+    extra_hosts:
+      dabaseHost: 127.0.0.1
+    hostname: mybackend
+    build: .
+    ports:
+      - 3001:3001
+    depends_on:
+      - mysql_db
+  mysql_db:
+    hostname: dabaseHost
+    restart: always
+    image: mysql:5.7
+    environment:
+      - MYSQL_PASSWORD=gonzalo_vision
+      - MYSQL_DATABASE=vision
+      - MYSQL_USER=gonzalo_root
+      - MYSQL_ROOT_PASSWORD=gonzalo_root
+      - MYSQL_ROOT_HOST=%
+    ports:
+      - 3308:3306

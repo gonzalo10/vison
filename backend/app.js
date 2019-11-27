@@ -96,10 +96,17 @@ server.applyMiddleware({ app, path: '/graphql' });
 
 applyDbRelations();
 
+const PORT = 3001;
+const HOST = '127.0.0.1';
+
+// app.listen(PORT, () => console.log('running'));
+
+// to run on docker docker run -p 3001:3001 test-node-app
+
 try {
 	sequelize
 		.sync()
-		.then(() => app.listen(3001))
+		.then(() => app.listen(PORT, () => console.log('running on port: ' + PORT)))
 		.catch(err => console.log(err));
 
 	// when it breaks append this .authenticate() then run then delete the word
