@@ -19,7 +19,6 @@ import {
 
 export default class App extends React.Component {
   render() {
-    console.log(this.props);
     return (
       <Router history={history}>
         <Layout history={history}>

@@ -19,11 +19,15 @@ function login(username, password) {
 
     userService.login(username, password).then(
       user => {
-        dispatch(success(user));
-        const { token } = user.login;
-        localStorage.removeItem('token');
-        localStorage.setItem('token', token);
-        history.push('/dashboard');
+        if (user) {
+          dispatch(success(user));
+          const { token } = user.login;
+          localStorage.removeItem('token');
+          localStorage.setItem('token', token);
+          history.push('/dashboard');
+        } else {
+          console.error('no user');
+        }
       },
       error => {
         console.log('error', error);

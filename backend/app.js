@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { ApolloServer } = require('apollo-server-express');
 const graphqlHttp = require('express-graphql');
 const session = require('express-session');
-var SequelizeStore = require('connect-session-sequelize')(session.Store);
+// var SequelizeStore = require('connect-session-sequelize')(session.Store);
 const multer = require('multer');
 const sequelize = require('./utils/database');
 const isAuth = require('./middleware/is-auth');
@@ -98,8 +98,6 @@ applyDbRelations();
 
 const PORT = 3001;
 const HOST = '127.0.0.1';
-
-// app.listen(PORT, () => console.log('running'));
 
 // to run on docker docker run -p 3001:3001 test-node-app
 
