@@ -12,8 +12,11 @@ services:
   web:
     build: .
     environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: database
     ports:
       - 3001:3001
     depends_on:
       - database
+    command: ["./wait-for-it.sh", "database:3306", "--", "npm", "start"] # <-- look here!

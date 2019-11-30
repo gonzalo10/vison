@@ -10,6 +10,7 @@ const sequelize = require('./utils/database');
 const isAuth = require('./middleware/is-auth');
 
 const applyDbRelations = require('./models/relations');
+const populateDBMockData = require('./utils/populateDBMockData');
 const User = require('./models/user');
 const resolvers = require('./graphql/resolvers');
 const HandleCsv = require('./helpers/handleCsv');
@@ -99,12 +100,11 @@ applyDbRelations();
 const PORT = 3001;
 const HOST = '127.0.0.1';
 
-// to run on docker docker run -p 3001:3001 test-node-app
-
+app.listen(PORT, () => console.log('running on port: ' + PORT));
 try {
 	sequelize
 		.sync()
-		.then(() => app.listen(PORT, () => console.log('running on port: ' + PORT)))
+		.then(() => populateDBMockData())
 		.catch(err => console.log(err));
 
 	// when it breaks append this .authenticate() then run then delete the word
