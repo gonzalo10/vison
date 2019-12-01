@@ -1,90 +1,100 @@
-import { modelConstants } from '../constants';
+import { modelConstants } from "../constants";
 
-export function models(state = {}, action) {
+const initialState = {
+  modelList: {},
+  isModelListLoading: undefined
+};
+
+export function models(state = { ...initialState }, action) {
   switch (action.type) {
-    case modelConstants.GETALL_REQUESTED:
+    case modelConstants.GETALL_REQUEST:
       return {
         ...state,
-        isLoading: true,
+        isModelListLoading: true
       };
 
     case modelConstants.GETALL_SUCCESS:
       return {
         ...state,
         modelList: action.models,
-        isLoading: false,
+        isModelListLoading: false
       };
 
     case modelConstants.GETALL_FAILURE:
       return {
+        ...state,
         message: action.message,
+        isModelListLoading: false
       };
 
     case modelConstants.GET_MODEL_TYPES_REQUEST:
       return {
-        ...state,
+        ...state
       };
 
     case modelConstants.GET_MODEL_TYPES_SUCCESS:
       return {
         ...state,
-        modelTypes: action.modelTypes.modelType,
+        modelTypes: action.modelTypes.modelType
       };
 
     case modelConstants.GET_MODEL_TYPES_FAILURE:
       return {
-        message: action.message,
+        ...state,
+        message: action.message
       };
 
     case modelConstants.CREATE_MODEL_REQUEST:
       return {
         ...state,
-        isLoading: true,
+        isLoading: true
       };
 
     case modelConstants.CREATE_MODEL_SUCCESS:
       return {
         ...state,
         modelTypes: action.modelTypes.modelType,
-        isLoading: false,
+        isLoading: false
       };
 
     case modelConstants.CREATE_MODEL_FAILURE:
       return {
-        message: action.message,
+        ...state,
+        message: action.message
       };
 
     case modelConstants.GET_MODEL_REQUEST:
       return {
         ...state,
-        isLoading: true,
+        isLoading: true
       };
 
     case modelConstants.GET_MODEL_SUCCESS:
       return {
         ...state,
         selectedModel: action.model,
-        isLoading: false,
+        isLoading: false
       };
 
     case modelConstants.GET_MODEL_FAILURE:
       return {
-        message: action.message,
+        ...state,
+        message: action.message
       };
 
     case modelConstants.DELETE_MODEL_REQUEST:
       return {
-        ...state,
+        ...state
       };
 
     case modelConstants.DELETE_MODEL_SUCCESS:
       return {
-        ...state,
+        ...state
       };
 
     case modelConstants.DELETE_MODEL_FAILURE:
       return {
-        message: action.message,
+        message: action.message
       };
 
     default:

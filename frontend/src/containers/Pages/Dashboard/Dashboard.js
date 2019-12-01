@@ -53,7 +53,7 @@ const HeaderWrapper = ({ handleOpenWizard }) => {
   );
 };
 
-const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
+const Dashboard = ({ dispatch, modelList, isModelListLoading }) => {
   const [menuOpenId, setMenuOpen] = useState();
   useEffect(() => {
     dispatch(modelActions.getAll());
@@ -89,6 +89,7 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
           handleOpenMenu={handleOpenMenu}
           handleDeleteModel={handleDeleteModel}
           handleStartProject={handleStartProject}
+          isModelListLoading={isModelListLoading}
         />
       </Container>
     </>
@@ -96,8 +97,8 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
 };
 
 function mapStateToProps(state) {
-  const { modelList, modelTypes, isLoading } = state.models;
-  return { modelList, modelTypes, isLoading };
+  const { modelList, isModelListLoading } = state.models;
+  return { modelList, isModelListLoading };
 }
 
 const connectedDashboard = connect(mapStateToProps)(Dashboard);

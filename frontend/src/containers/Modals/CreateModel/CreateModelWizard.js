@@ -6,7 +6,7 @@ import { faArrowLeft, faFileCsv } from "@fortawesome/free-solid-svg-icons";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 import { Input, Button, Card } from "../../../utils/Designs";
-import { modelActions } from "../../../_actions";
+import { modelActions, modalActions } from "../../../_actions";
 
 import { UploadDataModel } from "./UploadDataModel";
 
@@ -121,6 +121,7 @@ const CreateModelWizard = ({ dispatch, modelTypes }) => {
     setWizardStep(0);
     setDescription("");
     dispatch(modelActions.createModel(newModelData));
+    dispatch(modalActions.closeModal());
   };
 
   const onClickGoBack = () => {

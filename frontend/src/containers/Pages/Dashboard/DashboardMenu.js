@@ -69,14 +69,14 @@ const DashboardMenu = ({
   handleStartProject,
   handleOpenMenu,
   handleDeleteModel,
-  handleOpenWizard
+  handleOpenWizard,
+  isModelListLoading
 }) => {
-  if (!modelList) {
+  if (isModelListLoading === undefined) return null;
+  if (!Object.keys(modelList).length && !isModelListLoading) {
     return <EmptyDashboard />;
   }
-  if (!Object.keys(modelList).length) {
-    return <EmptyDashboard />;
-  }
+
   return (
     <Models>
       <CardMenu>
