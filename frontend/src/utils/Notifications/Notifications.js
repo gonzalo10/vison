@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTimes,
   faExclamationTriangle,
   faExclamation,
   faCheckCircle,
-  faInfoCircle,
-} from '@fortawesome/free-solid-svg-icons';
+  faInfoCircle
+} from "@fortawesome/free-solid-svg-icons";
 
-import color from '../colors';
+import colors from "../colors";
 
-import { notificationsActions } from '../../_actions';
+import { notificationsActions } from "../../_actions";
 
 const NotifiactionBase = styled.div`
   position: absolute;
@@ -31,79 +31,63 @@ const NotifiactionBase = styled.div`
   // transition: transform 1000ms ease-in;
   animation: slidein 3s linear 1s infinite alternate;
 `;
-const SuccessNotification = styled(NotifiactionBase)`
-  background-color: ${color.success};
-`;
-const ErrorNotifiaction = styled(NotifiactionBase)`
-  background-color: ${color.error};
-`;
-const WarningNotifiacation = styled(NotifiactionBase)`
-  background-color: ${color.warning};
-`;
-const InfoNotifiacation = styled(NotifiactionBase)`
-  background-color: ${color.info};
+
+const Notification = styled(NotifiactionBase)`
+  border: 1px solid ${props => props.color};
 `;
 
 const NotifiactionText = styled.p`
   padding: 10px 25px;
+  color: ${props => props.color};
 `;
 
 const Icon = styled(FontAwesomeIcon)`
   font-size: 22px;
+  color: ${props => props.color};
 `;
 const IconClose = styled(FontAwesomeIcon)`
   position: absolute;
   top: 10px;
   right: 10px;
   cursor: pointer;
+  color: black;
 `;
 
 const Notifications = ({ dispatch, notifications }) => {
-  let Notifiaction = InfoNotifiacation;
-  let notificationIcon;
   const handleClickClose = () => {
     dispatch(notificationsActions.clear());
   };
   if (!notifications) {
     return null;
   }
-  switch (notifications.type) {
-    case 'success':
-      Notifiaction = SuccessNotification;
-      notificationIcon = faCheckCircle;
-      break;
-    case 'error':
-      Notifiaction = ErrorNotifiaction;
-      notificationIcon = faExclamationTriangle;
-      break;
-    case 'warning':
-      Notifiaction = WarningNotifiacation;
-      notificationIcon = faExclamation;
-      break;
-    case 'info':
-      Notifiaction = InfoNotifiacation;
-      notificationIcon = faInfoCircle;
-      break;
-    default:
-      break;
-  }
+  const NotificationsTypes = {
+    success: faCheckCircle,
+    error: faExclamationTriangle,
+    warning: faExclamation,
+    info: faInfoCircle
+  };
+
+  const notificationIcon = NotificationsTypes[notifications.type];
+
   if (!notificationIcon) {
     return null;
   }
 
+  const color = colors[notifications.type];
+
   return (
-    <Notifiaction>
-      <Icon icon={notificationIcon} />
-      <NotifiactionText>{notifications.message}</NotifiactionText>
+    <Notification color={color}>
+      <Icon icon={notificationIcon} color={color} />
+      <NotifiactionText color={color}>{notifications.message}</NotifiactionText>
       <IconClose icon={faTimes} onClick={handleClickClose} />
-    </Notifiaction>
+    </Notification>
   );
 };
 
 function mapStateToProps(state) {
   const { notifications } = state;
   return {
-    notifications,
+    notifications
   };
 }
 
