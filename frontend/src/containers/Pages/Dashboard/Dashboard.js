@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import visionLogo from "../../../assets/images/vision.svg";
 import { modelActions, modalActions } from "../../../_actions";
 import { history } from "../../../helpers";
-import { Button, Modal } from "../../../utils/Designs";
-import { CreateModelWizard } from "../../Modals/CreateModel";
+import { Button } from "../../../utils/Designs";
 
 import DashboardMenu from "./DashboardMenu";
 
@@ -59,7 +58,6 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
   useEffect(() => {
     dispatch(modelActions.getAll());
   }, []);
-  const [modelWizard, setModelWizar] = useState(false);
 
   const handleStartProject = e => {
     const { id } = e.currentTarget;
@@ -67,20 +65,8 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
     history.push(`/model/${modelType}/${id}`);
   };
 
-  const handleClickModal = e => {
-    const id = e.target.id;
-    if (id === "modal") setModelWizar(false);
-  };
-
-  const createModel = newModelData => {
-    dispatch(modelActions.createModel(newModelData));
-    setModelWizar(false);
-  };
-
   const handleOpenWizard = () => {
     dispatch(modalActions.openModal("CreateModelWizard"));
-    // dispatch(modelActions.getModelTypes());
-    // setModelWizar(true);
   };
 
   const handleOpenMenu = id => {

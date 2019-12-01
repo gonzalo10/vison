@@ -10,7 +10,7 @@ export function modal(state = {}, action) {
     case modalConstants.CLOSE_MODAL:
       return {
         ...state,
-        closeModal: action.modalType
+        openModal: ""
       };
     case modalConstants.CLEAR_MODAL:
       return {

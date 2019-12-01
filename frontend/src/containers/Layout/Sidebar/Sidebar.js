@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 import { history } from "../../../helpers";
-import { userActions } from "../../../_actions";
+import { userActions, modalActions } from "../../../_actions";
 
 const LateralMenu = styled.div`
   width: 100px;
@@ -31,7 +31,7 @@ const MenuItem = styled.button`
   width: 100%;
 `;
 
-const Sidebar = ({ dispatch, openModelWizard }) => {
+const Sidebar = ({ dispatch }) => {
   const isMyModelsSelected = () => {
     if (history.location.pathname === "/dashboard") return true;
   };
@@ -68,7 +68,11 @@ const Sidebar = ({ dispatch, openModelWizard }) => {
         >
           Train Model
         </MenuItem>
-        <MenuItem onClick={openModelWizard}>+ Model</MenuItem>
+        <MenuItem
+          onClick={() => dispatch(modalActions.openModal("CreateModelWizard"))}
+        >
+          + Model
+        </MenuItem>
       </TopMenu>
       <BottomMenu>
         <MenuItem

@@ -2,22 +2,28 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { ModalWrapper } from "../Designs";
+import { modalActions } from "../../_actions";
 import { CreateModelWizard } from "../../containers/Modals/CreateModel";
 
 const ModalsTypes = {
   CreateModelWizard: <CreateModelWizard />
 };
 
-const Modal = ({ openModal, children }) => {
-  console.log("ModalsTypes", ModalsTypes);
-  console.log("openModal", openModal);
+const Modal = ({ openModal, dispatch }) => {
+  const handleClickOutsideModal = e => {
+    const id = e.target.id;
+    if (id === "outsideModal") dispatch(modalActions.closeModal());
+  };
   if (!openModal) return null;
-  return <ModalWrapper>{ModalsTypes[openModal]}</ModalWrapper>;
+  return (
+    <ModalWrapper id={"outsideModal"} onClick={handleClickOutsideModal}>
+      {ModalsTypes[openModal]}
+    </ModalWrapper>
+  );
 };
 
 function mapStateToProps(state) {
   const { openModal } = state.modal;
-  console.log(openModal);
   return {
     openModal
   };

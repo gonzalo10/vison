@@ -1,11 +1,8 @@
 import { modalConstants } from "../constants";
-import { modelService } from "../_services";
-import { history } from "../helpers";
-
-import { notificationsActions } from "./";
 
 export const modalActions = {
-  openModal
+  openModal,
+  closeModal
 };
 
 function openModal(modalType) {
@@ -15,5 +12,14 @@ function openModal(modalType) {
 
   function openModal(modalType) {
     return { type: modalConstants.OPEN_MODAL, modalType };
+  }
+}
+function closeModal() {
+  return dispatch => {
+    dispatch(closeModal());
+  };
+
+  function closeModal(modalType) {
+    return { type: modalConstants.CLOSE_MODAL };
   }
 }
