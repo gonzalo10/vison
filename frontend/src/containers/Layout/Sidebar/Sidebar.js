@@ -36,6 +36,7 @@ const MenuItem = styled.button`
 const Logo = styled.img`
   height: 30px;
   margin: 10px 10px;
+  cursor: pointer;
 `;
 
 const Sidebar = ({ dispatch, url }) => {
@@ -54,7 +55,7 @@ const Sidebar = ({ dispatch, url }) => {
   return (
     <LateralMenu>
       <TopMenu>
-        <Logo src={logoSVG} />
+        <Logo src={logoSVG} onClick={() => history.push("/dashboard")} />
         <MenuItem
           id="myModels"
           onClick={() => history.push("/dashboard")}

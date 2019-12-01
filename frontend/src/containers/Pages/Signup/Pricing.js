@@ -1,33 +1,74 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import { Card as CardBase, Button as ButtonBase } from '../../../utils/Designs';
+import { Card as CardBase, Button as ButtonBase } from "../../../utils/Designs";
 
 const FreeCard = {
-  title: 'Free',
+  id: 1,
+  title: "Free",
   price: 0,
   models: 2,
   requests: 300,
-  type: 1,
+  type: 1
 };
 const TeamCard = {
-  title: 'Team',
+  id: 2,
+  title: "Team",
   price: 49,
   models: 30,
-  requests: '10,000',
-  type: 2,
+  requests: "10,000",
+  type: 2
 };
 const BusinessCard = {
-  title: 'Business',
+  id: 3,
+  title: "Business",
   price: 190,
-  models: 'Unlimited',
-  requests: '1,000,000',
-  type: 3,
+  models: "Unlimited",
+  requests: "1,000,000",
+  type: 3
+};
+
+const tiers = {
+  1: {
+    id: 1,
+    title: "Free",
+    price: 0,
+    models: 2,
+    requests: 300,
+    type: 1,
+    color: "#4553ff"
+  },
+  2: {
+    id: 2,
+    title: "Team",
+    price: 49,
+    models: 30,
+    requests: "10,000",
+    type: 2,
+    color: "#0F9D58"
+  },
+  3: {
+    id: 3,
+    title: "Business",
+    price: 190,
+    models: "Unlimited",
+    requests: "1,000,000",
+    type: 3,
+    color: "#DB4437"
+  }
 };
 const PricingContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100vw;
+  transition: transform 500ms ease-in-out;
+  ${props => !props.isPricingVisible && " transform: translate(-1200px, 0px);"}
+`;
+const OnePriceContainer = styled.div`
+  left: -500px;
+  position: absolute;
+  transition: transform 5000ms ease-in-out;
+  ${props => props.active && "transform: translate(600px, 0px)"}
 `;
 
 const Header = styled.h1`
@@ -68,7 +109,6 @@ const Button = styled(ButtonBase)`
   width: 100px;
   &:hover {
     width: 150px;
-    -webkit-transition: width 0.5s; /* Safari prior 6.1 */
     transition: width 0.5s;
   }
 `;
@@ -87,18 +127,17 @@ const Card = styled(CardBase)`
 
   &:hover ${Header} {
     border-bottom: 2px solid ${props => props.color};
-    -webkit-transition: border-bottom 0.5s; /* Safari prior 6.1 */
     transition: border-bottom 0.5s;
   }
   &:hover ${PriceTitle} {
     color: ${props => props.color};
-    -webkit-transition: color 0.5s; /* Safari prior 6.1 */
     transition: color 0.5s;
   }
 `;
 
 const PricingCard = ({ data, color, handleClick }) => {
-  const { title, price, models, requests, type } = data;
+  const { title, price, models, requests, id } = data;
+
   return (
     <Card color={color}>
       <Header color={color}>{title}</Header>
@@ -114,24 +153,47 @@ const PricingCard = ({ data, color, handleClick }) => {
         </Property>
       </Body>
       <ButtonWrapper>
-        <Button id={type} color={color} onClick={handleClick}>
+        <Button id={id} color={color} onClick={handleClick}>
           Sign up
         </Button>
       </ButtonWrapper>
     </Card>
   );
 };
+
 const Pricing = ({ handleClick }) => {
+  const [isPricingVisible, setPricingVisible] = useState(true);
+  const [selectedPrice, setSelectedPrice] = useState();
+
+  const handleOnClick = e => {
+    console.log("setPricingVisible");
+    setPricingVisible(false);
+    handleClick(e);
+    setSelectedPrice(e.target.id);
+  };
+  console.log("selectedPrice", selectedPrice);
   return (
-    <PricingContainer>
-      <PricingCard data={FreeCard} color='#4553ff' handleClick={handleClick} />
-      <PricingCard data={TeamCard} color='#0F9D58' handleClick={handleClick} />
-      <PricingCard
-        data={BusinessCard}
-        color='#DB4437'
-        handleClick={handleClick}
-      />
-    </PricingContainer>
+    <>
+      {selectedPrice && (
+        <OnePriceContainer active>
+          <PricingCard
+            data={tiers[selectedPrice]}
+            color={tiers[selectedPrice].color}
+            handleClick={handleOnClick}
+          />
+        </OnePriceContainer>
+      )}
+      <PricingContainer isPricingVisible={isPricingVisible}>
+        {Object.keys(tiers).map((tier, key) => (
+          <PricingCard
+            key={key}
+            data={tiers[tier]}
+            color={tiers[tier].color}
+            handleClick={handleOnClick}
+          />
+        ))}
+      </PricingContainer>
+    </>
   );
 };
 

@@ -24,11 +24,12 @@ const Img = styled.img`
 const Brand = styled.h1`
 	font-size: 20px
 	color: ${props => props.theme.white};
-	font-weight: 900;
+  font-weight: 900;
 `;
 const BrandProfile = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 const Menu = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ const Item = styled.h1`
 const Navbar = ({ url }) => {
   return (
     <Header url={url}>
-      <BrandProfile>
+      <BrandProfile onClick={() => history.push("/")}>
         <Img src={Logo} />
         <Brand>Vision</Brand>
       </BrandProfile>

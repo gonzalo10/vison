@@ -222,7 +222,8 @@ export const ClientImg = styled.img`
   margin-right: 10px;
 `;
 export const UsesImg = styled.img`
-  height: 220px;
+  max-height: 160px;
+  height: 45%;
 `;
 
 export const Section = styled.div`
@@ -255,9 +256,8 @@ export const ClientsIcons = styled.div`
   margin: 60px;
 `;
 export const UsesIcons = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  margin: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 `;
 export const Footer = styled.div`
   width: 100vw;

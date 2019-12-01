@@ -6,7 +6,7 @@ import dasboardSVG from "../../../assets/images/home.svg";
 import dragSVG from "../../../assets/images/drag.svg";
 import manufactureSVG from "../../../assets/images/manufacture.svg";
 import integrateSVG from "../../../assets/images/integrate.svg";
-import visionLogo from "../../../assets/images/vision.svg";
+import logoSVG from "../../../assets/images/logo.svg";
 import DS from "../../../assets/images/DS.png";
 import BA from "../../../assets/images/BA.png";
 import DE from "../../../assets/images/DE.png";
@@ -170,7 +170,7 @@ export const LandingPage = () => {
       </Section>
       <Footer />
       <FooterContent>
-        <Logo src={visionLogo} />
+        <Logo src={logoSVG} />
         <Product>Products</Product>
         <Guides>Guides</Guides>
         <Company>Company</Company>
