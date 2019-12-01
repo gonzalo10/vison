@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 import visionLogo from "../../../assets/images/vision.svg";
-import { modelActions } from "../../../_actions";
-import { Sidebar } from "../../Layout/Sidebar";
+import { modelActions, modalActions } from "../../../_actions";
 import { history } from "../../../helpers";
-import { Button, Input, Card, CardMenu } from "../../../utils/Designs";
-import { CreateModelWizard } from "../../../components/Wizard/CreateModel";
-import { notificationsActions } from "../../../_actions";
+import { Button, Modal } from "../../../utils/Designs";
+import { CreateModelWizard } from "../../Modals/CreateModel";
 
 import DashboardMenu from "./DashboardMenu";
 
@@ -41,18 +37,6 @@ const HeaderLeft = styled.div`
   display: flex;
 `;
 const HeaderRight = styled.div``;
-const Modal = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  align-items: center;
-  display: flex;
-  justify-content: center;
-`;
 
 const HeaderWrapper = ({ handleOpenWizard }) => {
   return (
@@ -94,8 +78,9 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
   };
 
   const handleOpenWizard = () => {
-    dispatch(modelActions.getModelTypes());
-    setModelWizar(true);
+    dispatch(modalActions.openModal("CreateModelWizard"));
+    // dispatch(modelActions.getModelTypes());
+    // setModelWizar(true);
   };
 
   const handleOpenMenu = id => {
@@ -109,7 +94,6 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
 
   return (
     <>
-      <Sidebar openModelWizard={handleOpenWizard} />
       <Container>
         <HeaderWrapper handleOpenWizard={handleOpenWizard} />
         <DashboardMenu
@@ -121,14 +105,6 @@ const Dashboard = ({ dispatch, modelList, modelTypes, isLoading }) => {
           handleStartProject={handleStartProject}
         />
       </Container>
-      {modelWizard ? (
-        <Modal id={"modal"} onClick={handleClickModal}>
-          <CreateModelWizard
-            modelTypes={modelTypes}
-            createModel={createModel}
-          />
-        </Modal>
-      ) : null}
     </>
   );
 };

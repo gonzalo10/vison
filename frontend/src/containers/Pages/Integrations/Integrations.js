@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   faYoutube,
@@ -14,20 +14,20 @@ import {
   faHubspot,
   faYelp,
   faGoogle,
-  faIntercom,
-} from '@fortawesome/free-brands-svg-icons';
+  faIntercom
+} from "@fortawesome/free-brands-svg-icons";
 
-import { modelActions } from '../../../_actions';
-import { Sidebar } from '../../Layout/Sidebar';
-import { history } from '../../../helpers';
+import { modelActions } from "../../../_actions";
+import { Sidebar } from "../../Layout/Sidebar";
+import { history } from "../../../helpers";
 
 import {
   Button,
   Input as InputBase,
   FlatCard,
   CardMenu,
-  Toggle,
-} from '../../../utils/Designs';
+  Toggle
+} from "../../../utils/Designs";
 const Container = styled.div`
   display: flex;
   margin-left: 100px;
@@ -89,7 +89,6 @@ const IntegrationCard = styled(FlatCard)`
 const Integrations = ({ dispatch, isLoading }) => {
   return (
     <MainContainer>
-      <Sidebar />
       <Container>
         <Header>
           <HeaderLeft>

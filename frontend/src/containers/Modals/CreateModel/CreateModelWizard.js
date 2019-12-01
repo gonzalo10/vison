@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faFileCsv } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faFileCsv } from "@fortawesome/free-solid-svg-icons";
+import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 
-import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { Input, Button, Card } from "../../../utils/Designs";
+import { modelActions } from "../../../_actions";
 
-import { Input, Button, Card } from '../../../utils/Designs';
-
-import { UploadDataModel } from './UploadDataModel';
+import { UploadDataModel } from "./UploadDataModel";
 
 const SmallCard = styled(Card)`
   height: 130px;
@@ -84,11 +85,15 @@ const IntegrationCard = styled(Card)`
   align-items: center;
 `;
 
-export const CreateModelWizard = ({ modelTypes, createModel }) => {
+const CreateModelWizard = ({ dispatch, modelTypes }) => {
   const [wizardStep, setWizardStep] = useState(0);
   const [selectedModelType, setModelType] = useState();
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    dispatch(modelActions.getModelTypes());
+  }, []);
 
   const handleModelType = e => {
     e.preventDefault();
@@ -112,10 +117,10 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
 
   const handleCreateModel = () => {
     const newModelData = { selectedModelType, title, description };
-    setTitle('');
+    setTitle("");
     setWizardStep(0);
-    setDescription('');
-    createModel(newModelData);
+    setDescription("");
+    dispatch(modelActions.createModel(newModelData));
   };
 
   const onClickGoBack = () => {
@@ -140,7 +145,8 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
                     <SmallCard
                       key={model.id}
                       id={model.id}
-                      onClick={handleModelType}>
+                      onClick={handleModelType}
+                    >
                       <SmallCardIcon>{model.imageUrl}</SmallCardIcon>
                       <CardText>{model.title}</CardText>
                     </SmallCard>
@@ -156,16 +162,16 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
           <Form onSubmit={handleModelDetails}>
             <h3>Model Title</h3>
             <Input
-              type='text'
+              type="text"
               onChange={e => setTitle(e.target.value)}
-              value={title || ''}
+              value={title || ""}
             />
             <h3>Model Description</h3>
             <TextArea
               onChange={e => setDescription(e.target.value)}
-              value={description || ''}
+              value={description || ""}
             />
-            <Button color='blueDark' type='submit' value='Submit'>
+            <Button color="blueDark" type="submit" value="Submit">
               Next
             </Button>
           </Form>
@@ -213,3 +219,11 @@ export const CreateModelWizard = ({ modelTypes, createModel }) => {
     </ModelWizard>
   );
 };
+
+function mapStateToProps(state) {
+  const { modelTypes } = state.models;
+  return { modelTypes };
+}
+
+const connectedCreateModelWizard = connect(mapStateToProps)(CreateModelWizard);
+export { connectedCreateModelWizard as CreateModelWizard };

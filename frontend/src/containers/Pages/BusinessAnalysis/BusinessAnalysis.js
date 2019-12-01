@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
   faCaretUp,
   faPoll,
-  faFileAlt,
-} from '@fortawesome/free-solid-svg-icons';
+  faFileAlt
+} from "@fortawesome/free-solid-svg-icons";
 
-import { entityActions, modelActions } from '../../../_actions';
-import { Sidebar } from '../../Layout/Sidebar';
-import { history } from '../../../helpers';
+import { entityActions, modelActions } from "../../../_actions";
+import { Sidebar } from "../../Layout/Sidebar";
+import { history } from "../../../helpers";
 import {
   Button as ButtonBase,
   FlatCard,
@@ -20,9 +20,9 @@ import {
   ModelBody,
   ModelHeader,
   ModelHeaderDescription,
-  ModelHeaderTitle,
-} from '../../../utils/Designs';
-import { BussinessPieChart } from '../../../components/Charts';
+  ModelHeaderTitle
+} from "../../../utils/Designs";
+import { BussinessPieChart } from "../../../components/Charts";
 
 const Container = styled.div`
   margin-left: 100px;
@@ -211,19 +211,19 @@ const Results = ({ data }) => {
 };
 
 const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [openInfoList, setOpenInfo] = useState([]);
 
   useEffect(() => {
     getModel();
   }, []);
   const getModelId = () => {
-    const url = history.location.pathname.split('/');
+    const url = history.location.pathname.split("/");
     const id = url[url.length - 1];
     return id;
   };
   const getModel = () => {
-    const url = history.location.pathname.split('/');
+    const url = history.location.pathname.split("/");
     const id = getModelId();
     const modelType = url[url.length - 2];
     dispatch(modelActions.getModel(id, modelType));
@@ -252,7 +252,6 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
 
   return (
     <>
-      <Sidebar />
       <Container>
         <ModelHeader>
           <ModelHeaderTitle>
@@ -278,9 +277,10 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
             <Left>
               <BodyTitle>Analyze your text</BodyTitle>
               <TextArea
-                placeholder='Write here your text to analyze...'
-                onChange={handleChange}></TextArea>
-              <Button color='blueDark' onClick={execute}>
+                placeholder="Write here your text to analyze..."
+                onChange={handleChange}
+              ></TextArea>
+              <Button color="blueDark" onClick={execute}>
                 Analyze
               </Button>
             </Left>
@@ -316,7 +316,7 @@ const BusinessAnalysis = ({ dispatch, entities, isLoading, selectedModel }) => {
                       {openInfoList && openInfoList.includes(key) ? (
                         <>
                           <CardBody>{business.articleBody}</CardBody>
-                          <CardUrl href={business.wikiUrl} target='_blank'>
+                          <CardUrl href={business.wikiUrl} target="_blank">
                             {business.wikiUrl}
                           </CardUrl>
                           <DownCaret
@@ -363,7 +363,7 @@ function mapStateToProps(state) {
   const { selectedModel } = state.models;
   return {
     entities,
-    selectedModel,
+    selectedModel
   };
 }
 

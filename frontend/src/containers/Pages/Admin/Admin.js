@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import { userActions } from '../../../_actions';
-import { Sidebar } from '../../Layout/Sidebar';
-import PreviewData from '../../../components/PreviewData';
+import { userActions } from "../../../_actions";
+import { Sidebar } from "../../Layout/Sidebar";
+import PreviewData from "../../../components/PreviewData";
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +34,7 @@ const RowItem = styled.div`
 
 const HeaderWrapper = styled.div`
   display: grid;
-  grid-template-columns: ${({ columns }) => '1fr '.repeat(columns)};
+  grid-template-columns: ${({ columns }) => "1fr ".repeat(columns)};
   text-align: center;
   background-color: #6c79e0;
   color: white;
@@ -45,7 +45,7 @@ const HeaderWrapper = styled.div`
 `;
 const RowWrapper = styled.div`
   display: grid;
-  grid-template-columns: ${({ columns }) => '1fr '.repeat(columns)};
+  grid-template-columns: ${({ columns }) => "1fr ".repeat(columns)};
   text-align: center;
   border-bottom: 1px solid lightgray;
 `;
@@ -83,7 +83,7 @@ const Body = ({ rows }) => {
   return (
     <BodyWrapper>
       {rows.map((row, index) => {
-        console.log('rows', row);
+        console.log("rows", row);
         return (
           <RowWrapper key={index} columns={Object.keys(row).length}>
             {Object.keys(row).map((col, index) => {
@@ -109,15 +109,14 @@ const Admin = ({ dispatch, users, me }) => {
     return null;
   }
   const headers = [
-    'email',
-    'modelsUsage',
-    'requestsUsage',
-    'created',
-    'userTypeId',
+    "email",
+    "modelsUsage",
+    "requestsUsage",
+    "created",
+    "userTypeId"
   ];
   return (
     <>
-      <Sidebar />
       <Container>
         <div>Admin Panel</div>
         <div>

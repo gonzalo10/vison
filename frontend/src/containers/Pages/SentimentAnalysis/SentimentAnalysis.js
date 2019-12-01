@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import { modelActions } from '../../../_actions';
-import { history } from '../../../helpers';
-import { Sidebar } from '../../Layout/Sidebar';
+import { modelActions } from "../../../_actions";
+import { history } from "../../../helpers";
+import { Sidebar } from "../../Layout/Sidebar";
 import {
   Badge,
   BadgeGroup,
   ModelHeader,
   ModelHeaderTitle,
   ModelHeaderDescription,
-  FlatCard,
-} from '../../../utils/Designs';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartPie, faFileAlt } from '@fortawesome/free-solid-svg-icons';
-import { PieChart } from '../../../components/Charts';
-import { InputNewData } from './InputNewData';
+  FlatCard
+} from "../../../utils/Designs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartPie, faFileAlt } from "@fortawesome/free-solid-svg-icons";
+import { PieChart } from "../../../components/Charts";
+import { InputNewData } from "./InputNewData";
 
 const Container = styled.div`
   margin-left: 100px;
@@ -35,7 +35,7 @@ const ContentArea = styled.div`
   margin-top: 0px;
   width: 90%;
   height: 100%;
-  display: ${props => !props.isLoad && 'none'};
+  display: ${props => !props.isLoad && "none"};
 `;
 const ResultRow = styled.div`
   display: grid;
@@ -58,7 +58,7 @@ const DataArea = styled(FlatCard)`
   cursor: default;
   height: 300px;
   align-items: center;
-  justify-content: ${props => (props.hasData ? 'start' : 'center')};
+  justify-content: ${props => (props.hasData ? "start" : "center")};
 `;
 
 const StatsWrapper = styled.div`
@@ -123,19 +123,19 @@ const SentimentAnalysis = ({
   sentimentValue,
   icon,
   isLoading,
-  sentimentModel,
+  sentimentModel
 }) => {
   useEffect(() => {
     getModel();
   }, []);
 
   const getModelId = () => {
-    const url = history.location.pathname.split('/');
+    const url = history.location.pathname.split("/");
     const id = url[url.length - 1];
     return id;
   };
   const getModelType = () => {
-    const url = history.location.pathname.split('/');
+    const url = history.location.pathname.split("/");
     const modeType = url[url.length - 2];
     return modeType;
   };
@@ -156,14 +156,14 @@ const SentimentAnalysis = ({
   };
   return (
     <>
-      <Sidebar />
       <Container>
         <ModelHeader>
           <ModelHeaderTitle>
             <div
-              contentEditable='true'
+              contentEditable="true"
               // onInput={e => console.log('has changed', e.target.textContent)}
-              onBlur={e => console.log('has stopeed', e.target.textContent)}>
+              onBlur={e => console.log("has stopeed", e.target.textContent)}
+            >
               {sentimentModel && sentimentModel.title}
             </div>
             <Icon>😍/😡</Icon>
@@ -290,7 +290,7 @@ function mapStateToProps(state) {
     sentimentValue,
     isLoading,
     icon,
-    sentimentModel,
+    sentimentModel
   };
 }
 

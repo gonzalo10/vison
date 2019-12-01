@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
-import welcomeImg from '../../../assets/images/welcome2.jpg';
-import visionLogo from '../../../assets/images/vision.svg';
-import { userActions } from '../../../_actions';
-import { Sidebar } from '../../Layout/Sidebar';
-import { history } from '../../../helpers';
+import welcomeImg from "../../../assets/images/welcome2.jpg";
+import visionLogo from "../../../assets/images/vision.svg";
+import { userActions } from "../../../_actions";
+import { Sidebar } from "../../Layout/Sidebar";
+import { history } from "../../../helpers";
 import {
   Button,
   Input as InputBase,
   FlatCard,
   CardMenu,
-  Toggle,
-} from '../../../utils/Designs';
+  Toggle
+} from "../../../utils/Designs";
 const Container = styled.div`
   display: flex;
   margin-left: 100px;
   flex-direction: column;
-`;
-const MainContainer = styled.div`
   height: 100vh;
-  background-color: ${props => props.theme.color.beigeWhite};
 `;
+
 const Header = styled.div`
   height: 100px;
   display: flex;
@@ -107,7 +105,7 @@ const ProgressBar = styled.div`
 
 const InsideBar = styled.div`
   border-radius: 20px;
-  width: ${props => props.progress || '0'}%;
+  width: ${props => props.progress || "0"}%;
   height: 100%;
   transition: width;
   transition-duration: 1s;
@@ -142,13 +140,7 @@ const UserProfile = ({ dispatch, isLoading, myAccount }) => {
     dispatch(userActions.getUserAccount());
   }, []);
 
-  if (!myAccount)
-    return (
-      <MainContainer>
-        <Sidebar />
-        <Container />
-      </MainContainer>
-    );
+  if (!myAccount) return <Container />;
 
   const {
     createdAt,
@@ -160,76 +152,76 @@ const UserProfile = ({ dispatch, isLoading, myAccount }) => {
     price,
     requests,
     requestsUsage,
-    userTypeId,
+    userTypeId
   } = myAccount && myAccount;
 
   return (
-    <MainContainer>
-      <Sidebar />
-      <Container>
-        <Header>
-          <HeaderLeft>
+    <Container>
+      <Header>
+        <HeaderLeft>
+          <Avatar>🦊</Avatar>
+          <TitleHeader>My Profile</TitleHeader>
+        </HeaderLeft>
+        <HeaderRight>
+          <Button color="blueDark">Logout</Button>
+        </HeaderRight>
+      </Header>
+      <Body>
+        <UserInfoArea>
+          <UserInfoAreaLeft>
             <Avatar>🦊</Avatar>
-            <TitleHeader>My Profile</TitleHeader>
-          </HeaderLeft>
-          <HeaderRight>
-            <Button color='blueDark'>Logout</Button>
-          </HeaderRight>
-        </Header>
-        <Body>
-          <UserInfoArea>
-            <UserInfoAreaLeft>
-              <Avatar>🦊</Avatar>
-              <h5>Change profile imagen</h5>
-            </UserInfoAreaLeft>
-            <UserInfoAreaRight>
-              <Input placeholder='Name' type='text' />
-              <Input placeholder='Email' type='text' value={email} />
-              <Input placeholder='Company' type='text' />
-              <Input placeholder='Location' type='text' />
-              <div>{new Date(+createdAt).toLocaleDateString()}</div>
-            </UserInfoAreaRight>
-          </UserInfoArea>
-          <PasswordArea>
-            <Input placeholder='Old password' type='text' />
-            <Input placeholder='New password' type='text' />
-            <Input placeholder='Repeat new password' type='text' />
-            <Button color='blueDark'>Change password</Button>
-          </PasswordArea>
-          <UsageArea>
-            Models Usage
-            <ProgressBar>
-              <InsideBar progress={(modelsUsage / models) * 100}></InsideBar>
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '30%',
-                  left: '40%',
-                }}>
-                {modelsUsage}/{models}
-              </span>
-            </ProgressBar>
-            Requests Usage
-            <ProgressBar>
-              <InsideBar progress={(requestsUsage / requests) * 100} />
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '30%',
-                  left: '40%',
-                }}>
-                {requestsUsage}/{requests}
-              </span>
-            </ProgressBar>
-            <Button color='blueDark'>Upgrade Plan</Button>
-          </UsageArea>
-          <BillingArea>
-            <Input type='text' />
-            <Input type='text' />
-            <Input type='text' />
-            <Button color='blueDark'>Change billing address</Button>
-          </BillingArea>
-          {/* <EmailArea>
+            <h5>Change profile imagen</h5>
+          </UserInfoAreaLeft>
+          <UserInfoAreaRight>
+            <Input placeholder="Name" type="text" />
+            <Input placeholder="Email" type="text" value={email} />
+            <Input placeholder="Company" type="text" />
+            <Input placeholder="Location" type="text" />
+            <div>{new Date(+createdAt).toLocaleDateString()}</div>
+          </UserInfoAreaRight>
+        </UserInfoArea>
+        <PasswordArea>
+          <Input placeholder="Old password" type="text" />
+          <Input placeholder="New password" type="text" />
+          <Input placeholder="Repeat new password" type="text" />
+          <Button color="blueDark">Change password</Button>
+        </PasswordArea>
+        <UsageArea>
+          Models Usage
+          <ProgressBar>
+            <InsideBar progress={(modelsUsage / models) * 100}></InsideBar>
+            <span
+              style={{
+                position: "absolute",
+                top: "30%",
+                left: "40%"
+              }}
+            >
+              {modelsUsage}/{models}
+            </span>
+          </ProgressBar>
+          Requests Usage
+          <ProgressBar>
+            <InsideBar progress={(requestsUsage / requests) * 100} />
+            <span
+              style={{
+                position: "absolute",
+                top: "30%",
+                left: "40%"
+              }}
+            >
+              {requestsUsage}/{requests}
+            </span>
+          </ProgressBar>
+          <Button color="blueDark">Upgrade Plan</Button>
+        </UsageArea>
+        <BillingArea>
+          <Input type="text" />
+          <Input type="text" />
+          <Input type="text" />
+          <Button color="blueDark">Change billing address</Button>
+        </BillingArea>
+        {/* <EmailArea>
             <EmailAreaTop>
               <EmailAreaEmail>Supercollemail@gmail.com</EmailAreaEmail>
             </EmailAreaTop>
@@ -242,9 +234,8 @@ const UserProfile = ({ dispatch, isLoading, myAccount }) => {
               <Toggle />
             </EmailAreaBottom>
           </EmailArea> */}
-        </Body>
-      </Container>
-    </MainContainer>
+      </Body>
+    </Container>
   );
 };
 

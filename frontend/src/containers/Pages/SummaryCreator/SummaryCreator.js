@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import { summaryActions, modelActions } from '../../../_actions';
-import { history } from '../../../helpers';
-import { Sidebar } from '../../Layout/Sidebar';
+import { summaryActions, modelActions } from "../../../_actions";
+import { history } from "../../../helpers";
+import { Sidebar } from "../../Layout/Sidebar";
 import {
   Button as ButtonBase,
   ModelBody as ModelBodyBase,
   ModelHeader as ModelHeaderBase,
   ModelHeaderTitle as ModelHeaderTitleBase,
-  Card,
-} from '../../../utils/Designs';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+  Card
+} from "../../../utils/Designs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChartPie,
   faAlignJustify,
-  faFileAlt,
-} from '@fortawesome/free-solid-svg-icons';
+  faFileAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   margin-left: 100px;
@@ -118,7 +118,7 @@ const TextIcon = styled(ChartIcon)``;
 const EmptyStateText = styled.h2``;
 
 const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [summarySize, setSummarySize] = useState(80);
 
   //   useEffect(() => {
@@ -131,13 +131,13 @@ const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
   };
 
   const getModelId = () => {
-    const url = history.location.pathname.split('/');
+    const url = history.location.pathname.split("/");
     const id = url[url.length - 1];
     return id;
   };
 
   const getModel = () => {
-    const url = history.location.pathname.split('/');
+    const url = history.location.pathname.split("/");
     const id = getModelId();
     const modelType = url[url.length - 2];
     dispatch(modelActions.getModel(id, modelType));
@@ -154,7 +154,6 @@ const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
 
   return (
     <>
-      <Sidebar />
       <Container>
         <ModelHeader>
           <ModelHeaderTitle>
@@ -166,18 +165,19 @@ const SummaryCreator = ({ dispatch, preSummaryText, isLoading, summary }) => {
             <Left>
               <BodyTitle>Text to summarize</BodyTitle>
               <TextArea
-                placeholder='Write here the text you want to summarize...'
-                onChange={handleChange}></TextArea>
+                placeholder="Write here the text you want to summarize..."
+                onChange={handleChange}
+              ></TextArea>
               <SummarySizeArea>
                 Sumarize to
                 <SummarySizeInput
-                  placeholder='80'
-                  type='number'
+                  placeholder="80"
+                  type="number"
                   onChange={handleSummarySizeChange}
                 />
                 %
               </SummarySizeArea>
-              <Button color='blueDark' onClick={execute}>
+              <Button color="blueDark" onClick={execute}>
                 Summarize
               </Button>
             </Left>
@@ -208,7 +208,7 @@ function mapStateToProps(state) {
   return {
     preSummaryText,
     summary,
-    isLoading,
+    isLoading
   };
 }
 

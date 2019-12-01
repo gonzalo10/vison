@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 import EmptyDashboard from "./EmptyDashboard";
 
-import { Button, Input, Card, CardMenu } from "../../../utils/Designs";
+import { Card, CardMenu } from "../../../utils/Designs";
 
 const Models = styled.div`
   display: flex;
