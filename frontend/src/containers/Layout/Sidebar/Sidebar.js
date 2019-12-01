@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import { history } from '../../../helpers';
-import { userActions } from '../../../_actions';
+import { history } from "../../../helpers";
+import { userActions } from "../../../_actions";
 
 const LateralMenu = styled.div`
   width: 100px;
@@ -25,53 +25,57 @@ const MenuItem = styled.button`
   padding: 10px 0px 10px 2px;
   color: ${props => props.theme.white};
   background-color: ${props =>
-    props.isSelected ? props.theme.color.blueLight : 'transparent'};
+    props.isSelected ? props.theme.color.blueLight : "transparent"};
   border: none;
   cursor: pointer;
   width: 100%;
 `;
 
-const Sidebar = ({ dispatch }) => {
+const Sidebar = ({ dispatch, openModelWizard }) => {
   const isMyModelsSelected = () => {
-    if (history.location.pathname === '/dashboard') return true;
+    if (history.location.pathname === "/dashboard") return true;
   };
   const isIntegrationsSelected = () => {
-    if (history.location.pathname === '/integrations') return true;
+    if (history.location.pathname === "/integrations") return true;
   };
   const isTrainModelSelected = () => {
-    if (history.location.pathname === '/train') return true;
+    if (history.location.pathname === "/train") return true;
   };
   const isProfileSelected = () => {
-    if (history.location.pathname === '/profile') return true;
+    if (history.location.pathname === "/profile") return true;
   };
   return (
     <LateralMenu>
       <TopMenu>
         <MenuItem
-          id='myModels'
-          onClick={() => history.push('/dashboard')}
-          isSelected={isMyModelsSelected()}>
+          id="myModels"
+          onClick={() => history.push("/dashboard")}
+          isSelected={isMyModelsSelected()}
+        >
           My Models
         </MenuItem>
         <MenuItem
-          id='myModels'
-          onClick={() => history.push('/integrations')}
-          isSelected={isIntegrationsSelected()}>
+          id="myModels"
+          onClick={() => history.push("/integrations")}
+          isSelected={isIntegrationsSelected()}
+        >
           Integrations
         </MenuItem>
         <MenuItem
-          id='myModels'
-          onClick={() => history.push('/train')}
-          isSelected={isTrainModelSelected()}>
+          id="myModels"
+          onClick={() => history.push("/train")}
+          isSelected={isTrainModelSelected()}
+        >
           Train Model
         </MenuItem>
-        <MenuItem>+ Model</MenuItem>
+        <MenuItem onClick={openModelWizard}>+ Model</MenuItem>
       </TopMenu>
       <BottomMenu>
         <MenuItem
-          id='profile'
-          onClick={() => history.push('/profile')}
-          isSelected={isProfileSelected()}>
+          id="profile"
+          onClick={() => history.push("/profile")}
+          isSelected={isProfileSelected()}
+        >
           Profile
         </MenuItem>
         <MenuItem onClick={() => dispatch(userActions.logout())}>

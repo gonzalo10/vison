@@ -26,7 +26,7 @@ const populateDBMockData = async () => {
 	await ModelType.create({
 		title: 'Sentiment',
 		description: 'Sentiment Analysis',
-		imageUrl: 'love',
+		imageUrl: '😍',
 	});
 };
 

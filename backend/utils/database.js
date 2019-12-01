@@ -9,6 +9,7 @@ const sequelize = new Sequelize('vision', 'root', 'root', {
 		acquire: 30000,
 		idle: 10000,
 	},
+	charset: 'utf8mb4',
 });
 
 module.exports = sequelize;
