@@ -120,8 +120,8 @@ const CreateModelWizard = ({ dispatch, modelTypes }) => {
     setTitle("");
     setWizardStep(0);
     setDescription("");
-    dispatch(modelActions.createModel(newModelData));
     dispatch(modalActions.closeModal());
+    dispatch(modelActions.createModel(newModelData));
   };
 
   const onClickGoBack = () => {

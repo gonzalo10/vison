@@ -2,7 +2,8 @@ import { modelConstants } from "../constants";
 
 const initialState = {
   modelList: {},
-  isModelListLoading: undefined
+  isModelListLoading: false,
+  areModelsLoaded: false
 };
 
 export function models(state = { ...initialState }, action) {
@@ -10,21 +11,24 @@ export function models(state = { ...initialState }, action) {
     case modelConstants.GETALL_REQUEST:
       return {
         ...state,
-        isModelListLoading: true
+        isModelListLoading: true,
+        areModelsLoaded: false
       };
 
     case modelConstants.GETALL_SUCCESS:
       return {
         ...state,
         modelList: action.models,
-        isModelListLoading: false
+        isModelListLoading: false,
+        areModelsLoaded: true
       };
 
     case modelConstants.GETALL_FAILURE:
       return {
         ...state,
         message: action.message,
-        isModelListLoading: false
+        isModelListLoading: false,
+        areModelsLoaded: false
       };
 
     case modelConstants.GET_MODEL_TYPES_REQUEST:

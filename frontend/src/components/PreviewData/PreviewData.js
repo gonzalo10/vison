@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Table = styled.div`
   margin-top: 10px;
@@ -23,7 +23,7 @@ const RowItem = styled.div`
 
 const HeaderWrapper = styled.div`
   display: grid;
-  grid-template-columns: ${({ columns }) => '1fr '.repeat(columns)};
+  grid-template-columns: ${({ columns }) => "1fr ".repeat(columns)};
   text-align: center;
   background-color: #6c79e0;
   color: white;
@@ -34,7 +34,7 @@ const HeaderWrapper = styled.div`
 `;
 const RowWrapper = styled.div`
   display: grid;
-  grid-template-columns: ${({ columns }) => '1fr '.repeat(columns)};
+  grid-template-columns: ${({ columns }) => "1fr ".repeat(columns)};
   text-align: center;
   border-bottom: 1px solid lightgray;
 `;
@@ -98,7 +98,13 @@ const PreviewData = ({ data }) => {
         <Body rows={rows} />
       </Table>
     );
-  } else return <div>emptyState</div>;
+  } else
+    return (
+      <>
+        <h3>No data yet!</h3>
+        <h5>Upload data to see the preview</h5>
+      </>
+    );
 };
 
 export default PreviewData;

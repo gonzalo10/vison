@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
-import visionLogo from "../../../assets/images/vision.svg";
+import logoSVG from "../../../assets/images/logo.svg";
 import { modelActions, modalActions } from "../../../_actions";
 import { history } from "../../../helpers";
 import { Button } from "../../../utils/Designs";
@@ -22,8 +22,8 @@ const Header = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 40px;
-  margin: 20px;
+  height: 30px;
+  margin: auto 20px;
 `;
 
 const TitleHeader = styled.h1`
@@ -41,7 +41,7 @@ const HeaderWrapper = ({ handleOpenWizard }) => {
   return (
     <Header>
       <HeaderLeft>
-        <Logo src={visionLogo} />
+        <Logo src={logoSVG} />
         <TitleHeader>My Models</TitleHeader>
       </HeaderLeft>
       <HeaderRight>
@@ -53,7 +53,12 @@ const HeaderWrapper = ({ handleOpenWizard }) => {
   );
 };
 
-const Dashboard = ({ dispatch, modelList, isModelListLoading }) => {
+const Dashboard = ({
+  dispatch,
+  modelList,
+  isModelListLoading,
+  areModelsLoaded
+}) => {
   const [menuOpenId, setMenuOpen] = useState();
   useEffect(() => {
     dispatch(modelActions.getAll());
@@ -90,6 +95,7 @@ const Dashboard = ({ dispatch, modelList, isModelListLoading }) => {
           handleDeleteModel={handleDeleteModel}
           handleStartProject={handleStartProject}
           isModelListLoading={isModelListLoading}
+          areModelsLoaded={areModelsLoaded}
         />
       </Container>
     </>
@@ -97,8 +103,8 @@ const Dashboard = ({ dispatch, modelList, isModelListLoading }) => {
 };
 
 function mapStateToProps(state) {
-  const { modelList, isModelListLoading } = state.models;
-  return { modelList, isModelListLoading };
+  const { modelList, isModelListLoading, areModelsLoaded } = state.models;
+  return { modelList, isModelListLoading, areModelsLoaded };
 }
 
 const connectedDashboard = connect(mapStateToProps)(Dashboard);

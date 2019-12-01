@@ -1,11 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import UploadFile from '../../../helpers/uploadData';
-import PreviewData from '../../../components/PreviewData';
-import { Button } from '../../../utils/Designs';
-import { modelActions } from '../../../_actions';
+import UploadFile from "../../../helpers/uploadData";
+import PreviewData from "../../../components/PreviewData";
+import { Button } from "../../../utils/Designs";
+import { modelActions, modalActions } from "../../../_actions";
 
 const WizardTitle = styled.h1`
   text-align: center;
@@ -15,23 +15,32 @@ const UploadFileWrapper = styled.div`
   display: flex;
 `;
 
+const PreviewWrapper = styled.div`
+  justify-content: center;
+  display: flex;
+  min-height: 40%;
+  align-items: center;
+  flex-direction: column;
+`;
+
 const UploadDataModel = ({
   dataSetPreview,
   modelType,
   title,
   description,
-  dispatch,
+  dispatch
 }) => {
   const onClickCreateModel = () => {
-    const fileName = localStorage.getItem('uploadedFile');
+    const fileName = localStorage.getItem("uploadedFile");
     dispatch(
       modelActions.createModelFromFile({
         fileName,
         modelType,
         title,
-        description,
+        description
       })
     );
+    dispatch(modalActions.closeModal());
   };
   return (
     <>
@@ -39,10 +48,16 @@ const UploadDataModel = ({
       <UploadFileWrapper>
         <UploadFile />
       </UploadFileWrapper>
-      <PreviewData data={dataSetPreview || null} />
-      <Button color='blueDark' onClick={onClickCreateModel}>
-        Create Model
-      </Button>
+      <PreviewWrapper style={{ display: "flex", justifyContent: "center" }}>
+        <PreviewData data={dataSetPreview || null} />
+        <Button
+          color="blueDark"
+          onClick={onClickCreateModel}
+          disabled={!dataSetPreview}
+        >
+          Create Model
+        </Button>
+      </PreviewWrapper>
     </>
   );
 };
@@ -50,7 +65,7 @@ const UploadDataModel = ({
 function mapStateToProps(state) {
   const { dataSetPreview } = state.uploadedFile;
   return {
-    dataSetPreview,
+    dataSetPreview
   };
 }
 

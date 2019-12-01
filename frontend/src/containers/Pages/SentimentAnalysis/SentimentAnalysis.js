@@ -160,7 +160,6 @@ const SentimentAnalysis = ({
         <ModelHeader>
           <ModelHeaderTitle>
             <div
-              contentEditable="true"
               // onInput={e => console.log('has changed', e.target.textContent)}
               onBlur={e => console.log("has stopeed", e.target.textContent)}
             >

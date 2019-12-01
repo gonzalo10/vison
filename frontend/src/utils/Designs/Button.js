@@ -1,19 +1,19 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import colorPalette from '../colors';
+import colorPalette from "../colors";
 
 export const Button = styled.button`
   cursor: pointer;
-  margin-right: 23px;
+  margin: 20px;
   border: ${props =>
-    props.variant === 'outlined'
+    props.variant === "outlined"
       ? `2px solid ${colorPalette[props.color]}`
-      : 'none'};
+      : "none"};
   color: ${props =>
-    props.variant === 'outlined' ? colorPalette[props.color] : '#fff'};
+    props.variant === "outlined" ? colorPalette[props.color] : "#fff"};
   background: ${props =>
-    props.variant === 'outlined' ? '#fff' : colorPalette[props.color]};
+    props.variant === "outlined" ? "#fff" : colorPalette[props.color]};
   text-shadow: 0 1px 3px rgba(36, 180, 126, 0.4);
   white-space: nowrap;
   display: inline-block;
@@ -30,5 +30,9 @@ export const Button = styled.button`
   transition: all 0.15s ease;
   &:hover {
     filter: grayscale(20%);
+  }
+  &:disabled {
+    background: #d3d3d3;
+    cursor: default;
   }
 `;

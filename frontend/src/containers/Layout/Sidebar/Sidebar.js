@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import { history } from "../../../helpers";
 import { userActions, modalActions } from "../../../_actions";
+import logoSVG from "../../../assets/images/logoWhite.svg";
 
 const LateralMenu = styled.div`
   width: 100px;
@@ -15,10 +16,12 @@ const LateralMenu = styled.div`
   background-color: ${props => props.theme.color.blueDark};
 `;
 const TopMenu = styled.div`
-  margin-top: 50px;
+  margin-top: 0px;
+  padding: 5px;
 `;
 const BottomMenu = styled.div`
   margin-bottom: 20px;
+  padding: 5px;
 `;
 const MenuItem = styled.button`
   font-size: 17px;
@@ -30,23 +33,28 @@ const MenuItem = styled.button`
   cursor: pointer;
   width: 100%;
 `;
+const Logo = styled.img`
+  height: 30px;
+  margin: 10px 10px;
+`;
 
-const Sidebar = ({ dispatch }) => {
+const Sidebar = ({ dispatch, url }) => {
   const isMyModelsSelected = () => {
-    if (history.location.pathname === "/dashboard") return true;
+    if (url === "/dashboard") return true;
   };
   const isIntegrationsSelected = () => {
-    if (history.location.pathname === "/integrations") return true;
+    if (url === "/integrations") return true;
   };
   const isTrainModelSelected = () => {
-    if (history.location.pathname === "/train") return true;
+    if (url === "/train") return true;
   };
   const isProfileSelected = () => {
-    if (history.location.pathname === "/profile") return true;
+    if (url === "/profile") return true;
   };
   return (
     <LateralMenu>
       <TopMenu>
+        <Logo src={logoSVG} />
         <MenuItem
           id="myModels"
           onClick={() => history.push("/dashboard")}

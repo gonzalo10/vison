@@ -1,8 +1,8 @@
-import { modelConstants } from '../constants';
-import { modelService } from '../_services';
-import { history } from '../helpers';
+import { modelConstants } from "../constants";
+import { modelService } from "../_services";
+import { history } from "../helpers";
 
-import { notificationsActions } from './';
+import { notificationsActions } from "./";
 
 export const modelActions = {
   getAll,
@@ -10,7 +10,7 @@ export const modelActions = {
   getModelTypes,
   getModel,
   deleteModel,
-  createModelFromFile,
+  createModelFromFile
 };
 
 const arrayToObject = array =>
@@ -28,7 +28,7 @@ function getAll() {
         dispatch(success(arrayToObject(models)));
       },
       error => {
-        console.log('error', error);
+        console.log("error", error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }
@@ -54,7 +54,7 @@ function getModelTypes() {
         dispatch(success(modelTypes));
       },
       error => {
-        console.log('error', error);
+        console.log("error", error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }
@@ -77,12 +77,11 @@ function createModel(newModelData) {
     dispatch(request());
 
     modelService.createModel(newModelData).then(
-      models => {
-        // dispatch(success());
+      () => {
         dispatch(getAll());
       },
       error => {
-        console.log('error', error);
+        console.log("error", error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }
@@ -107,12 +106,12 @@ function createModelFromFile(newModelData) {
       model => {
         // dispatch(success());
         const { modelType, modelId } = model;
-        console.log('createModelFromFile', model);
+        console.log("createModelFromFile", model);
         history.push(`/model/${modelType}/${modelId}`);
         dispatch(getAll());
       },
       error => {
-        console.log('error', error);
+        console.log("error", error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }
@@ -136,16 +135,16 @@ function getModel(id, modelType) {
     let getModelType = undefined;
 
     switch (modelType) {
-      case '1':
+      case "1":
         getModelType = modelService.getSentimentModel;
         break;
-      case '2':
+      case "2":
         getModelType = modelService.getEntityModel;
         break;
-      case '3':
+      case "3":
         getModelType = modelService.getSummaryModel;
         break;
-      case '3':
+      case "3":
         getModelType = modelService.getYoutubeCommentsModel;
         break;
       default:
@@ -153,11 +152,11 @@ function getModel(id, modelType) {
     }
     getModelType(id).then(
       model => {
-        console.log('model', model);
+        console.log("model", model);
         dispatch(success(model));
       },
       error => {
-        console.log('error', error);
+        console.log("error", error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }
@@ -182,10 +181,10 @@ function deleteModel(id) {
       response => {
         console.log(response);
         dispatch(getAll());
-        dispatch(notificationsActions.success('The model has been deleted'));
+        dispatch(notificationsActions.success("The model has been deleted"));
       },
       error => {
-        console.log('error', error);
+        console.log("error", error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }

@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
+import React from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
 
-import { history } from '../../helpers';
-import { userActions } from '../../_actions';
-import Logo from '../../assets/images/vision.svg';
+import { history } from "../../helpers";
+import { userActions } from "../../_actions";
+import Logo from "../../assets/images/logoWhite.svg";
 
 const Header = styled.div`
   color: ${props => props.theme.fontsPrimaryColor};
@@ -50,17 +50,17 @@ const Navbar = ({ url }) => {
         <Brand>Vision</Brand>
       </BrandProfile>
       <Menu>
-        <Item onClick={() => history.push('/login')}>Log in</Item>
-        <Item onClick={() => history.push('/signup')}>Sign up</Item>
+        <Item onClick={() => history.push("/login")}>Log in</Item>
+        <Item onClick={() => history.push("/signup")}>Sign up</Item>
       </Menu>
     </Header>
   );
 };
 
 function mapStateToProps(state) {
-  const user = 'Gonzalo';
+  const user = "Gonzalo";
   return {
-    user,
+    user
   };
 }
 

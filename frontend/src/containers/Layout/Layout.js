@@ -21,7 +21,7 @@ class Layout extends Component {
     }
     return (
       <>
-        <Sidebar />
+        <Sidebar url={url} />
         <Notifications />
         <Modal />
         <main>{this.props.children}</main>

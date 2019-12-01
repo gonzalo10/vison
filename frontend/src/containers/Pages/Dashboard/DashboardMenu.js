@@ -70,61 +70,64 @@ const DashboardMenu = ({
   handleOpenMenu,
   handleDeleteModel,
   handleOpenWizard,
-  isModelListLoading
+  areModelsLoaded
 }) => {
-  if (isModelListLoading === undefined) return null;
-  if (!Object.keys(modelList).length && !isModelListLoading) {
-    return <EmptyDashboard />;
-  }
+  const shouldShowModels = areModelsLoaded && Object.keys(modelList).length;
+  const shouldShowEmptyState =
+    areModelsLoaded && !Object.keys(modelList).length;
 
-  return (
-    <Models>
-      <CardMenu>
-        <ModelCard color="#4553ff">
-          <ModelMenu />
-          <div onClick={handleOpenWizard}>
-            <CardIcon fontSize={50} color="white">
-              +
-            </CardIcon>
-            <CardText color="white">Create Model</CardText>
-          </div>
-        </ModelCard>
-        {Object.keys(modelList).map(modelId => {
-          const model = modelList[modelId];
-          return (
-            <ModelCard
-              key={model.id}
-              id={model.id}
-              name={model.modelTypeId}
-              // onClick={handleStartProject}
-            >
-              <ModelMenu
-                id="optionsMenu"
-                icon={faEllipsisV}
-                onClick={() => handleOpenMenu(model.id)}
-              />
-              {menuOpenId === model.id && (
-                <OptionsMenu>
-                  <OptionsMenuItem>Edit</OptionsMenuItem>
-                  <OptionsMenuItem
-                    delete
-                    onClick={() => handleDeleteModel(model.id)}
-                  >
-                    Delete
-                  </OptionsMenuItem>
-                </OptionsMenu>
-              )}
-              <div id={model.id} onClick={handleStartProject}>
-                <CardIcon>{model.modelType.imageUrl}</CardIcon>
-                <CardText>{model.title}</CardText>
-                <CardDescription>{model.description}</CardDescription>
-              </div>
-            </ModelCard>
-          );
-        })}
-      </CardMenu>
-    </Models>
-  );
+  if (shouldShowEmptyState) return <EmptyDashboard />;
+  if (shouldShowModels) {
+    return (
+      <Models>
+        <CardMenu>
+          <ModelCard color="#4553ff">
+            <ModelMenu />
+            <div onClick={handleOpenWizard}>
+              <CardIcon fontSize={50} color="white">
+                +
+              </CardIcon>
+              <CardText color="white">Create Model</CardText>
+            </div>
+          </ModelCard>
+          {Object.keys(modelList).map(modelId => {
+            const model = modelList[modelId];
+            return (
+              <ModelCard
+                key={model.id}
+                id={model.id}
+                name={model.modelTypeId}
+                // onClick={handleStartProject}
+              >
+                <ModelMenu
+                  id="optionsMenu"
+                  icon={faEllipsisV}
+                  onClick={() => handleOpenMenu(model.id)}
+                />
+                {menuOpenId === model.id && (
+                  <OptionsMenu>
+                    <OptionsMenuItem>Edit</OptionsMenuItem>
+                    <OptionsMenuItem
+                      delete
+                      onClick={() => handleDeleteModel(model.id)}
+                    >
+                      Delete
+                    </OptionsMenuItem>
+                  </OptionsMenu>
+                )}
+                <div id={model.id} onClick={handleStartProject}>
+                  <CardIcon>{model.modelType.imageUrl}</CardIcon>
+                  <CardText>{model.title}</CardText>
+                  <CardDescription>{model.description}</CardDescription>
+                </div>
+              </ModelCard>
+            );
+          })}
+        </CardMenu>
+      </Models>
+    );
+  }
+  return null;
 };
 
 export default DashboardMenu;
