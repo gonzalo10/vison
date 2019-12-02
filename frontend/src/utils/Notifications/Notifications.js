@@ -28,12 +28,12 @@ const NotifiactionBase = styled.div`
   box-shadow: -1px 7px 24px -6px rgba(0, 0, 0, 0.43);
   color: white;
   z-index: 9;
-  // transition: transform 1000ms ease-in;
   animation: slidein 3s linear 1s infinite alternate;
 `;
 
 const Notification = styled(NotifiactionBase)`
   border: 1px solid ${props => props.color};
+  background-color: white;
 `;
 
 const NotifiactionText = styled.p`
@@ -53,7 +53,7 @@ const IconClose = styled(FontAwesomeIcon)`
   color: black;
 `;
 
-const Notifications = ({ dispatch, notifications }) => {
+const Notifications = ({ dispatch, notifications = {} }) => {
   const handleClickClose = () => {
     dispatch(notificationsActions.clear());
   };

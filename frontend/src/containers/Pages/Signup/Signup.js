@@ -93,28 +93,26 @@ export const Span6 = styled.span`
 const SignupPage = ({ dispatch }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [plan, setPlan] = useState(0);
+  const [repeatedPassword, setRepeatedPassword] = useState();
+  const [plan, setPlan] = useState(1);
   const [isSignupModalOpen, setSignupModal] = useState(false);
 
   const handleLogin = () => {
-    dispatch(userActions.register(username, password, plan));
+    dispatch(userActions.register(username, password, Number(plan)));
   };
 
   const handleSelectedPrice = e => {
     if (e) {
       setSignupModal(true);
-      console.log("value", e.target.value);
+      setPlan(e.target.id);
     } else {
       setSignupModal(false);
+      setPlan(1);
     }
-  };
-  const handleClickOutside = e => {
-    // setSignupModal(false);
-    if (e) console.log(e.target.id);
   };
 
   return (
-    <SignupWrapper id="2" onClick={handleClickOutside}>
+    <SignupWrapper>
       <Header>
         <Span1 />
         <Span2 />
@@ -140,7 +138,12 @@ const SignupPage = ({ dispatch }) => {
             placeholder="password"
             value={password || ""}
           />
-
+          <Input
+            padding="m"
+            onChange={e => setRepeatedPassword(e.target.value)}
+            placeholder="repeat the password"
+            value={repeatedPassword || ""}
+          />
           <Button onClick={handleLogin} color="blueDark">
             Login
           </Button>

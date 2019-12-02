@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
-import { userActions } from '../../../_actions';
-
-import { Button, Input as InputBase } from '../../../utils/Designs';
+import { userActions } from "../../../_actions";
+import logoSVG from "../../../assets/images/logoWhite.svg";
+import { Button, Input as InputBase } from "../../../utils/Designs";
 
 export const LoginSection = styled.div`
   display: flex;
@@ -39,9 +39,17 @@ const DesignSection = styled.div`
   width: 50%;
   min-width: 300px;
   padding: 15px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 60px 0px;
 `;
 const Title = styled.h1``;
-const SubTitle = styled.h1``;
+const SubTitle = styled.h3`
+  font-size: 25px;
+  text-align: center;
+`;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -51,8 +59,16 @@ const InputPassword = styled(InputBase)`
   text-security: disc;
 `;
 
+const Logo = styled.img`
+  height: 60px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+`;
+
 const LoginPage = ({ dispatch, isOpen, message }) => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState();
 
   const handleLogin = e => {
@@ -71,19 +87,19 @@ const LoginPage = ({ dispatch, isOpen, message }) => {
           <Title>
             Welcome to <b>Vision</b>
           </Title>
+          <Logo src={logoSVG} />
           <SubTitle>Login to use the app</SubTitle>
         </DesignSection>
         <LoginSection>
           <h1>Login</h1>
-          {isOpen ? <div>{message}</div> : null}
           <Form onSubmit={handleLogin}>
             <InputBase
-              type='text'
+              type="text"
               onChange={e => setUsername(e.target.value)}
-              value={username || ''}
+              value={username || ""}
             />
-            <InputPassword onChange={handlePassword} value={password || ''} />
-            <Button color='blueDark' type='submit' value='Submit'>
+            <InputPassword onChange={handlePassword} value={password || ""} />
+            <Button color="blueDark" type="submit" value="Submit">
               Login
             </Button>
           </Form>
@@ -97,7 +113,7 @@ function mapStateToProps(state) {
   const { isOpen, message } = state.notifications;
   return {
     isOpen,
-    message,
+    message
   };
 }
 

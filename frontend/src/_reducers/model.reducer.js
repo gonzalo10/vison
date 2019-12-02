@@ -98,6 +98,7 @@ export function models(state = { ...initialState }, action) {
 
     case modelConstants.DELETE_MODEL_FAILURE:
       return {
+        ...state,
         message: action.message
       };
 

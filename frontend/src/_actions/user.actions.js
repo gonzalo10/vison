@@ -1,8 +1,8 @@
-import { userConstants } from '../constants';
-import { userService } from '../_services';
-import { history } from '../helpers';
+import { userConstants } from "../constants";
+import { userService } from "../_services";
+import { history } from "../helpers";
 
-import { notificationsActions } from './';
+import { notificationsActions } from "./";
 
 export const userActions = {
   login,
@@ -10,7 +10,7 @@ export const userActions = {
   register,
   getUserAccount,
   getAllUsers,
-  getUser,
+  getUser
 };
 
 function login(username, password) {
@@ -22,15 +22,15 @@ function login(username, password) {
         if (user) {
           dispatch(success(user));
           const { token } = user.login;
-          localStorage.removeItem('token');
-          localStorage.setItem('token', token);
-          history.push('/dashboard');
+          localStorage.removeItem("token");
+          localStorage.setItem("token", token);
+          history.push("/dashboard");
         } else {
-          console.error('no user');
+          console.error("no user");
         }
       },
       error => {
-        console.log('error', error);
+        console.log("error", error);
         dispatch(failure(error.toString()));
         // dispatch(notificationsActions.error(error.toString()));
       }
@@ -52,7 +52,7 @@ function logout() {
   return dispatch => {
     userService.logout();
     dispatch(logout());
-    history.push('/login');
+    history.push("/login");
   };
   function logout() {
     return { type: userConstants.LOGOUT };
@@ -62,13 +62,11 @@ function logout() {
 function register(username, password, plan) {
   return dispatch => {
     dispatch(request());
-
     userService.register(username, password, plan).then(
-      user => {
-        console.log('user', user);
+      () => {
         dispatch(success());
-        history.push('/login');
-        dispatch(notificationsActions.success('Registration successful'));
+        history.push("/login");
+        dispatch(notificationsActions.success("Registration successful"));
       },
       error => {
         dispatch(failure(error.toString()));
@@ -97,7 +95,7 @@ function getUserAccount() {
         dispatch(
           success({
             ...user.user,
-            ...user.userType,
+            ...user.userType
           })
         );
       },

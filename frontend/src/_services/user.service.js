@@ -1,8 +1,8 @@
-import { client } from '../index';
-import { gql } from 'apollo-boost';
-import { API, backendURL } from './helpers';
-import { store } from '../helpers';
-import { object } from 'prop-types';
+import { client } from "../index";
+import { gql } from "apollo-boost";
+import { API, backendURL } from "./helpers";
+import { store } from "../helpers";
+import { object } from "prop-types";
 
 const login = async (username, password) => {
   try {
@@ -42,12 +42,12 @@ const login = async (username, password) => {
           error
         }
       }
-      `,
+      `
     };
-    const response = await fetch(backendURL + '/graphql', {
-      method: 'POST',
+    const response = await fetch(backendURL + "/graphql", {
+      method: "POST",
       body: JSON.stringify(requestBody),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" }
     });
     const text = await response.text();
     const data = text && JSON.parse(text);
@@ -65,12 +65,12 @@ function register(username, password, plan) {
        id
       }
     }
-    `,
+    `
   };
-  return fetch(backendURL + '/graphql', {
-    method: 'POST',
+  return fetch(backendURL + "/graphql", {
+    method: "POST",
     body: JSON.stringify(requestBody),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" }
   }).then(response => handleResponse(response));
 }
 function getUserAccount() {
@@ -94,7 +94,7 @@ function getUserAccount() {
         }
 			}
 		  }
-    `,
+    `
   };
   return API(requestBody);
 }
@@ -108,7 +108,7 @@ function getUser() {
         userTypeId
 			}
 		}
-    `,
+    `
   };
   return API(requestBody);
 }
@@ -128,7 +128,7 @@ function getAllUsers() {
         
 			}
 		}
-    `,
+    `
   };
   return API(requestBody);
 }
@@ -151,9 +151,9 @@ function handleResponse(response) {
 
 function logout() {
   // remove user from local storage to log user out
-  localStorage.removeItem('user');
-  localStorage.removeItem('token');
-  localStorage.removeItem('refresh_token');
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+  localStorage.removeItem("refresh_token");
 }
 
 export const userService = {
@@ -162,7 +162,7 @@ export const userService = {
   register,
   getUserAccount,
   getAllUsers,
-  getUser,
+  getUser
   // getAll,
   // getById,
   // update,

@@ -1,19 +1,22 @@
-import { uploadFileConstants } from '../constants';
+import { uploadFileConstants } from "../constants";
 
 export function uploadedFile(state = {}, action) {
   switch (action.type) {
     case uploadFileConstants.UPLOAD_REQUEST:
       return {
-        isLoading: true,
+        ...state,
+        isLoading: true
       };
     case uploadFileConstants.UPLOAD_SUCCESS:
       return {
+        ...state,
         isLoading: false,
-        dataSetPreview: action.dataSetPreview,
+        dataSetPreview: action.dataSetPreview
       };
     case uploadFileConstants.UPLOAD_FAILURE:
       return {
-        message: action.message,
+        ...state,
+        message: action.message
       };
 
     default:
