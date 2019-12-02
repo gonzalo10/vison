@@ -3,31 +3,6 @@ import styled from "styled-components";
 
 import { Card as CardBase, Button as ButtonBase } from "../../../utils/Designs";
 
-const FreeCard = {
-  id: 1,
-  title: "Free",
-  price: 0,
-  models: 2,
-  requests: 300,
-  type: 1
-};
-const TeamCard = {
-  id: 2,
-  title: "Team",
-  price: 49,
-  models: 30,
-  requests: "10,000",
-  type: 2
-};
-const BusinessCard = {
-  id: 3,
-  title: "Business",
-  price: 190,
-  models: "Unlimited",
-  requests: "1,000,000",
-  type: 3
-};
-
 const tiers = {
   1: {
     id: 1,
@@ -61,13 +36,14 @@ const PricingContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100vw;
-  transition: transform 500ms ease-in-out;
-  ${props => !props.isPricingVisible && " transform: translate(-1200px, 0px);"}
+  transition: transform 1000ms ease-in-out;
+  ${props => !props.isPricingVisible && " transform: translate(-11000px, 0px);"}
 `;
 const OnePriceContainer = styled.div`
   left: -500px;
   position: absolute;
-  transition: transform 5000ms ease-in-out;
+  top: 25%;
+  transition: transform 500ms ease-in-out;
   ${props => props.active && "transform: translate(600px, 0px)"}
 `;
 
@@ -121,10 +97,11 @@ const ButtonWrapper = styled.div`
 
 const Card = styled(CardBase)`
   height: 400px;
+  width: 70%;
   padding: 0px 20px;
   max-width: 320px;
   min-width: 230px;
-
+  margin: auto;
   &:hover ${Header} {
     border-bottom: 2px solid ${props => props.color};
     transition: border-bottom 0.5s;
@@ -132,6 +109,30 @@ const Card = styled(CardBase)`
   &:hover ${PriceTitle} {
     color: ${props => props.color};
     transition: color 0.5s;
+  }
+`;
+
+const CrossIconWrapper = styled.div`
+  top: -15px;
+  left: -15px;
+  position: absolute;
+  font-size: 25px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  padding: 2px;
+  width: 25px;
+  border-radius: 50%;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  background-color: #d3d3d375;
+  color: white;
+  &:hover {
+    box-shadow: -1px 7px 24px -6px rgba(0, 0, 0, 0.43);
+    cursor: pointer;
+    background-color: lightgray;
   }
 `;
 
@@ -166,23 +167,25 @@ const Pricing = ({ handleClick }) => {
   const [selectedPrice, setSelectedPrice] = useState();
 
   const handleOnClick = e => {
-    console.log("setPricingVisible");
     setPricingVisible(false);
     handleClick(e);
     setSelectedPrice(e.target.id);
   };
-  console.log("selectedPrice", selectedPrice);
+  const onClickCancelSelection = () => {
+    setPricingVisible(true);
+    handleClick();
+    setSelectedPrice(null);
+  };
   return (
     <>
-      {selectedPrice && (
-        <OnePriceContainer active>
-          <PricingCard
-            data={tiers[selectedPrice]}
-            color={tiers[selectedPrice].color}
-            handleClick={handleOnClick}
-          />
-        </OnePriceContainer>
-      )}
+      <OnePriceContainer active={selectedPrice}>
+        <CrossIconWrapper onClick={onClickCancelSelection}>X</CrossIconWrapper>
+        <PricingCard
+          data={tiers[selectedPrice] || {}}
+          color={selectedPrice && tiers[selectedPrice].color}
+          handleClick={handleOnClick}
+        />
+      </OnePriceContainer>
       <PricingContainer isPricingVisible={isPricingVisible}>
         {Object.keys(tiers).map((tier, key) => (
           <PricingCard

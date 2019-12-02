@@ -3,16 +3,20 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 import { userActions } from "../../../_actions";
+import { Card, Button, Input } from "../../../utils/Designs";
 
 import Pricing from "./Pricing";
 
-export const LoginSection = styled.div`
-  display: flex;
-  flex-direction: column;
+export const LoginSection = styled(Card)`
+  width: 40%;
+  height: 50%;
+  position: absolute;
+  left: 50%;
+  display: ${props => (props.active ? "flex" : "none")};
   justify-content: center;
   align-items: center;
-  width: 600px;
-  bakcground: white;
+  top: 25%;
+  margin: 0;
 `;
 export const SignupWrapper = styled.div`
   height: 100vh;
@@ -97,12 +101,16 @@ const SignupPage = ({ dispatch }) => {
   };
 
   const handleSelectedPrice = e => {
-    setSignupModal(true);
-    console.log("value", e.target.value);
+    if (e) {
+      setSignupModal(true);
+      console.log("value", e.target.value);
+    } else {
+      setSignupModal(false);
+    }
   };
   const handleClickOutside = e => {
     // setSignupModal(false);
-    console.log(e.target.id);
+    if (e) console.log(e.target.id);
   };
 
   return (
@@ -116,28 +124,26 @@ const SignupPage = ({ dispatch }) => {
       <Span6 />
       <Pricing handleClick={handleSelectedPrice} />
       {isSignupModalOpen && (
-        <LoginSection id="1">
+        <LoginSection id="1" active={isSignupModalOpen}>
           <h1>Signup</h1>
-          <input
+          <Input
+            padding="m"
             type="text"
             onChange={e => setUsername(e.target.value)}
             placeholder="email"
             type="email"
             value={username || ""}
           />
-          <input
+          <Input
+            padding="m"
             onChange={e => setPassword(e.target.value)}
             placeholder="password"
             value={password || ""}
           />
-          <input
-            onChange={e => setPlan(e.target.value)}
-            type="number"
-            value={plan}
-            placeholder="1"
-          />
 
-          <button onClick={handleLogin}>Login</button>
+          <Button onClick={handleLogin} color="blueDark">
+            Login
+          </Button>
         </LoginSection>
       )}
     </SignupWrapper>
