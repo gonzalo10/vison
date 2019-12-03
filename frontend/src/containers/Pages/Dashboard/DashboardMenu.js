@@ -33,11 +33,13 @@ const OptionsMenu = styled.div`
 `;
 
 const OptionsMenuItem = styled.div`
-  padding: 10px;
+  width: 100px;
+  text-align: center;
+  padding: 8px;
   border-bottom: 1px solid lightgray;
   color: ${props => (props.delete ? "red" : "")};
   &:hover {
-    background-color: lightgray;
+    background-color: ${props => props.theme.color.blueDark + "60"};
     color: ${props => (props.delete ? "red" : "")};
   }
 `;
