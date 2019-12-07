@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Card = styled.div`
   cursor: pointer;
@@ -44,10 +44,10 @@ export const FlatCard = styled.div`
   cursor: default;
 `;
 
-export const CardMenu = styled.div`
+export const GridMenuArea = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(${props => props.cols || 4}, 1fr);
   grid-template-rows: 1fr 1fr 1fr;
   height: 85vh;
   overflow: scroll;

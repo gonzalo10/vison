@@ -24,8 +24,10 @@ function getAll() {
     dispatch(request());
 
     modelService.getAll().then(
-      ({ models }) => {
-        dispatch(success(arrayToObject(models)));
+      response => {
+        if (response) {
+          dispatch(success(arrayToObject(response.models)));
+        } else throw "Could not get models";
       },
       error => {
         console.log("error", error);

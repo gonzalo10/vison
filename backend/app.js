@@ -2,9 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const { ApolloServer } = require('apollo-server-express');
-const graphqlHttp = require('express-graphql');
-const session = require('express-session');
-// var SequelizeStore = require('connect-session-sequelize')(session.Store);
+
 const multer = require('multer');
 const sequelize = require('./utils/database');
 const isAuth = require('./middleware/is-auth');
@@ -17,6 +15,8 @@ const HandleCsv = require('./helpers/handleCsv');
 const typeDefs = require('./graphql/schema');
 
 const previewCsv = HandleCsv.previewCSV;
+
+require('dotenv').config();
 
 const server = new ApolloServer({
 	typeDefs,
@@ -82,17 +82,6 @@ app.post('/upload', async function(req, res) {
 	});
 });
 
-// app.post('/upload', async function(req, res) {
-// 	const { modelId, modelType } = req.query;
-// 	const userId = req.userId;
-
-// 	upload(req, res, function(err) {
-// 		if (err instanceof multer.MulterError) return res.status(500).json(err);
-// 		else if (err) return res.status(500).json(err);
-// 		return handleCsv(csvName, modelType, modelId, userId, res);
-// 	});
-// });
-
 server.applyMiddleware({ app, path: '/graphql' });
 
 applyDbRelations();
@@ -100,15 +89,20 @@ applyDbRelations();
 const PORT = 3001;
 const HOST = '127.0.0.1';
 
-app.listen(PORT, () => console.log('running on port: ' + PORT));
 try {
+	// sequelize
+	// 	.authenticate()
+	// 	.then(() => {
+	// 		console.log('Connection has been established successfully.');
+	// 	})
+	// 	.catch(err => {
+	// 		console.error('Unable to connect to the database:', err);
+	// 	});
 	sequelize
 		.sync()
 		.then(() => populateDBMockData())
 		.catch(err => console.log(err));
-
-	// when it breaks append this .authenticate() then run then delete the word
-	// it works by forcing to re-store the connection
+	app.listen(PORT, () => console.log('running on port: ' + PORT));
 } catch (err) {
 	console.log('server err', err);
 }

@@ -4,12 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
 import EmptyDashboard from "./EmptyDashboard";
-
-import { Card, CardMenu } from "../../../utils/Designs";
-
-const Models = styled.div`
-  display: flex;
-`;
+import { Card, GridMenuArea } from "../../../utils/Designs";
 
 const ModelMenu = styled(FontAwesomeIcon)`
   position: absolute;
@@ -43,12 +38,12 @@ const OptionsMenuItem = styled.div`
     color: ${props => (props.delete ? "red" : "")};
   }
 `;
-const CardIcon = styled.h1`
+const Icon = styled.h1`
   color: ${props => props.color};
   font-size: ${props => props.fontSize}px;
 `;
 
-const ModelCard = styled(Card)`
+const CardWrapper = styled(Card)`
   max-height: 200px;
   background-color: ${props => props.color};
   &:hover {
@@ -56,7 +51,7 @@ const ModelCard = styled(Card)`
   }
 `;
 
-const SmallCardIcon = styled(CardIcon)`
+const SmallCardIcon = styled(Icon)`
   margin: 0px;
 `;
 
@@ -64,6 +59,71 @@ const CardText = styled.h3`
   color: ${props => props.color};
 `;
 const CardDescription = styled.p``;
+
+const ModelCard = ({
+  model,
+  handleStartProject,
+  handleDeleteModel,
+  handleOpenMenu,
+  menuOpenId
+}) => {
+  return (
+    <CardWrapper key={model.id} id={model.id} name={model.modelTypeId}>
+      <ModelMenu
+        id="optionsMenu"
+        icon={faEllipsisV}
+        onClick={() => handleOpenMenu(model.id)}
+      />
+      <div id={model.id} onClick={handleStartProject}>
+        <Icon>{model.modelType.imageUrl}</Icon>
+        <CardText>{model.title}</CardText>
+        <CardDescription>{model.description}</CardDescription>
+      </div>
+      {menuOpenId === model.id && (
+        <OptionsMenu>
+          <OptionsMenuItem>Edit</OptionsMenuItem>
+          <OptionsMenuItem delete onClick={() => handleDeleteModel(model.id)}>
+            Delete
+          </OptionsMenuItem>
+        </OptionsMenu>
+      )}
+    </CardWrapper>
+  );
+};
+
+const CardList = ({
+  handleStartProject,
+  handleDeleteModel,
+  handleOpenMenu,
+  menuOpenId,
+  modelList
+}) =>
+  Object.keys(modelList).map((modelId, key) => {
+    const model = modelList[modelId];
+    return (
+      <ModelCard
+        key={key}
+        model={model}
+        handleStartProject={handleStartProject}
+        handleDeleteModel={handleDeleteModel}
+        handleOpenMenu={handleOpenMenu}
+        menuOpenId={menuOpenId}
+      />
+    );
+  });
+
+const AddModelCard = ({ handleOpenWizard }) => {
+  return (
+    <CardWrapper color="#4553ff">
+      <div onClick={handleOpenWizard}>
+        <Icon fontSize={50} color="white">
+          +
+        </Icon>
+        <CardText color="white">Create Model</CardText>
+      </div>
+    </CardWrapper>
+  );
+};
 
 const DashboardMenu = ({
   modelList,
@@ -78,58 +138,30 @@ const DashboardMenu = ({
   const shouldShowEmptyState =
     areModelsLoaded && !Object.keys(modelList).length;
 
+  const handleClick = e => {
+    if (e.target && e.target.id === "gridwrapper") handleOpenMenu();
+    if (!isNaN(e)) handleOpenMenu(e);
+  };
+
+  const handleGridClick = e => {
+    if (e.target.id === "gridwrapper") console.log(e.target);
+  };
+
   if (shouldShowEmptyState) return <EmptyDashboard />;
-  if (shouldShowModels) {
-    return (
-      <Models>
-        <CardMenu>
-          <ModelCard color="#4553ff">
-            <ModelMenu />
-            <div onClick={handleOpenWizard}>
-              <CardIcon fontSize={50} color="white">
-                +
-              </CardIcon>
-              <CardText color="white">Create Model</CardText>
-            </div>
-          </ModelCard>
-          {Object.keys(modelList).map(modelId => {
-            const model = modelList[modelId];
-            return (
-              <ModelCard
-                key={model.id}
-                id={model.id}
-                name={model.modelTypeId}
-                // onClick={handleStartProject}
-              >
-                <ModelMenu
-                  id="optionsMenu"
-                  icon={faEllipsisV}
-                  onClick={() => handleOpenMenu(model.id)}
-                />
-                {menuOpenId === model.id && (
-                  <OptionsMenu>
-                    <OptionsMenuItem>Edit</OptionsMenuItem>
-                    <OptionsMenuItem
-                      delete
-                      onClick={() => handleDeleteModel(model.id)}
-                    >
-                      Delete
-                    </OptionsMenuItem>
-                  </OptionsMenu>
-                )}
-                <div id={model.id} onClick={handleStartProject}>
-                  <CardIcon>{model.modelType.imageUrl}</CardIcon>
-                  <CardText>{model.title}</CardText>
-                  <CardDescription>{model.description}</CardDescription>
-                </div>
-              </ModelCard>
-            );
-          })}
-        </CardMenu>
-      </Models>
-    );
-  }
-  return null;
+  if (!shouldShowModels) return null;
+
+  return (
+    <GridMenuArea cols={4} onClick={handleClick} id="gridwrapper">
+      <AddModelCard handleOpenWizard={handleOpenWizard} />
+      <CardList
+        handleStartProject={handleStartProject}
+        handleDeleteModel={handleDeleteModel}
+        handleOpenMenu={handleClick}
+        menuOpenId={menuOpenId}
+        modelList={modelList}
+      />
+    </GridMenuArea>
+  );
 };
 
 export default DashboardMenu;

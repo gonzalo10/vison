@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 const analyzeEntities = require('../../ML/Amazon/entities');
-const credentials = require('../../credentials');
 
 const formatText = text => text.trim().replace(/  +/g, '+');
 module.exports = {
@@ -34,7 +33,7 @@ module.exports = {
 					var googleResult = await axios.get(
 						`https://kgsearch.googleapis.com/v1/entities:search?query=${formatText(
 							entity.Text
-						)}&key=${credentials.google}&limit=1&indent=True`
+						)}&key=${process.env.GOOGLE_API}&limit=1&indent=True`
 					);
 					const {
 						name,

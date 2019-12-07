@@ -2,7 +2,6 @@ var AWS = require('aws-sdk');
 const path = require('path');
 
 // Load credentials and set region from JSON file
-AWS.config.loadFromPath(path.join(__dirname, '../../config.json'));
 
 const analyzeSentiment = async text => {
 	var comprehend = new AWS.Comprehend();
@@ -20,8 +19,9 @@ const analyzeSentiment = async text => {
 			Mixed: 0.004865831229835749,
 		},
 	};
-	// const result = await comprehend.detectSentiment(params).promise();
-	// return result;
+	const result = await comprehend.detectSentiment(params).promise();
+	console.log(result);
+	return result;
 };
 
 module.exports = analyzeSentiment;

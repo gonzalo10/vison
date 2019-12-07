@@ -2,7 +2,7 @@ var AWS = require('aws-sdk');
 const path = require('path');
 
 // Load credentials and set region from JSON file
-AWS.config.loadFromPath(path.join(__dirname, '../../config.json'));
+// AWS.config.loadFromPath(path.join(__dirname, '../../config.js'));
 
 const analyzeEntities = async text => {
 	var comprehend = new AWS.Comprehend();
@@ -11,8 +11,7 @@ const analyzeEntities = async text => {
 		Text: decodeURI(text),
 	};
 
-	const result = await comprehend.detectEntities(params).promise();
-	// console.log('AWS comprehend result ', result);
+	// const result = await comprehend.detectEntities(params).promise();
 	return {
 		Entities: [
 			{
