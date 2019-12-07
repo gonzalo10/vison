@@ -3,7 +3,7 @@ module.exports = {
 	Query: {
 		sentimentAnalysis: async (parent, args, user, info) => {
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				const sentiments = await user.getSentiments({
@@ -21,7 +21,7 @@ module.exports = {
 		createSentimentAnalysis: async (parent, args, user, info) => {
 			const { text, modelId } = args.sentimentInput;
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				const result = await analyzeSentiment(text);

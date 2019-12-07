@@ -44,9 +44,10 @@ const server = new ApolloServer({
 				.catch(err => console.log('error graphql', err));
 			return myUser;
 		}
-		return {};
+		return null;
 	},
 });
+
 const app = express();
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -58,6 +59,7 @@ app.use((req, res, next) => {
 	}
 	next();
 });
+
 app.use(isAuth);
 
 var csvName;

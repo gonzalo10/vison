@@ -72,7 +72,7 @@ module.exports = {
 			const { url, modelId } = args;
 			try {
 				console.log(args);
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				const comments = await getYoutbeComments(url);

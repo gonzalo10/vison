@@ -9,7 +9,7 @@ module.exports = {
 		createModel: async (parent, args, user, info) => {
 			const { title, description, modelTypeId } = args.modelInput;
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				return user.createModel({
@@ -24,7 +24,7 @@ module.exports = {
 		},
 		deleteModel: async (parent, args, user, info) => {
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 
@@ -49,7 +49,7 @@ module.exports = {
 	Query: {
 		models: async (parent, args, user, info) => {
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				const models = await user.getModels({
@@ -63,7 +63,7 @@ module.exports = {
 		},
 		sentimentModel: async (parent, args, user, info) => {
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				const { id } = args;

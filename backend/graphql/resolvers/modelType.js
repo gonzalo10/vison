@@ -4,7 +4,7 @@ module.exports = {
 		createModelType: async (parent, args, user, info) => {
 			const { title, description, imageUrl } = args.modelTypeInput;
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				return ModelType.create({
@@ -21,7 +21,7 @@ module.exports = {
 	Query: {
 		modelType: async (parent, args, user, info) => {
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				const modelTypes = await ModelType.findAll();

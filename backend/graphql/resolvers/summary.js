@@ -14,7 +14,7 @@ module.exports = {
 		createSummary: (parent, args, user, info) => {
 			const { text, summarySize } = args.summaryInput;
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 

@@ -7,7 +7,7 @@ module.exports = {
 	Query: {
 		entitiesAnalysis: async (parent, args, user, info) => {
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				return user.getEntities({
@@ -24,7 +24,7 @@ module.exports = {
 		createEntitiesAnalysis: async (parent, args, user, info) => {
 			const { text, modelId } = args.entityInput;
 			try {
-				if (!user) {
+				if (!user.dataValues) {
 					throw new Error('Unauthenticated!');
 				}
 				const result = await analyzeEntities(text);

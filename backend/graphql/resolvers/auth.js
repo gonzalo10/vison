@@ -58,6 +58,9 @@ module.exports = {
 		},
 		updatePassword: async (_, args, user, info) => {
 			const { oldPassword, newPassword } = args.updatePasswordInput;
+			if (!user.dataValues) {
+				throw new Error('Unauthenticated!');
+			}
 			try {
 				await updatePassword(oldPassword, newPassword);
 			} catch (err) {
@@ -69,7 +72,7 @@ module.exports = {
 	Query: {
 		login: async (_, { email, password }, req, res) => {
 			const user = await User.findOne({ where: { email } });
-			if (!user) {
+			if (!user.dataValues) {
 				return {
 					userId: '',
 					token: '',
