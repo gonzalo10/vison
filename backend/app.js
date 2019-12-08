@@ -89,17 +89,9 @@ server.applyMiddleware({ app, path: '/graphql' });
 applyDbRelations();
 
 const PORT = 3001;
-const HOST = '127.0.0.1';
 
 try {
-	// sequelize
-	// 	.authenticate()
-	// 	.then(() => {
-	// 		console.log('Connection has been established successfully.');
-	// 	})
-	// 	.catch(err => {
-	// 		console.error('Unable to connect to the database:', err);
-	// 	});
+	console.log(process.env.AWS_RDS_DB_USER);
 	sequelize
 		.sync()
 		.then(() => populateDBMockData())
