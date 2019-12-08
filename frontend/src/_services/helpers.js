@@ -2,7 +2,7 @@ import { authHeader } from "../helpers";
 import { userActions } from "../_actions";
 import { store } from "../helpers";
 
-export const backendURL = "http://127.0.0.1:3001";
+export const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 export const API = requestBody =>
   fetch(backendURL + "/graphql", {
