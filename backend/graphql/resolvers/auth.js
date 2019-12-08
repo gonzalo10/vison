@@ -72,7 +72,7 @@ module.exports = {
 	Query: {
 		login: async (_, { email, password }, req, res) => {
 			const user = await User.findOne({ where: { email } });
-			if (!user.dataValues) {
+			if (!user || !user.dataValues) {
 				return {
 					userId: '',
 					token: '',
