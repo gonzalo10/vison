@@ -38,6 +38,6 @@ export function notifications(state = {}, action) {
         isOpen: false
       };
     default:
-      return state;
+      return { ...state };
   }
 }

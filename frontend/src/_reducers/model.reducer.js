@@ -103,6 +103,6 @@ export function models(state = { ...initialState }, action) {
       };
 
     default:
-      return state;
+      return { ...state };
   }
 }

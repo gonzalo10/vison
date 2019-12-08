@@ -4,7 +4,7 @@ import { userActions } from "../_actions";
 export function user(state = {}, action) {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
-      return state;
+      return { ...state };
     case userConstants.LOGIN_SUCCESS:
       return {
         ...state,
@@ -53,9 +53,9 @@ export function user(state = {}, action) {
         myAccount: action.account
       };
     case userConstants.GET_USER_ACCOUNT_FAILURE:
-      return state;
+      return { ...state };
 
     default:
-      return state;
+      return { ...state };
   }
 }

@@ -23,6 +23,6 @@ export function sentiment(state = {}, action) {
       };
 
     default:
-      return state;
+      return { ...state };
   }
 }

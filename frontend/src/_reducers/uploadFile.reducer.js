@@ -20,6 +20,6 @@ export function uploadedFile(state = {}, action) {
       };
 
     default:
-      return state;
+      return { ...state };
   }
 }

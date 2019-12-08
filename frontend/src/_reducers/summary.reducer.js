@@ -21,6 +21,6 @@ export function summary(state = {}, action) {
       };
 
     default:
-      return state;
+      return { ...state };
   }
 }

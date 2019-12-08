@@ -20,6 +20,6 @@ export function modal(state = {}, action) {
       };
 
     default:
-      return state;
+      return { ...state };
   }
 }

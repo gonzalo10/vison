@@ -20,6 +20,6 @@ export function entity(state = {}, action) {
       };
 
     default:
-      return state;
+      return { ...state };
   }
 }
